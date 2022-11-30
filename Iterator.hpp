@@ -1,9 +1,11 @@
 #ifndef ITERATOR_HPP
-# define INTERATOR_HPP
+# define ITERATOR_HPP
 
-# include <bits/c++config.h>
+# include <iostream>
 # include <cstddef>
+# include "ft_containers.hpp"
 
+NAME_SPACE_START
 
 //! ITERATOR CATEGORIES:	
 //For every LegacyIterator type It, a typedef std::iterator_traits<It>::iterator_category must be defined to be an alias to one of these tag types, to indicate the most specific category that It is in. Iterator category tags carry information that can be used to select the most efficient algorithms for the specific requirement set that is implied by the category.
@@ -78,4 +80,5 @@ struct iterator_traits<const T*>
 	typedef random_access_iterator_tag	iterator_category;
 };
 
+NAME_SPACE_END
 #endif
