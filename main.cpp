@@ -1,6 +1,7 @@
 #include "Iterator.hpp"
 #include "reverse_iterator.hpp"
 #include "distance.hpp"
+#include "equal.hpp"
 #include <vector>
 
 

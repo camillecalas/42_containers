@@ -2,6 +2,7 @@
 # define REVERSE_ITERATOR_HPP
 
 # include <iostream>
+
 # include "ft_containers.hpp"
 # include "Iterator.hpp"
 
@@ -56,6 +57,8 @@ class reverse_iterator: public ft::iterator<typename iterator_traits<Iterator>::
 
 		// =============================================================================
 		// ASSIGN ANOTHER ITERATOR ADAPTOR =============================================
+		//TODO careful no = in 98?
+
 		template< class U >
 		reverse_iterator& operator=(const reverse_iterator<U>& other)
 		{
@@ -198,8 +201,6 @@ bool operator>=( const ft::reverse_iterator<Iterator1>& lhs,
 {
 	return (lhs.base() <= rhs.base());
 }
-
-
 
 NAME_SPACE_END
 #endif

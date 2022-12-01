@@ -3,6 +3,7 @@
 
 # include <iostream>
 # include <cstddef>
+
 # include "ft_containers.hpp"
 
 NAME_SPACE_START
@@ -10,19 +11,19 @@ NAME_SPACE_START
 // =============================================================================
 // DEFINES THE CATEGORY OF AN ITERATOR: each tag is an empty type ==============
 
-// ITERATOR CATEGORIES:	input_iterator_tag corresponds to LegacyInputIterator.
+// input_iterator_tag corresponds to LegacyInputIterator.
 struct input_iterator_tag { };	
 
-// ITERATOR CATEGORIES: output_iterator_tag corresponds to LegacyOutputIterator.
+// output_iterator_tag corresponds to LegacyOutputIterator.
 struct output_iterator_tag { };
 
-// ITERATOR CATEGORIES:	forward_iterator_tag corresponds to LegacyForwardIterator. 
+// forward_iterator_tag corresponds to LegacyForwardIterator. 
 struct forward_iterator_tag : public input_iterator_tag { };
 
-// ITERATOR CATEGORIES:	bidirectional_iterator_tag corresponds to LegacyBidirectionalIterator. 
+// bidirectional_iterator_tag corresponds to LegacyBidirectionalIterator. 
 struct bidirectional_iterator_tag : public forward_iterator_tag { };
 
-// ITERATOR CATEGORIES:	random_access_iterator_tag corresponds to LegacyRandomAccessIterator. 
+// random_access_iterator_tag corresponds to LegacyRandomAccessIterator. 
 struct random_access_iterator_tag : public bidirectional_iterator_tag { };
 
 

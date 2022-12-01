@@ -1,3 +1,6 @@
+#ifndef DISTANCE_HPP
+# define DISTANCE_HPP
+
 # include "ft_containers.hpp"
 # include "Iterator.hpp"
 
@@ -14,3 +17,4 @@ typename std::iterator_traits<InputIt>::difference_type
 }
 
 NAME_SPACE_END
+#endif
