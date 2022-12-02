@@ -77,7 +77,8 @@ class vector
 		}
 
 	private:
-		void	destroy_vector()
+		void
+		destroy_vector()
 		{
 			if (_capacity)
 			{
@@ -86,7 +87,6 @@ class vector
 				_alloc.deallocate(_start, _capacity);
 			}
 		}
-
 
 
 		// =============================================================================
@@ -108,8 +108,56 @@ class vector
 
 
 		// =============================================================================
+		// ITERATORS ===================================================================
+		iterator 
+		begin()
+		{
+			return (_start);
+		}
+		const_iterator
+		begin() const
+		{
+			return ((const_iterator)_start);
+		}
+
+		iterator 
+		end()
+		{
+			return (_start + _size);
+		}
+		const_iterator 
+		end() const
+		{
+			((const_iterator)(_start + _size));
+		}
+
+		reverse_iterator 
+		rbegin()
+		{
+			return (reverse_iterator(_start + _size));
+		}
+		const_reverse_iterator 
+		rbegin() const
+		{
+			return (const_reverse_iterator(_start + _size));
+		}
+
+		reverse_iterator 
+		rend()
+		{
+			return (reverse_iterator(_start));
+		}
+		const_reverse_iterator 
+		rend() const
+		{
+			return (const_reverse_iterator(_start));
+		}
+
+
+		// =============================================================================
 		// CAPACITY ====================================================================
-		void reserve (size_type n)
+		void 
+		reserve (size_type n)
 		{
 			_capacity = n;
 			_start = _alloc.allocate(_capacity);
@@ -120,7 +168,8 @@ class vector
 		// =============================================================================
 		// MODIFIERS ===================================================================
 		// If a reallocation happens, the storage is allocated using the container's allocator, which may throw exceptions on failure (for the default allocator, bad_alloc is thrown if the allocation request does not succeed).
-		void push_back (const value_type& val)
+		void 
+		push_back (const value_type& val)
 		{
 			if ((_size + 1) > _capacity)
 			{
