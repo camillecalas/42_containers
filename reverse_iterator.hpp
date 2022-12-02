@@ -16,7 +16,7 @@ class reverse_iterator: public ft::iterator<typename iterator_traits<Iterator>::
 											typename iterator_traits<Iterator>::reference>
 {
 		// =============================================================================
-		// ATTRIBUTS ===================================================================
+		// TYPEDEF =====================================================================
 	public:
 		typedef Iterator													iterator_type;
 		typedef typename ft::iterator_traits<Iterator>::iterator_category	iterator_category;
@@ -25,13 +25,17 @@ class reverse_iterator: public ft::iterator<typename iterator_traits<Iterator>::
 		typedef typename ft::iterator_traits<Iterator>::pointer				pointer;
 		typedef typename ft::iterator_traits<Iterator>::reference			reference;
 
-	// current (protected)	the underlying iterator of which base() returns a copy
+
+		// =============================================================================
+		// ATTRIBUTS ===================================================================
+		// current (protected)	the underlying iterator of which base() returns a copy
 	protected:
 		iterator_type	current;
 
-	public:
+
 		// =============================================================================
 		// CONSTRUCTORS ================================================================
+	public:
 		reverse_iterator() : current()
 		{}
 
@@ -43,6 +47,7 @@ class reverse_iterator: public ft::iterator<typename iterator_traits<Iterator>::
 		{
 			current(other.base());
 		}
+
 
 		// =============================================================================
 		// OVERLOADS ===================================================================
@@ -146,6 +151,7 @@ reverse_iterator<Iter>
 {
 	return (reverse_iterator<Iter>(it.base() - n));
 }
+
 
 // =============================================================================
 // COMPUTES THE DISTANCE BETWEEN 2 ITERATORS ADAPTORS ==========================
