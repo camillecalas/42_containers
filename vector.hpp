@@ -38,7 +38,7 @@ class vector
 		size_type 		_capacity;	// capacity of vector
 		pointer			_start;		// point on the beginning of vector 
 		size_type 		_size;		// taille utilisee du vector : size
-		
+
 
 		// =============================================================================
 		// CONSTRUCTORS ================================================================
@@ -56,7 +56,6 @@ class vector
 		};
 
 		//TODO pas sur pour ce constructeur
-
 		template< class InputIt >
 		vector(InputIt first, InputIt last, const allocator_type& alloc = allocator_type())
 			: _alloc(alloc), _capacity(ft_distance(first, last)), _start(_alloc.allocate(ft_distance(first, last))), _size(ft_distance(first, last))
@@ -114,21 +113,11 @@ class vector
 		{
 			return (_start);
 		}
-		const_iterator
-		begin() const
-		{
-			return ((const_iterator)_start);
-		}
 
 		iterator 
 		end()
 		{
 			return (_start + _size);
-		}
-		const_iterator 
-		end() const
-		{
-			((const_iterator)(_start + _size));
 		}
 
 		reverse_iterator 
@@ -136,17 +125,32 @@ class vector
 		{
 			return (reverse_iterator(_start + _size));
 		}
-		const_reverse_iterator 
-		rbegin() const
-		{
-			return (const_reverse_iterator(_start + _size));
-		}
 
 		reverse_iterator 
 		rend()
 		{
 			return (reverse_iterator(_start));
 		}
+
+
+		const_iterator
+		begin() const
+		{
+			return ((const_iterator)_start);
+		}
+
+		const_iterator 
+		end() const
+		{
+			((const_iterator)(_start + _size));
+		}
+
+		const_reverse_iterator 
+		rbegin() const
+		{
+			return (const_reverse_iterator(_start + _size));
+		}
+
 		const_reverse_iterator 
 		rend() const
 		{
@@ -156,12 +160,95 @@ class vector
 
 		// =============================================================================
 		// CAPACITY ====================================================================
+		size_type
+		size() const
+		{
+			return (_size);
+		}
+		//TODO not sure
+		size_type
+		max_size() const
+		{
+			return (std::numeric_limits<difference_type>::max());
+		}
+
+		size_type 
+		capacity() const
+		{
+			return (_capacity);
+		}
+
+		bool empty() const
+		{
+			if(_size == NULL)
+				return (true);
+			return (false);
+		}
+
 		void 
 		reserve (size_type n)
 		{
-			_capacity = n;
-			_start = _alloc.allocate(_capacity);
+			if (n < _capacity)
+				return ;
+			if (n > _capacity)
+				throw std::length_error("Length error: vector::_M_fill_insert");
+		}
 
+
+		// =============================================================================
+		// ELEMENTS ACCESS =============================================================
+		reference 
+		operator[] (size_type n)
+		{
+			return ((*(_start + n)));
+		}
+
+		reference 
+		at (size_type n)
+		{
+			// std::stringstream ss;
+			// ss << "Out of Range error: vector::_M_range_check\n";
+			if (n >= _size)
+				throw std::out_of_range("vector\n");
+			return ((*(_start + n)));
+		}
+
+		reference
+		front()
+		{
+			return (*_start);
+		}
+
+		reference 
+		back()
+		{
+			return (*(_start + _size - 1));
+		}
+
+
+		const_reference
+		operator[] (size_type n) const
+		{
+			return ((*(_start + n)));
+		}
+
+		const_reference at (size_type n) const
+		{
+			if (n >= _size)
+				throw std::out_of_range("vector\n");
+			return ((*(_start + n)));
+		}
+
+		const_reference 
+		front() const
+		{
+			return (*_start);
+		}
+
+		const_reference 
+		back() const
+		{
+			return (*(_start + _size - 1));
 		}
 
 
@@ -179,6 +266,18 @@ class vector
 			_size += 1;
 		}
 
+		// void swap (vector& x)
+		// {
+
+		// }
+
+		// =============================================================================
+		// ALLOCATOR ===================================================================
+		allocator_type 
+		get_allocator() const
+		{
+			return (_alloc);
+		}
 
 
 };
