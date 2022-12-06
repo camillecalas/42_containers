@@ -44,11 +44,13 @@ class vector
 		// CONSTRUCTORS ================================================================
 		// Allocate return a pointer to the initial element in the block of storage
 	public:
-		explicit vector (const allocator_type& alloc = allocator_type())
+		explicit 
+		vector (const allocator_type& alloc = allocator_type())
 			: _alloc(alloc), _capacity(0), _start(NULL), _size(0)
 		{};
 
-		explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
+		explicit 
+		vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
 			: _alloc(alloc), _capacity(n), _start(_alloc.allocate(n)), _size(n)
 		{
 			for(size_t i = 0; i < n; i++)
@@ -159,43 +161,6 @@ class vector
 
 
 		// =============================================================================
-		// CAPACITY ====================================================================
-		size_type
-		size() const
-		{
-			return (_size);
-		}
-		//TODO not sure
-		size_type
-		max_size() const
-		{
-			return (std::numeric_limits<difference_type>::max());
-		}
-
-		size_type 
-		capacity() const
-		{
-			return (_capacity);
-		}
-
-		bool empty() const
-		{
-			if(_size == NULL)
-				return (true);
-			return (false);
-		}
-
-		void 
-		reserve (size_type n)
-		{
-			if (n < _capacity)
-				return ;
-			if (n > _capacity)
-				throw std::length_error("Length error: vector::_M_fill_insert");
-		}
-
-
-		// =============================================================================
 		// ELEMENTS ACCESS =============================================================
 		reference 
 		operator[] (size_type n)
@@ -206,10 +171,8 @@ class vector
 		reference 
 		at (size_type n)
 		{
-			// std::stringstream ss;
-			// ss << "Out of Range error: vector::_M_range_check\n";
 			if (n >= _size)
-				throw std::out_of_range("vector\n");
+				throw std::out_of_range("vector::at\n");
 			return ((*(_start + n)));
 		}
 
@@ -235,7 +198,7 @@ class vector
 		const_reference at (size_type n) const
 		{
 			if (n >= _size)
-				throw std::out_of_range("vector\n");
+				throw std::out_of_range("vector::at\n");
 			return ((*(_start + n)));
 		}
 
@@ -253,17 +216,133 @@ class vector
 
 
 		// =============================================================================
+		// CAPACITY ====================================================================
+		size_type
+		size() const
+		{
+			return (_size);
+		}
+
+		// return the max number of element that the vector can hold
+		size_type
+		max_size() const
+		{
+			return (_alloc.max_size());
+		}
+
+		size_type 
+		capacity() const
+		{
+			return (_capacity);
+		}
+
+		bool empty() const
+		{
+			if(_size == 0)
+				return (true);
+			return (false);
+		}
+
+		//TODO not sure why not n > _capacity
+		void 
+		reserve (size_type n)
+		{
+			if (n < _capacity)
+				return ;
+			// else if (n > _capacity)
+			else if (n > _alloc.max_size())
+				throw std::length_error("vector::reserve\n");
+
+			pointer tmp = _alloc.allocate(n);
+			for(size_t i = 0; i < _size; i++)
+				_alloc.construct(tmp + i, *(_start + i));
+			destroy_vector();
+			_start = tmp;
+			_capacity = n;
+		}
+
+
+		// =============================================================================
 		// MODIFIERS ===================================================================
+		void
+		clear()
+		{
+			destroy_vector();
+			_size = 0;
+		}
+
 		// If a reallocation happens, the storage is allocated using the container's allocator, which may throw exceptions on failure (for the default allocator, bad_alloc is thrown if the allocation request does not succeed).
 		void 
 		push_back (const value_type& val)
 		{
-			if ((_size + 1) > _capacity)
+			if (_size >= _capacity)
 			{
-				(*this).reserve(_size);
+				if (_capacity == 0)
+					reserve(1);
+				else
+					reserve(_capacity * 2);
 			}
-			_alloc.construct(_start + _size, val);
+			_alloc.construct((_start + _size), val);
 			_size += 1;
+		}
+
+		void
+		pop_back()
+		{
+			if (_size == 0)
+				return ;
+			_size -= 1;
+			_alloc.destroy(_start + _size);
+		}
+
+		//TODO not too sure if good methods 
+		iterator
+		erase (iterator position)
+		{
+			iterator	tmp = _alloc.allocate(_capacity);
+			size_t		i = 0;
+
+			while (i < _size)
+			{
+				if ((_start + i) == position)
+					break ;
+				_alloc.construct(tmp + i, *(_start + i));
+				i++;
+			}
+			for (; (i + 1) < _size; i++)
+				_alloc.construct(tmp + i, *(_start + i + 1));
+			destroy_vector();
+			_start = tmp;
+			_size -= 1;
+			return (_start);
+		}
+		
+
+		iterator 
+		erase (iterator first, iterator last)
+		{
+			iterator	tmp = _alloc.allocate(_capacity);
+			size_t		i = 0;
+			size_t		j = 0;
+
+			while (i < _size)
+			{
+				if ((_start + i) == first)
+				{
+					while ((_start + i) != last)
+						i++;
+					break ;
+				}
+				_alloc.construct(tmp + i, *(_start + i));
+				i++;
+				j++;
+			}
+			for (; j < _size; j++)
+				_alloc.construct(tmp + j, *(_start + i++));
+			destroy_vector();
+			_start = tmp;
+			_size = (_size - (last - first));
+			return (_start);
 		}
 
 		// void swap (vector& x)
