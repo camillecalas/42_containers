@@ -11,7 +11,6 @@ CFLAGS = -Wall -Werror -Wextra -std=c++98 -fsanitize=address -g3
 
 $(NAME_FT): $(OBJS_FT)
 	$(CXX) $(CXXFLAGS) -o $(NAME_FT) $(OBJS_FT) 
-	@echo "\\n\033[32;1mFT COMPILATION OK \033[0m \\n"
 
 $(NAME_STD): $(OBJS_STD)
 	$(CXX) $(CXXFLAGS) -o $(NAME_STD) $(OBJS_STD) 

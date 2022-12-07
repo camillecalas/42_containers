@@ -3,6 +3,8 @@
 
 # include "ft_containers.hpp"
 # include "distance.hpp"
+# include "enable_if.hpp"
+# include "is_integral.hpp"
 
 //TODO erase later
 # include <vector>
@@ -37,6 +39,7 @@ class vector
 		allocator_type	_alloc;		// object allocate
 		size_type 		_capacity;	// capacity of vector
 		pointer			_start;		// point on the beginning of vector 
+		pointer			_ptr;
 		size_type 		_size;		// taille utilisee du vector : size
 
 
@@ -46,12 +49,12 @@ class vector
 	public:
 		explicit 
 		vector (const allocator_type& alloc = allocator_type())
-			: _alloc(alloc), _capacity(0), _start(NULL), _size(0)
+			: _alloc(alloc), _capacity(0), _start(NULL), _ptr(NULL),_size(0)
 		{};
 
 		explicit 
 		vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
-			: _alloc(alloc), _capacity(n), _start(_alloc.allocate(n)), _size(n)
+			: _alloc(alloc), _capacity(n), _start(_alloc.allocate(n)), _ptr(NULL), _size(n)
 		{
 			for(size_t i = 0; i < n; i++)
 				_alloc.construct(_start + i, val);
@@ -60,7 +63,7 @@ class vector
 		//TODO pas sur pour ce constructeur
 		template< class InputIt >
 		vector(InputIt first, InputIt last, const allocator_type& alloc = allocator_type())
-			: _alloc(alloc), _capacity(ft_distance(first, last)), _start(_alloc.allocate(ft_distance(first, last))), _size(ft_distance(first, last))
+			: _alloc(alloc), _capacity(ft_distance(first, last)), _start(_alloc.allocate(ft_distance(first, last))), _ptr(NULL), _size(ft_distance(first, last))
 		{};
 
 
@@ -235,7 +238,8 @@ class vector
 			return (_capacity);
 		}
 
-		bool empty() const
+		bool
+		empty() const
 		{
 			if (_size == 0)
 				return (true);
@@ -292,7 +296,6 @@ class vector
 			_alloc.destroy(_start + _size);
 		}
 
-		//TODO not too sure if good methods : Invalid Read sur la version range
 		//TODO a tester avec grandes valeurs
 		iterator
 		erase (iterator position)
@@ -364,6 +367,44 @@ class vector
 				_size = n;
 			}
 		}
+
+		//TODO not sure about the allocation
+		//Any elements held in the container before the call are destroyed and replaced by newly constructed elements (no assignments of elements take place). This causes an automatic reallocation of the allocated storage space if -and only if- the new vector size surpasses the current vector capacity.
+
+
+		template <class InputIterator>
+		void
+		assign (InputIterator first, InputIterator last)
+		{
+			(void) last;
+			std::cout << "first = " << (*first) << std::endl;
+			//TODO understand why this isnt working
+			size_t i = 0;
+			pointer tmp = _alloc.allocate(_capacity);
+			for (; first != last; first++)
+				_alloc.construct(tmp + i++, (*first));
+			
+			// size_t i = 0;
+			// size_t j = 0;
+			// while ((_start + i) != first )
+			// 	i++;
+			// while (_start[i] != last)
+			// 	_alloc.construc(tmp + j++, _start[i]);
+
+
+		}
+
+		void
+		assign (size_type n, const value_type& val)
+		{
+			destroy_vector();
+			_capacity = n;
+			_start = _alloc.allocate(n);
+			_size = n;
+			for(size_t i = 0; i < _size; i++)
+				_alloc.construct(_start + i, val);
+		}
+
 
 		// void swap (vector& x)
 		// {
