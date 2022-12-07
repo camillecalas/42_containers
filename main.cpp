@@ -26,12 +26,15 @@ int main()
 	for (size_t i = 0; i < b.size(); i++)
 		std::cout << "i = " << i << "   "<< b[i] << std::endl;
 	std::cout << std::endl;
-	b.erase(b.begin() + 3, b.begin() + 5);
+	b.resize(4);
+	// b.erase(b.begin() + 3);
+	// b.erase(b.begin() + 3, b.begin() + 5);
 	for (size_t i = 0; i < b.size(); i++)
 		std::cout << "i = " << i << "   "<< b[i] << std::endl;
+	std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
 
 	std::cout << "************************"<< std::endl;
-	
+
 	ft::vector<int> a;
 	a.push_back(1);
 	a.push_back(2);
@@ -44,10 +47,16 @@ int main()
 	for (size_t i = 0; i < a.size(); i++)
 		std::cout << "i = " << i << "   "<< a[i] << std::endl;
 	std::cout << std::endl;
-	a.erase(a.begin() + 3, a.begin() + 5);
+	// a.erase(a.begin() + 3);
+	// a.erase(a.begin() + 3, a.begin() + 5);
+	a.resize(4);
 	for (size_t i = 0; i < a.size(); i++)
 		std::cout << "i = " << i << "   "<< a[i] << std::endl;
+	std::cout << "SIZE = " << a.size() << " CAPACITY = " << b.capacity() << std::endl;
 
 
 	return (0);
 }
+	// ft::vector<int>::iterator it;
+	// for (it = a.begin() + 2; it != a.end(); it++)
+	// 	std::cout << "i = " << *it << std::endl;

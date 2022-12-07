@@ -188,7 +188,6 @@ class vector
 			return (*(_start + _size - 1));
 		}
 
-
 		const_reference
 		operator[] (size_type n) const
 		{
@@ -238,18 +237,16 @@ class vector
 
 		bool empty() const
 		{
-			if(_size == 0)
+			if (_size == 0)
 				return (true);
 			return (false);
 		}
 
-		//TODO not sure why not n > _capacity
 		void 
 		reserve (size_type n)
 		{
 			if (n < _capacity)
 				return ;
-			// else if (n > _capacity)
 			else if (n > _alloc.max_size())
 				throw std::length_error("vector::reserve\n");
 
@@ -295,7 +292,8 @@ class vector
 			_alloc.destroy(_start + _size);
 		}
 
-		//TODO not too sure if good methods 
+		//TODO not too sure if good methods : Invalid Read sur la version range
+		//TODO a tester avec grandes valeurs
 		iterator
 		erase (iterator position)
 		{
@@ -316,7 +314,6 @@ class vector
 			_size -= 1;
 			return (_start);
 		}
-		
 
 		iterator 
 		erase (iterator first, iterator last)
@@ -337,12 +334,35 @@ class vector
 				i++;
 				j++;
 			}
-			for (; j < _size; j++)
+			for (; j < _size - (last - first); j++)
 				_alloc.construct(tmp + j, *(_start + i++));
 			destroy_vector();
 			_start = tmp;
 			_size = (_size - (last - first));
 			return (_start);
+		}
+
+		void
+		resize (size_type n, value_type val = value_type())
+		{
+			if (n < _size)
+				(*this).erase(begin() + n, end());
+			else
+			{
+				iterator	tmp = _alloc.allocate(n);
+				for (size_t i = 0; i < _size; i++)
+					_alloc.construct(tmp + i, *(_start + i));
+				for (size_t i = _size; i < n; i++)
+				{
+					if (val)
+						_alloc.construct(tmp + i, val);
+					else
+						_alloc.construct(tmp + i, 0);
+				}
+				destroy_vector();
+				_start = tmp;
+				_size = n;
+			}
 		}
 
 		// void swap (vector& x)
