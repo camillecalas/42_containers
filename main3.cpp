@@ -5,15 +5,17 @@
 #include "vector.hpp"
 #include <vector>
 
-# define TESTED_TYPE int
-# define _VECTOR NAMESPACE::vector<TESTED_TYPE>
+#ifndef TESTED_NAMESPACE
+# define TESTED_NAMESPACE ft
+#endif
 
 using namespace TESTED_NAMESPACE;
 
+
 int main()
 {
-	_VECTOR<TESTED_TYPE>b;
-	b.assign(7,100);
+	std::vector<int> b;
+	b.assign(5,100);
 	std::vector<int>::iterator it2;
 	it2 = b.begin() + 1;
 	b.assign(it2, b.end() - 1);
@@ -38,7 +40,10 @@ int main()
 	std::cout << "************************"<< std::endl;
 
 	ft::vector<int> a;
+	a.assign(5,100);
 	ft::vector<int>::iterator it;
+	it = a.begin() + 1;
+	a.assign(it, a.end() - 1);
 	// std::cout << (*(a.begin() + 1)) << std::endl;
 	// a.push_back(1);
 	// a.push_back(2);
@@ -56,6 +61,8 @@ int main()
 	// a.resize(8);
 	for (size_t i = 0; i < a.size(); i++)
 		std::cout << "i = " << i << "   "<< a[i] << std::endl;
+	// for (it = a.begin(); it != a.end(); it++)
+	// 	std::cout << "i = " << *it << std::endl;
 	std::cout << "SIZE = " << a.size() << " CAPACITY = " << b.capacity() << std::endl;
 
 
