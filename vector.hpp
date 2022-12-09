@@ -2,6 +2,7 @@
 # define VECTOR_HPP
 
 # include "ft_containers.hpp"
+# include "reverse_iterator.hpp"
 # include "distance.hpp"
 # include "enable_if.hpp"
 # include "is_integral.hpp"
@@ -301,9 +302,6 @@ public:
 	erase (iterator position)
 	{
 		iterator	pos_save = position;
-		//TODO try to understand &(*position) vs position
-		std::cout << "pos = " << &(*position) << std::endl;
-		std::cout << "pos = " << position << "val = "<< *position<< std::endl;
 		for (; position + 1 != end(); position++)
 		{
 			_alloc.destroy(position);
@@ -325,25 +323,20 @@ public:
 	void
 	resize (size_type n, value_type val = value_type())
 	{
+	
 		if (n < _size)
-		{
 			(*this).erase(begin() + n, end());
-		}
 		else
 		{
-			iterator	tmp = _alloc.allocate(n);
-			for (size_t i = 0; i < _size; i++)
-				_alloc.construct(tmp + i, *(_start + i));
-			for (size_t i = _size; i < n; i++)
+			if (n > _capacity)
 			{
-				if (val)
-					_alloc.construct(tmp + i, val);
+				if (_capacity * 2 > n)
+					reserve(_capacity * 2);
 				else
-					_alloc.construct(tmp + i, 0);
+					reserve(n);
 			}
-			destroy_vector();
-			_start = tmp;
-			_size = n;
+			for (; _size < n; _size++)
+				_alloc.construct((_start + _size), val);
 		}
 	}
 
@@ -385,10 +378,23 @@ public:
 	}
 
 
-	// void swap (vector& x)
-	// {
+	void swap (vector& x)
+	{
+		allocator_type	tmp_alloc	= _alloc;
+		size_type 		tmp_capacity= _capacity;
+		pointer			tmp_start	= _start;
+		size_type 		tmp_size	= _size;
 
-	// }
+		_alloc		= x._alloc;
+		_capacity	= x._capacity;
+		_start		= x._start;
+		_size		= x._size;
+
+		x._alloc 	= tmp_alloc;
+		x._capacity = tmp_capacity;
+		x._start	= tmp_start;	
+		x._size		= tmp_size;
+	}
 
 	// =============================================================================
 	// ALLOCATOR ===================================================================

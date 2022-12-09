@@ -1,0 +1,14 @@
+TEST: ASSIGN
+SIZE = 7 CAPACITY = 7
+SIZE = 5 CAPACITY = 7
+SIZE = 35 CAPACITY = 56
+SIZE = 5 CAPACITY = 56
+15
+16
+17
+18
+19
+SIZE = 5 CAPACITY = 56
+Size of first: 7
+Size of second: 5
+Size of third: 3

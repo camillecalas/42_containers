@@ -14,51 +14,63 @@ using namespace TESTED_NAMESPACE;
 
 int main()
 {
-	std::vector<int> b;
-	// std::vector<int>::iterator it2;
+	std::vector<int> c;
+	std::vector<int> d;
+
+	c.push_back(1);
+	c.push_back(2);
+	c.push_back(3);
+	c.push_back(4);
+	c.push_back(1);
+	c.push_back(2);
+	c.push_back(3);
+	c.push_back(4);
+
+	d.push_back(5);
+	d.push_back(6);
+	d.push_back(7);
+	d.push_back(8);
+
+	c.swap(d);
+	std::cout << "SIZE = " << c.size() << " CAPACITY = " << c.capacity() << std::endl;
+
+
+	std::vector<int>::iterator it2;
+		
+	for (it2 = c.begin(); it2 != c.end(); it2++)
+		std::cout << *it2 << std::endl;
+	std::cout << "SIZE = " << c.size() << " CAPACITY = " << c.capacity() << std::endl;
+
+	std::cout << "************************"<< std::endl;
+
+
+	ft::vector<int> a;
+	ft::vector<int> b;
+
 	b.push_back(1);
 	b.push_back(2);
 	b.push_back(3);
 	b.push_back(4);
-	b.push_back(5);
-	b.push_back(6);
-	b.push_back(7);
-	b.push_back(8);
-	b.erase(b.begin() + 2, b.end() - 2);
-	// for (size_t i = 0; i < b.size(); i++)
-	// 	std::cout << "i = " << i << "   "<< b[i] << std::endl;
-	// std::cout << std::endl;
-	// b.resize(8);
-	// // b.erase(b.begin() + 3);
-	// // b.erase(b.begin() + 3, b.begin() + 5);
-	for (size_t i = 0; i < b.size(); i++)
-		std::cout << "i = " << i << "   "<< b[i] << std::endl;
-	std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
+	b.push_back(1);
+	b.push_back(2);
+	b.push_back(3);
+	b.push_back(4);
 
-	std::cout << "************************"<< std::endl;
-
-	ft::vector<int> a;
-	// ft::vector<int>::iterator it;
-	a.push_back(1);
-	a.push_back(2);
-	a.push_back(3);
-	a.push_back(4);
 	a.push_back(5);
 	a.push_back(6);
 	a.push_back(7);
 	a.push_back(8);
-	a.erase(a.begin() + 2, a.end() - 2);
-	// for (size_t i = 0; i < a.size(); i++)
-	// 	std::cout << "i = " << i << "   "<< a[i] << std::endl;
-	// std::cout << std::endl;
-	// // a.erase(a.begin() + 3);
-	// // a.erase(a.begin() + 3, a.begin() + 5);
-	// a.resize(8);
-	for (size_t i = 0; i < a.size(); i++)
-		std::cout << "i = " << i << "   "<< a[i] << std::endl;
-	// for (it = a.begin(); it != a.end(); it++)
-	// 	std::cout << "i = " << *it << std::endl;
-	std::cout << "SIZE = " << a.size() << " CAPACITY = " << b.capacity() << std::endl;
+
+	b.swap(a);
+	std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
+
+
+	ft::vector<int>::iterator it;
+		
+	for (it = b.begin(); it != b.end(); it++)
+		std::cout << *it << std::endl;
+	std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
+
 
 
 	return (0);

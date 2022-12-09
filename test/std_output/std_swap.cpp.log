@@ -1,0 +1,14 @@
+TEST: SWAP
+SIZE = 4 CAPACITY = 4
+5
+6
+7
+8
+SIZE = 4 CAPACITY = 4
+********************************
+SIZE = 4 CAPACITY = 4
+5
+6
+7
+8
+SIZE = 4 CAPACITY = 4
