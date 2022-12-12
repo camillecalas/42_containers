@@ -32,6 +32,7 @@ int main()
 	d.push_back(8);
 
 	c.swap(d);
+	swap(c, d);
 	std::cout << "SIZE = " << c.size() << " CAPACITY = " << c.capacity() << std::endl;
 
 
@@ -62,6 +63,7 @@ int main()
 	a.push_back(8);
 
 	b.swap(a);
+	swap(a, b);
 	std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
 
 

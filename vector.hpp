@@ -353,7 +353,7 @@ public:
 			for (size_t i = 0; i < _size; i++)
 				_alloc.destroy(_start + i);
 		for (size_t i = 0; first != last; first++, i++)
-			_alloc.construct(_start + i, (*first));
+			_alloc.construct(_start + i, *first);
 		_size = size_btw;
 	}
 
@@ -406,6 +406,17 @@ public:
 
 
 };
+
+template <class T, class Alloc>
+void
+swap (vector<T,Alloc>& x, vector<T,Alloc>& y)
+{
+	vector<T,Alloc> tmp;
+
+	tmp = x;
+	x = y;
+	y = tmp; 
+}
 
 NAME_SPACE_END
 #endif
