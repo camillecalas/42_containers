@@ -2,10 +2,13 @@
 # define VECTOR_HPP
 
 # include "ft_containers.hpp"
+# include "Iterator.hpp"
 # include "reverse_iterator.hpp"
 # include "distance.hpp"
 # include "enable_if.hpp"
 # include "is_integral.hpp"
+
+# include <iostream>
 
 //TODO erase later
 # include <vector>
@@ -40,7 +43,6 @@ protected:
 	allocator_type	_alloc;		// object allocate
 	size_type 		_capacity;	// capacity of vector
 	pointer			_start;		// point on the beginning of vector 
-	pointer			_ptr;
 	size_type 		_size;		// taille utilisee du vector : size
 
 
@@ -50,22 +52,25 @@ protected:
 public:
 	explicit 
 	vector (const allocator_type& alloc = allocator_type())
-		: _alloc(alloc), _capacity(0), _start(NULL), _ptr(NULL),_size(0)
+		: _alloc(alloc), _capacity(0), _start(NULL), _size(0)
 	{};
 
 	explicit 
 	vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
-		: _alloc(alloc), _capacity(n), _start(_alloc.allocate(n)), _ptr(NULL), _size(n)
+		: _alloc(alloc), _capacity(n), _start(_alloc.allocate(n)), _size(n)
 	{
 		for(size_t i = 0; i < n; i++)
 			_alloc.construct(_start + i, val);
 	};
 
-	//TODO pas sur pour ce constructeur
+
 	template< class InputIt >
-	vector(InputIt first, InputIt last, const allocator_type& alloc = allocator_type())
-		: _alloc(alloc), _capacity(ft_distance(first, last)), _start(_alloc.allocate(ft_distance(first, last))), _ptr(NULL), _size(ft_distance(first, last))
-	{};
+	vector(InputIt first, ENABLE_IF last, const allocator_type& alloc = allocator_type())
+		: _alloc(alloc), _capacity(ft::distance(first, last)), _start(_alloc.allocate(ft::distance(first, last))), _size(ft::distance(first, last))
+	{
+		for (size_t i = 0; first != last; first++, i++)
+			_alloc.construct(_start + i, *first);
+	};
 
 
 	vector (const vector& x)
@@ -273,7 +278,6 @@ public:
 		_size = 0;
 	}
 
-	// If a reallocation happens, the storage is allocated using the container's allocator, which may throw exceptions on failure (for the default allocator, bad_alloc is thrown if the allocation request does not succeed).
 	void 
 	push_back (const value_type& val)
 	{
@@ -297,7 +301,6 @@ public:
 		_alloc.destroy(_start + _size);
 	}
 
-	//TODO check for desallocate probably same than for assign!
 	iterator
 	erase (iterator position)
 	{
@@ -340,9 +343,7 @@ public:
 		}
 	}
 
-	//TODO not sure about the allocation
 	//Any elements held in the container before the call are destroyed and replaced by newly constructed elements (no assignments of elements take place). This causes an automatic reallocation of the allocated storage space if -and only if- the new vector size surpasses the current vector capacity.
-	//! DO NOT desallocate, only destroy
 	template <class InputIterator>
 	void
 	assign (InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last)
@@ -367,18 +368,92 @@ public:
 		for(size_t i = 0; i < n; i++)
 			_alloc.construct(_start + i, val);
 		_size = n;
-
-		//TODO not working because reallocation happens only if too small, if not it's destroy but not desallocate
-		// destroy_vector();
-		// _capacity = n;
-		// _start = _alloc.allocate(n);
-		// _size = n;
-		// for(size_t i = 0; i < _size; i++)
-		// 	_alloc.construct(_start + i, val);
 	}
 
+	iterator 
+	insert (iterator position, const value_type& val)
+	{
+		ptrdiff_t	pos = position - begin();
+		int			x = 1;
 
-	void swap (vector& x)
+		//! potentiel rajout if _capiciy == 0 but why ?
+		if (_size >= _capacity)
+			reserve (_capacity * 2);
+
+		for (long i = _size; i > pos; i--, x++)
+			_alloc.construct(begin() + i, *(end() - x));
+		_alloc.construct(begin() + pos, val);
+		_size += 1;
+		return (begin() + pos);
+	}
+
+	void 
+	insert (iterator position, size_type n, const value_type& val)
+	{
+		ptrdiff_t	pos = position - begin();
+		int			x = 1;
+
+		if ((_size + n) > _capacity * 2)
+			reserve(_size + n);
+		else if ((_size + n) >= _capacity)
+			reserve(_capacity * 2);
+
+		for (long i = _size - 1; i >= pos; i--, x++)
+			_alloc.construct(begin() + i + n, *(end() - x));
+	
+		for (size_t i = 0; i < n; pos++, i++)
+			_alloc.construct(begin() + pos, val);
+		_size += n;
+	}
+
+	template <class InputIterator>
+	void
+	insert (iterator position, InputIterator first, InputIterator last)
+	{
+		(void) position;
+		(void) first;
+		(void) last;
+
+		ptrdiff_t	pos = position - begin();
+		ptrdiff_t	pos_first = first - begin();
+		// ptrdiff_t	pos_last = last - begin();
+		ptrdiff_t	nb_elem = ft::distance(first, last);
+		ptrdiff_t	nb_elem2 = ft::distance(first, last);
+		int			x = 0;
+		std::cout << "distance = " << nb_elem << std::endl;
+
+		if (_size + (size_t)nb_elem >= _capacity)
+			reserve (_capacity * 2);
+
+		for (long i = _size - 1; i >= pos; i--, x++, nb_elem2++)
+			_alloc.construct(begin() + pos + nb_elem2, *begin() + x);
+	
+		nb_elem2 = nb_elem;
+		for (size_t i = 0; i < _size + nb_elem; i++)
+			std::cout << _start + i << " _start[" << i << "] = " << _start[i] << std::endl;
+		std::cout << std::endl;
+		for (size_t i = 0; i < (size_t)nb_elem; pos++, i++, nb_elem2++)
+		{
+			std::cout << begin() + pos <<  " = "  << *(begin() + pos + pos_first) << std::endl;
+			_alloc.construct(begin() + pos, *(begin() + pos_first + nb_elem2));
+		}
+		
+		_size += nb_elem;
+		
+		
+		// for (size_t i = 0; i < n; pos++, i++)
+		// 	_alloc.construct(begin() + pos, val);
+
+
+
+		
+
+		// for (long i = _size; i >= (long)pos; i--, x++)
+		// 	_alloc.construct(begin() + i + nb_elem, *(end() - x));
+	}
+
+	void 
+	swap (vector& x)
 	{
 		allocator_type	tmp_alloc	= _alloc;
 		size_type 		tmp_capacity= _capacity;

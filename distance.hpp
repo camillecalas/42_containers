@@ -10,7 +10,7 @@ template< class InputIt >
 typename std::iterator_traits<InputIt>::difference_type
 distance(InputIt first, InputIt last)
 {
-	typename std::iterator_traits<InputIt>::difference_type increment = 0;
+	typename ft::iterator_traits<InputIt>::difference_type increment = 0;
 	for (; first != last; first++)
 		increment++;
 	return (increment);
