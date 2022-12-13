@@ -108,7 +108,8 @@ public:
 		if (this == &x)
 			return (*this);
 		destroy_vector();
-		_capacity = x._capacity;
+		if (x._size > _capacity)
+			_capacity = x._capacity;
 		_start = _alloc.allocate(x._capacity);
 		_size = x._size;
 		for(size_t i = 0; i < _size; i++)
@@ -153,7 +154,7 @@ public:
 	const_iterator 
 	end() const
 	{
-		((const_iterator)(_start + _size));
+		return ((const_iterator)(_start + _size));
 	}
 
 	const_reverse_iterator 
@@ -274,7 +275,11 @@ public:
 	void
 	clear()
 	{
-		destroy_vector();
+		// if (_capacity)
+		// {
+		// 	for (size_t i = 0; i < _size; i++)
+		// 		_alloc.destroy(_start + i);
+		// }
 		_size = 0;
 	}
 
@@ -406,51 +411,54 @@ public:
 		_size += n;
 	}
 
-	template <class InputIterator>
-	void
-	insert (iterator position, InputIterator first, InputIterator last)
-	{
-		(void) position;
-		(void) first;
-		(void) last;
+	// template <class InputIterator>
+	// void
+	// insert (iterator position, InputIterator first, InputIterator last)
+	// {
+	// 	(void) position;
+	// 	(void) first;
+	// 	(void) last;
 
-		ptrdiff_t	pos = position - begin();
-		ptrdiff_t	pos_first = first - begin();
-		// ptrdiff_t	pos_last = last - begin();
-		ptrdiff_t	nb_elem = ft::distance(first, last);
-		ptrdiff_t	nb_elem2 = ft::distance(first, last);
-		int			x = 0;
-		std::cout << "distance = " << nb_elem << std::endl;
+	// 	ptrdiff_t	pos = position - begin();
+	// 	// ptrdiff_t	pos_first = first - begin();
+	// 	// ptrdiff_t	pos_last = last - begin();
+	// 	ptrdiff_t	nb_elem = ft::distance(first, last);
+	// 	ptrdiff_t	nb_elem2 = ft::distance(first, last);
+	// 	int			x = 0;
+	// 	std::cout << "distance = " << nb_elem << std::endl;
 
-		if (_size + (size_t)nb_elem >= _capacity)
-			reserve (_capacity * 2);
+	// 	if (_size + (size_t)nb_elem >= _capacity)
+	// 		reserve (_capacity * 2);
 
-		for (long i = _size - 1; i >= pos; i--, x++, nb_elem2++)
-			_alloc.construct(begin() + pos + nb_elem2, *begin() + x);
+	// 	for (long i = _size - 1; i >= pos; i--, x++, nb_elem2++)
+	// 		_alloc.construct(begin() + pos + nb_elem2, *begin() + pos + x);
 	
-		nb_elem2 = nb_elem;
-		for (size_t i = 0; i < _size + nb_elem; i++)
-			std::cout << _start + i << " _start[" << i << "] = " << _start[i] << std::endl;
-		std::cout << std::endl;
-		for (size_t i = 0; i < (size_t)nb_elem; pos++, i++, nb_elem2++)
-		{
-			std::cout << begin() + pos <<  " = "  << *(begin() + pos + pos_first) << std::endl;
-			_alloc.construct(begin() + pos, *(begin() + pos_first + nb_elem2));
-		}
+	// 	nb_elem2 = nb_elem;
+	// 	// for (size_t i = 0; i < _size + nb_elem; i++)
+	// 	// 	std::cout << _start + i << " _start[" << i << "] = " << _start[i] << std::endl;
+	// 	// std::cout << std::endl;
+	// 	for (size_t i = 0; i < (size_t)nb_elem; pos++, i++, nb_elem2++)
+	// 	{	
+	// 		std::cout << "pos first = " << pos_first << " pos = " << pos; 
+	// 		if (pos_first < pos)
+	// 			_alloc.construct(begin() + pos, *(begin() + pos_first));
+	// 		std::cout << begin() + pos <<  " = "  << *(begin() + pos + pos_first) << std::endl;
+	// 		_alloc.construct(begin() + pos, *(begin() + pos_first + nb_elem2));
+	// 	}
 		
-		_size += nb_elem;
+	// 	_size += nb_elem;
 		
 		
-		// for (size_t i = 0; i < n; pos++, i++)
-		// 	_alloc.construct(begin() + pos, val);
+	// 	// for (size_t i = 0; i < n; pos++, i++)
+	// 	// 	_alloc.construct(begin() + pos, val);
 
 
 
 		
 
-		// for (long i = _size; i >= (long)pos; i--, x++)
-		// 	_alloc.construct(begin() + i + nb_elem, *(end() - x));
-	}
+	// 	// for (long i = _size; i >= (long)pos; i--, x++)
+	// 	// 	_alloc.construct(begin() + i + nb_elem, *(end() - x));
+	// }
 
 	void 
 	swap (vector& x)
