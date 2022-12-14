@@ -9,6 +9,7 @@
 # include "is_integral.hpp"
 
 # include <iostream>
+#include <iterator>
 
 //TODO erase later
 # include <vector>
@@ -148,13 +149,13 @@ public:
 	const_iterator
 	begin() const
 	{
-		return ((const_iterator)_start);
+		return (const_iterator(_start));
 	}
 
 	const_iterator 
 	end() const
 	{
-		return ((const_iterator)(_start + _size));
+		return (const_iterator(_start + _size));
 	}
 
 	const_reverse_iterator 
@@ -175,7 +176,7 @@ public:
 	reference 
 	operator[] (size_type n)
 	{
-		return ((*(_start + n)));
+		return (*(_start + n));
 	}
 
 	reference 
@@ -183,7 +184,7 @@ public:
 	{
 		if (n >= _size)
 			throw std::out_of_range("vector::at\n");
-		return ((*(_start + n)));
+		return (*(_start + n));
 	}
 
 	reference
@@ -201,26 +202,26 @@ public:
 	const_reference
 	operator[] (size_type n) const
 	{
-		return ((*(_start + n)));
+		return (const_reference(*(_start + n)));
 	}
 
 	const_reference at (size_type n) const
 	{
 		if (n >= _size)
 			throw std::out_of_range("vector::at\n");
-		return ((*(_start + n)));
+		return (const_reference(*(_start + n)));
 	}
 
 	const_reference 
 	front() const
 	{
-		return (*_start);
+		return (const_reference(*_start));
 	}
 
 	const_reference 
 	back() const
 	{
-		return (*(_start + _size - 1));
+		return (const_reference(*(_start + _size - 1)));
 	}
 
 
@@ -275,11 +276,11 @@ public:
 	void
 	clear()
 	{
-		// if (_capacity)
-		// {
-		// 	for (size_t i = 0; i < _size; i++)
-		// 		_alloc.destroy(_start + i);
-		// }
+		if (_capacity)
+		{
+			for (size_t i = 0; i < _size; i++)
+				_alloc.destroy(_start + i);
+		}
 		_size = 0;
 	}
 
@@ -401,7 +402,7 @@ public:
 		if ((_size + n) > _capacity * 2)
 			reserve(_size + n);
 		else if ((_size + n) >= _capacity)
-			reserve(_capacity * 2);
+			reserve(_size * 2);
 
 		for (long i = _size - 1; i >= pos; i--, x++)
 			_alloc.construct(begin() + i + n, *(end() - x));
@@ -411,54 +412,77 @@ public:
 		_size += n;
 	}
 
-	// template <class InputIterator>
-	// void
-	// insert (iterator position, InputIterator first, InputIterator last)
-	// {
-	// 	(void) position;
-	// 	(void) first;
-	// 	(void) last;
-
-	// 	ptrdiff_t	pos = position - begin();
-	// 	// ptrdiff_t	pos_first = first - begin();
-	// 	// ptrdiff_t	pos_last = last - begin();
-	// 	ptrdiff_t	nb_elem = ft::distance(first, last);
-	// 	ptrdiff_t	nb_elem2 = ft::distance(first, last);
-	// 	int			x = 0;
-	// 	std::cout << "distance = " << nb_elem << std::endl;
-
-	// 	if (_size + (size_t)nb_elem >= _capacity)
-	// 		reserve (_capacity * 2);
-
-	// 	for (long i = _size - 1; i >= pos; i--, x++, nb_elem2++)
-	// 		_alloc.construct(begin() + pos + nb_elem2, *begin() + pos + x);
+	template <class InputIterator>
+	void
+	insert (iterator position, InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last)
+	{
 	
-	// 	nb_elem2 = nb_elem;
-	// 	// for (size_t i = 0; i < _size + nb_elem; i++)
-	// 	// 	std::cout << _start + i << " _start[" << i << "] = " << _start[i] << std::endl;
-	// 	// std::cout << std::endl;
-	// 	for (size_t i = 0; i < (size_t)nb_elem; pos++, i++, nb_elem2++)
-	// 	{	
-	// 		std::cout << "pos first = " << pos_first << " pos = " << pos; 
-	// 		if (pos_first < pos)
-	// 			_alloc.construct(begin() + pos, *(begin() + pos_first));
-	// 		std::cout << begin() + pos <<  " = "  << *(begin() + pos + pos_first) << std::endl;
-	// 		_alloc.construct(begin() + pos, *(begin() + pos_first + nb_elem2));
-	// 	}
-		
-	// 	_size += nb_elem;
-		
-		
-	// 	// for (size_t i = 0; i < n; pos++, i++)
-	// 	// 	_alloc.construct(begin() + pos, val);
+		ptrdiff_t	pos = position - begin();
+		ptrdiff_t	pos_first = first - begin();
+		// ptrdiff_t	pos_first = std::distance(first, begin());
+		ptrdiff_t	nb_elem = ft::distance(first, last);
+		ptrdiff_t	nb_elem2 = ft::distance(first, last);
 
 
+		pointer tmp = _alloc.allocate(nb_elem);
+		for (size_t i = 0; first != last; first++, i++)
+			_alloc.construct(tmp + i, *first);
+
+		// for (size_t i = 0; i < (size_t)nb_elem2; i++)
+		// 	std::cout << tmp + i << " tmp[" << i << "] = " << tmp[i] << std::endl;
+
+		if (_size + (size_t)nb_elem >= _capacity)
+			reserve (_size * 2);
+
+		int			x = 0;
+		for (long i = _size - 1; i >= pos; i--, x++, nb_elem2++)
+			_alloc.construct(begin() + pos + nb_elem2, *(begin() + pos + x));
+
+		// std::cout << "first = " << pos_first << " last = " << pos_last << std::endl;
+		for (size_t i = 0; pos_first <= nb_elem; pos++, pos_first++, i++)
+		{
+			_alloc.construct(begin() + pos, *(tmp + i));	
+			// std::cout << "TMP = " << *(tmp + i)  << std::endl;
+		}
+
+		for (size_t i = 0; i < _size; i++)
+				_alloc.destroy(tmp + i);
+			_alloc.deallocate(tmp, _capacity);
+		
+		
+		_size += nb_elem;
+		
+
 
 		
 
-	// 	// for (long i = _size; i >= (long)pos; i--, x++)
-	// 	// 	_alloc.construct(begin() + i + nb_elem, *(end() - x));
-	// }
+
+		
+		// for (size_t i = 0; i < _size + nb_elem; i++)
+		// 	std::cout << _start + i << " _start[" << i << "] = " << _start[i] << std::endl;
+		// std::cout << std::endl;
+
+		// std::cout << "POS = " << pos << " NB ELEM = " << nb_elem << std::endl;
+
+
+		// nb_elem2 = nb_elem;
+		// for (size_t i = 0; i < (size_t)nb_elem; pos++, i++, nb_elem2++)
+		// {	
+		// 	std::cout << "pos first = " << pos_first << " pos = " << pos; 
+		// 	if (pos_first < pos)
+		// 		_alloc.construct(begin() + pos, *(begin() + pos_first));
+		// 	std::cout << begin() + pos <<  " = "  << *(begin() + pos + pos_first) << std::endl;
+		// 	_alloc.construct(begin() + pos, *(begin() + pos_first + nb_elem2));
+		// }
+
+		
+		// for (size_t i = 0; i < n; pos++, i++)
+		// 	_alloc.construct(begin() + pos, val);
+		
+
+		// for (long i = _size; i >= (long)pos; i--, x++)
+		// 	_alloc.construct(begin() + i + nb_elem, *(end() - x));
+	}
 
 	void 
 	swap (vector& x)
@@ -494,11 +518,12 @@ template <class T, class Alloc>
 void
 swap (vector<T,Alloc>& x, vector<T,Alloc>& y)
 {
-	vector<T,Alloc> tmp;
+	// vector<T,Alloc> tmp;
 
-	tmp = x;
-	x = y;
-	y = tmp; 
+	// tmp = x;
+	// x = y;
+	// y = tmp; 
+	x.swap(y);
 }
 
 NAME_SPACE_END
