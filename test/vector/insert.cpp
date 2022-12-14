@@ -21,14 +21,18 @@ int main()
 	b.insert(b.begin() + 3, 10);
 	std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
 	
-	b.insert(b.end() - 3, 4, 10);
-	std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
+	// b.insert(b.end() - 3, 4, 10);
+	// std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
 	
-	b.insert(b.begin() + 3, 10, 10);
-	std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
+	// b.insert(b.begin() + 3, 10, 10);
+	// std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
 
-	b.insert(b.begin() + 2, b.begin() + 1, b.end());
-	std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
+	// b.insert(b.begin() + 2, b.begin() + 1, b.end());
+	// std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
+
+
+  	int myarray [] = { 501,502,503 };
+  	b.insert (b.begin(), myarray, myarray+3);
 
 	NAMESPACE::vector<TESTED_TYPE>::iterator it;
 		

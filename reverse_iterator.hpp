@@ -66,14 +66,14 @@ public:
 	// ASSIGN ANOTHER ITERATOR ADAPTOR =============================================
 	//TODO careful no = in 98?
 
-	template< class U >
-	reverse_iterator& operator=(const reverse_iterator<U>& other)
-	{
-		if (*this == other)
-			return (*this);
-		current = other.base();
-		return (*this);
-	}
+	// template< class U >
+	// reverse_iterator& operator=(const reverse_iterator<U>& other)
+	// {
+	// 	if (*this == other)
+	// 		return (*this);
+	// 	current = other.base();
+	// 	return (*this);
+	// }
 
 
 	// =============================================================================
@@ -139,8 +139,6 @@ public:
 	operator-(difference_type n) const
 	{
 		return (reverse_iterator(base() + n));
-		//TODO erase
-		// return (reverse_iterator(current + n));
 	}
 
 	reverse_iterator& 

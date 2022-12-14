@@ -5,6 +5,7 @@
 #include "vector.hpp"
 #include <vector>
 
+
 #ifndef TESTED_NAMESPACE
 # define TESTED_NAMESPACE ft
 #endif
@@ -44,25 +45,15 @@ int main()
 	c.push_back(7);
 	c.push_back(8);
 
-	// std::cout << "SIZE = " << c.size() << " CAPACITY = " << c.capacity() << std::endl;
-	// c.insert(c.begin() + 3, 10);
-	// std::cout << "SIZE = " << c.size() << " CAPACITY = " << c.capacity() << std::endl;
-	// c.insert(c.end() - 3, 4, 10);
-	// std::cout << "SIZE = " << c.size() << " CAPACITY = " << c.capacity() << std::endl;
-	// c.insert(c.begin() + 3, 100, 10);
-	// std::cout << "SIZE = " << c.size() << " CAPACITY = " << c.capacity() << std::endl;
+
 	c.insert(c.begin() + 2, c.begin() + 1, c.end());
 	std::cout << "SIZE = " << c.size() << " CAPACITY = " << c.capacity() << std::endl;
 
-	// c.insert(c.begin() + 2, 4, 10);
-	// std::cout << "SIZE = " << c.size() << " CAPACITY = " << c.capacity() << std::endl;
-	// c.insert(c.begin() + 3, 100, 10);
-
-	// c.insert(c.begin() + 2, c.begin(), c.end());
-	// std::cout << "SIZE = " << c.size() << " CAPACITY = " << c.capacity() << std::endl;
-	std::vector<int>::iterator it2;
+	std::vector<int>::iterator it2 = c.begin();
+	std::vector<int>::const_iterator it4 = c.begin();
+	it4[0] = 42;
 	int i = 0;
-	for (it2 = c.begin(); it2 != c.end(); it2++)
+	for (; it2 != c.end(); it2++)
 		std::cout << i++ << " = " << *it2 << std::endl;
 	std::cout << "SIZE = " << c.size() << " CAPACITY = " << c.capacity() << std::endl;
 	
@@ -82,24 +73,14 @@ int main()
 
 	std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
 
-	// b.insert(b.begin() + 3, 10);
-	// std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
-	// b.insert(b.end() - 3, 4, 10);
-	// std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
-	// b.insert(b.begin() + 3, 100, 10);
-	// std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
+
 	b.insert(b.begin() + 2, b.begin() + 1, b.end());
 	std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
 
 
-
-	// b.insert(b.begin() + 2, 4, 10);
-	// std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
-	// b.insert(b.begin() + 3, 100, 10);
-
-	// b.insert(b.begin() + 2, b.begin() + 1, b.end());
-	// std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
 	ft::vector<int>::iterator it;
+	ft::vector<int>::const_iterator it3 = b.begin();
+	it3[0] = 42;
 	int j = 0;
 	for (it = b.begin(); it != b.end(); it++)
 		std::cout << j++ << "    " << it << " = " << *it << std::endl;

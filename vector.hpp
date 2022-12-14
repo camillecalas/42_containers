@@ -418,70 +418,42 @@ public:
 	{
 	
 		ptrdiff_t	pos = position - begin();
-		ptrdiff_t	pos_first = first - begin();
-		// ptrdiff_t	pos_first = std::distance(first, begin());
 		ptrdiff_t	nb_elem = ft::distance(first, last);
-		ptrdiff_t	nb_elem2 = ft::distance(first, last);
 
-
-		pointer tmp = _alloc.allocate(nb_elem);
+		if (_size + (size_t)nb_elem >= _capacity)
+			reserve (_size * 2);
 		for (size_t i = 0; first != last; first++, i++)
-			_alloc.construct(tmp + i, *first);
+			insert(begin() + pos + i, *first);
+		
+		
+		// ptrdiff_t	pos_first = first - begin();
+		// 
+
+		// ptrdiff_t	pos_first = std::distance(first, begin());
+		// ptrdiff_t	nb_elem2 = ft::distance(first, last);
+
+
+		// pointer tmp = _alloc.allocate(nb_elem);
+		// for (size_t i = 0; first != last; first++, i++)
+		// 	_alloc.construct(tmp + i, *first);
 
 		// for (size_t i = 0; i < (size_t)nb_elem2; i++)
 		// 	std::cout << tmp + i << " tmp[" << i << "] = " << tmp[i] << std::endl;
 
-		if (_size + (size_t)nb_elem >= _capacity)
-			reserve (_size * 2);
+		// int			x = 0;
+		// for (long i = _size - 1; i >= pos; i--, x++, nb_elem2++)
+		// 	_alloc.construct(begin() + pos + nb_elem2, *(begin() + pos + x));
 
-		int			x = 0;
-		for (long i = _size - 1; i >= pos; i--, x++, nb_elem2++)
-			_alloc.construct(begin() + pos + nb_elem2, *(begin() + pos + x));
-
-		// std::cout << "first = " << pos_first << " last = " << pos_last << std::endl;
-		for (size_t i = 0; pos_first <= nb_elem; pos++, pos_first++, i++)
-		{
-			_alloc.construct(begin() + pos, *(tmp + i));	
-			// std::cout << "TMP = " << *(tmp + i)  << std::endl;
-		}
-
-		for (size_t i = 0; i < _size; i++)
-				_alloc.destroy(tmp + i);
-			_alloc.deallocate(tmp, _capacity);
-		
-		
-		_size += nb_elem;
-		
-
-
-		
-
-
-		
-		// for (size_t i = 0; i < _size + nb_elem; i++)
-		// 	std::cout << _start + i << " _start[" << i << "] = " << _start[i] << std::endl;
-		// std::cout << std::endl;
-
-		// std::cout << "POS = " << pos << " NB ELEM = " << nb_elem << std::endl;
-
-
-		// nb_elem2 = nb_elem;
-		// for (size_t i = 0; i < (size_t)nb_elem; pos++, i++, nb_elem2++)
-		// {	
-		// 	std::cout << "pos first = " << pos_first << " pos = " << pos; 
-		// 	if (pos_first < pos)
-		// 		_alloc.construct(begin() + pos, *(begin() + pos_first));
-		// 	std::cout << begin() + pos <<  " = "  << *(begin() + pos + pos_first) << std::endl;
-		// 	_alloc.construct(begin() + pos, *(begin() + pos_first + nb_elem2));
+		// std::cout << "first = " << pos_first <<  std::endl;
+		// for (size_t i = 0; pos_first <= nb_elem; pos++, pos_first++, i++)
+		// {
+		// 	_alloc.construct(begin() + pos, *(tmp + i));	
+		// 	std::cout << "TMP = " << *(tmp + i)  << std::endl;
 		// }
 
-		
-		// for (size_t i = 0; i < n; pos++, i++)
-		// 	_alloc.construct(begin() + pos, val);
-		
-
-		// for (long i = _size; i >= (long)pos; i--, x++)
-		// 	_alloc.construct(begin() + i + nb_elem, *(end() - x));
+		// for (size_t i = 0; i < _size; i++)
+		// 		_alloc.destroy(tmp + i);
+		// 	_alloc.deallocate(tmp, _capacity);
 	}
 
 	void 
@@ -518,11 +490,6 @@ template <class T, class Alloc>
 void
 swap (vector<T,Alloc>& x, vector<T,Alloc>& y)
 {
-	// vector<T,Alloc> tmp;
-
-	// tmp = x;
-	// x = y;
-	// y = tmp; 
 	x.swap(y);
 }
 
