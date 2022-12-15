@@ -1,5 +1,13 @@
 #include "../test.hpp"
 
+void
+print_vector(NAMESPACE::vector<TESTED_TYPE> & v) {
+	std::cout << "---------------------------------------------------------" << std::endl;
+	std::cout << "SIZE = " << v.size() << " CAPACITY = " << v.capacity() << std::endl;
+	for (auto it = v.begin(); it != v.end(); it++)
+		std::cout << *it << std::endl;
+}
+
 int main()
 {
 
@@ -19,25 +27,23 @@ int main()
 	b.push_back(8);
 
 	b.insert(b.begin() + 3, 10);
-	std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
+	print_vector(b);
 	
 	b.insert(b.end() - 3, 4, 10);
-	std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
+	print_vector(b);
 	
 	b.insert(b.begin() + 3, 10, 10);
-	std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
+	print_vector(b);
 
 	b.insert(b.begin() + 2, b.begin() + 3, b.end());
-	std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
+	print_vector(b);
 
 	// b.insert(b.begin() + 5, b.begin() + 1, b.end());
-	// std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
+	// print_vector(b);
 
 
-  	// int myarray [] = { 501,502,503,504 };
-	// int	*tmp = &myarray[1];
-  	// b.insert (b.begin(), myarray, tmp);
-  	// b.insert (b.begin(), myarray, myarray+3);
+  	int myarray [] = { 501,502,503,504 };
+  	b.insert (b.begin(), myarray, myarray+3);
 
 	NAMESPACE::vector<TESTED_TYPE>::iterator it;
 		

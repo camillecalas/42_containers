@@ -7,6 +7,7 @@
 # include "distance.hpp"
 # include "enable_if.hpp"
 # include "is_integral.hpp"
+#include "lexicographical_compare.hpp"
 
 # include <iostream>
 #include <iterator>
@@ -17,6 +18,7 @@ std::vector<int> res;
 
 
 NAME_SPACE_START
+
 template<class T, class Allocator = std::allocator<T> >
 class vector
 {
@@ -379,44 +381,69 @@ public:
 	iterator 
 	insert (iterator position, const value_type& val)
 	{
-		ptrdiff_t	pos = position - begin();
-		int			x = 1;
+		// ptrdiff_t	pos = position - begin();
+		// int			x = 1;
 
-		//! potentiel rajout if _capiciy == 0 but why ?
-		if (_size >= _capacity)
-			reserve (_capacity * 2);
+		// //! potentiel rajout if _capiciy == 0 but why ?
+		// if (_size >= _capacity)
+		// 	reserve (_capacity * 2);
 
-		for (long i = _size; i > pos; i--, x++)
-			_alloc.construct(begin() + i, *(end() - x));
-		_alloc.construct(begin() + pos, val);
-		_size += 1;
-		return (begin() + pos);
+		// for (long i = _size; i > pos; i--, x++)
+		// 	_alloc.construct(begin() + i, *(end() - x));
+		// _alloc.construct(begin() + pos, val);
+		// _size += 1;
+		// return (begin() + pos);
+		insert(position, 1, val);
+
 	}
 
 	void 
 	insert (iterator position, size_type n, const value_type& val)
 	{
-		ptrdiff_t	pos = position - begin();
-		int			x = 1;
+		// ptrdiff_t	pos = position - begin();
+		// int			x = 1;
 
-		if ((_size + n) > _capacity * 2)
-			reserve(_size + n);
-		else if ((_size + n) >= _capacity)
-			reserve(_size * 2);
+		// if ((_size + n) > _capacity * 2)
+		// 	reserve(_size + n);
+		// else if ((_size + n) >= _capacity)
+		// 	reserve(_size * 2);
 
-		for (long i = _size - 1; i >= pos; i--, x++)
-			_alloc.construct(begin() + i + n, *(end() - x));
+		// for (long i = _size - 1; i >= pos; i--, x++)
+		// 	_alloc.construct(begin() + i + n, *(end() - x));
 	
-		for (size_t i = 0; i < n; pos++, i++)
-			_alloc.construct(begin() + pos, val);
-		_size += n;
+		// for (size_t i = 0; i < n; pos++, i++)
+		// 	_alloc.construct(begin() + pos, val);
+		// _size += n;
+		vector v(n, val);
+		insert(position, v.begin(), v.end());
 	}
 
 	template <class InputIterator>
 	void
 	insert (iterator position, InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last)
 	{
-	
+		/*
+		
+			1: Copier first et last dans un nouveau vector
+				vector v(first, last);
+
+			2: 	Cree un ptr * (attention a la taille)
+
+				valeurs recuperable :
+					- distance first - last
+					- size
+					- distance a = begin -> position & position -> end
+					-> creer une fonction private -> (size, n) -> retourner la taille a reallouer
+
+					realloue un nouveau pointer de n size;
+					copier i < a ensuite first to last ensuite la fin.
+
+					destroy vector
+
+				copier tout
+				free(old_ptr)
+		
+		*/
 		ptrdiff_t	pos = position - begin();
 		ptrdiff_t	nb_elem = ft::distance(first, last);
 
@@ -493,6 +520,77 @@ public:
 
 
 };
+
+// //TODO not sure at all
+// template< class T, class Alloc >
+// bool 
+// operator==( const ft::vector<T,Alloc>& lhs,
+//             const ft::vector<T,Alloc>& rhs )
+// {
+// 	if (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()) == false)
+// 		return (true);
+// 	return (false);
+// }
+
+// template< class T, class Alloc >
+// bool
+// operator!=( const ft::vector<T,Alloc>& lhs,
+//             const ft::vector<T,bool 
+// operator==( const ft::vector<T,Alloc>& lhs,
+//             const ft::vector<T,Alloc>& rhs )
+// {
+// 	if (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()) == false)
+// 		return (true);
+// 	return (false);
+// }
+
+// template< class T, class Alloc >
+// bool
+// operator!=( const ft::vector<T,Alloc>& lhs,
+//             const ft::vector<T,Alloc>& rhs )
+// {
+// 	if (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()))
+// 		return (true);
+// 	return (false);
+// }Alloc>& rhs )
+// {
+// 	if (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()))
+// 		return (true);
+// 	return (false);
+// }
+
+// template< class T, class Alloc >
+// bool
+// operator<(	const ft::vector<T,Alloc>& lhs,
+//         	const ft::vector<T,Alloc>& rhs )
+// {
+// 	return (lhs > rhs);
+// }
+
+// template< class T, class Alloc >
+// bool
+// operator<=( const ft::vector<T,Alloc>& lhs,
+//             const ft::vector<T,Alloc>& rhs )
+// {
+// 	return (lhs >= rhs);
+// }
+
+// template< class T, class Alloc >
+// bool
+// operator>(	const ft::vector<T,Alloc>& lhs,
+//         	const ft::vector<T,Alloc>& rhs )
+// {
+// 	return (lhs < rhs);
+// }
+
+// template< class T, class Alloc >
+// bool
+// operator>=( const ft::vector<T,Alloc>& lhs,
+//             const ft::vector<T,Alloc>& rhs )
+// {
+// 	return (lhs <= rhs);
+// }
+
 
 template <class T, class Alloc>
 void
