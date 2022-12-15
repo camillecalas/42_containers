@@ -7,8 +7,9 @@
 NAME_SPACE_START
 
 template< class InputIt1, class InputIt2 >
-bool equal( InputIt1 first1, InputIt1 last1,
-            InputIt2 first2 )
+bool
+equal (	InputIt1 first1, InputIt1 last1,
+    	InputIt2 first2 )
 {
 	while (first1!=last1) 
 	{
@@ -21,8 +22,9 @@ bool equal( InputIt1 first1, InputIt1 last1,
 
 //TODO 98 ?
 template <class InputIterator1, class InputIterator2, class BinaryPredicate>
-  bool equal (InputIterator1 first1, InputIterator1 last1,
-              InputIterator2 first2, BinaryPredicate pred)
+bool 
+equal ( InputIterator1 first1, InputIterator1 last1,
+    	InputIterator2 first2, BinaryPredicate pred)
 {
 	for (; first1 != last1; ++first1, ++first2)
 		if (!pred(*first1,*first2))

@@ -421,15 +421,20 @@ public:
 		ptrdiff_t	nb_elem = ft::distance(first, last);
 
 		if (_size + (size_t)nb_elem >= _capacity)
-			reserve (_size * 2);
+		{
+			if ((_size + (size_t)nb_elem) > _capacity * 2)
+				reserve (_size + (size_t)nb_elem);
+			else
+				reserve(_size * 2);
+		}
 		for (size_t i = 0; first != last; first++, i++)
 			insert(begin() + pos + i, *first);
 		
 		
+		// ptrdiff_t	pos = position - begin();
 		// ptrdiff_t	pos_first = first - begin();
-		// 
-
-		// ptrdiff_t	pos_first = std::distance(first, begin());
+		// // ptrdiff_t	pos_first = std::distance(first, begin());
+		// ptrdiff_t	nb_elem = ft::distance(first, last);
 		// ptrdiff_t	nb_elem2 = ft::distance(first, last);
 
 
@@ -437,23 +442,26 @@ public:
 		// for (size_t i = 0; first != last; first++, i++)
 		// 	_alloc.construct(tmp + i, *first);
 
-		// for (size_t i = 0; i < (size_t)nb_elem2; i++)
-		// 	std::cout << tmp + i << " tmp[" << i << "] = " << tmp[i] << std::endl;
+		// if (_size + (size_t)nb_elem >= _capacity)
+		// 	reserve (_size * 2);
 
 		// int			x = 0;
 		// for (long i = _size - 1; i >= pos; i--, x++, nb_elem2++)
 		// 	_alloc.construct(begin() + pos + nb_elem2, *(begin() + pos + x));
 
-		// std::cout << "first = " << pos_first <<  std::endl;
+		// // std::cout << "first = " << pos_first << " last = " << pos_last << std::endl;
 		// for (size_t i = 0; pos_first <= nb_elem; pos++, pos_first++, i++)
 		// {
 		// 	_alloc.construct(begin() + pos, *(tmp + i));	
-		// 	std::cout << "TMP = " << *(tmp + i)  << std::endl;
+		// 	// std::cout << "TMP = " << *(tmp + i)  << std::endl;
 		// }
 
 		// for (size_t i = 0; i < _size; i++)
 		// 		_alloc.destroy(tmp + i);
 		// 	_alloc.deallocate(tmp, _capacity);
+
+
+		// _size += nb_elem;
 	}
 
 	void 
