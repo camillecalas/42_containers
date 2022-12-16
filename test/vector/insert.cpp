@@ -38,15 +38,15 @@ int main()
 	b.insert(b.begin() + 2, b.begin() + 3, b.end());
 	print_vector(b);
 
-	// b.insert(b.begin() + 5, b.begin() + 1, b.end());
-	// print_vector(b);
+	b.insert(b.begin() + 5, b.begin() + 1, b.end());
+	print_vector(b);
 
 
   	int myarray [] = { 501,502,503,504 };
   	b.insert (b.begin(), myarray, myarray+3);
+	print_vector(b);
 
 	NAMESPACE::vector<TESTED_TYPE>::iterator it;
-		
 	for (it = b.begin(); it != b.end(); it++)
 		std::cout << *it << std::endl;
 	std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;

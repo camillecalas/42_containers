@@ -381,115 +381,192 @@ public:
 	iterator 
 	insert (iterator position, const value_type& val)
 	{
-		// ptrdiff_t	pos = position - begin();
-		// int			x = 1;
+		ptrdiff_t	pos = position - begin();
+		int			x = 1;
 
-		// //! potentiel rajout if _capiciy == 0 but why ?
-		// if (_size >= _capacity)
-		// 	reserve (_capacity * 2);
+		//! potentiel rajout if _capiciy == 0 but why ?
+		if (_size >= _capacity)
+			reserve (_capacity * 2);
 
-		// for (long i = _size; i > pos; i--, x++)
-		// 	_alloc.construct(begin() + i, *(end() - x));
-		// _alloc.construct(begin() + pos, val);
-		// _size += 1;
-		// return (begin() + pos);
-		insert(position, 1, val);
+		for (long i = _size; i > pos; i--, x++)
+			_alloc.construct(begin() + i, *(end() - x));
+		_alloc.construct(begin() + pos, val);
+		_size += 1;
+		return (begin() + pos);
+
+		// insert(position, 1, val);
 
 	}
 
 	void 
 	insert (iterator position, size_type n, const value_type& val)
 	{
-		// ptrdiff_t	pos = position - begin();
-		// int			x = 1;
+		ptrdiff_t	pos = position - begin();
+		int			x = 1;
 
-		// if ((_size + n) > _capacity * 2)
-		// 	reserve(_size + n);
-		// else if ((_size + n) >= _capacity)
-		// 	reserve(_size * 2);
+		if ((_size + n) > _capacity * 2)
+			reserve(_size + n);
+		else if ((_size + n) >= _capacity)
+			reserve(_size * 2);
 
-		// for (long i = _size - 1; i >= pos; i--, x++)
-		// 	_alloc.construct(begin() + i + n, *(end() - x));
+		for (long i = _size - 1; i >= pos; i--, x++)
+			_alloc.construct(begin() + i + n, *(end() - x));
 	
-		// for (size_t i = 0; i < n; pos++, i++)
-		// 	_alloc.construct(begin() + pos, val);
-		// _size += n;
-		vector v(n, val);
-		insert(position, v.begin(), v.end());
+		for (size_t i = 0; i < n; pos++, i++)
+			_alloc.construct(begin() + pos, val);
+		_size += n;
+
+
+		// vector v(n, val);
+		// insert(position, v.begin(), v.end());
 	}
+
+
 
 	template <class InputIterator>
 	void
 	insert (iterator position, InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last)
 	{
-		/*
-		
-			1: Copier first et last dans un nouveau vector
-				vector v(first, last);
+		(void) position;
+		(void) first;
 
-			2: 	Cree un ptr * (attention a la taille)
-
-				valeurs recuperable :
-					- distance first - last
-					- size
-					- distance a = begin -> position & position -> end
-					-> creer une fonction private -> (size, n) -> retourner la taille a reallouer
-
-					realloue un nouveau pointer de n size;
-					copier i < a ensuite first to last ensuite la fin.
-
-					destroy vector
-
-				copier tout
-				free(old_ptr)
-		
-		*/
 		ptrdiff_t	pos = position - begin();
 		ptrdiff_t	nb_elem = ft::distance(first, last);
 
-		if (_size + (size_t)nb_elem >= _capacity)
+		pointer tmp = _alloc.allocate(nb_elem);
+		for (size_t i = 0; first != last; first++, i++)
+			_alloc.construct(tmp + i, *first);
+
+		pointer tmp2 = _alloc.allocate(_capacity);
+		for (size_t i = 0; i < _size; i++)
+			_alloc.construct(tmp2 + i, *(_start + i));
+
+		// for (size_t i = 0; i < (size_t) nb_elem; i++)
+		// 	std::cout << "v[" << i <<"] = " << tmp[i] <<std::endl;
+
+		
+
+		if (_size + (size_t)nb_elem > _capacity)
 		{
 			if ((_size + (size_t)nb_elem) > _capacity * 2)
 				reserve (_size + (size_t)nb_elem);
 			else
 				reserve(_size * 2);
 		}
-		for (size_t i = 0; first != last; first++, i++)
-			insert(begin() + pos + i, *first);
+	
+		for (size_t i = 0; i < (size_t)nb_elem; i++)
+			_alloc.construct(_start + pos + i, *(tmp + i));
+
 		
-		
-		// ptrdiff_t	pos = position - begin();
-		// ptrdiff_t	pos_first = first - begin();
-		// // ptrdiff_t	pos_first = std::distance(first, begin());
-		// ptrdiff_t	nb_elem = ft::distance(first, last);
-		// ptrdiff_t	nb_elem2 = ft::distance(first, last);
+		size_t j = 0;
+		for (size_t i = nb_elem + pos; i < _size + nb_elem; i++, j++)
+			_alloc.construct(_start + i, *(tmp2 + pos + j));
+
+		// std::cout<<"ICI 4\n" << "size = " << _size << std::endl;
+		for (size_t i = 0; i < _size; i++)
+		{
+			_alloc.destroy(tmp2 + i);
+		}
+		for (size_t i = 0; i < (size_t)nb_elem; i++)
+			_alloc.destroy(tmp + i);
+
+		_alloc.deallocate(tmp, _capacity);
+		_alloc.deallocate(tmp2, _capacity);
 
 
-		// pointer tmp = _alloc.allocate(nb_elem);
-		// for (size_t i = 0; first != last; first++, i++)
-		// 	_alloc.construct(tmp + i, *first);
 
-		// if (_size + (size_t)nb_elem >= _capacity)
-		// 	reserve (_size * 2);
-
-		// int			x = 0;
-		// for (long i = _size - 1; i >= pos; i--, x++, nb_elem2++)
-		// 	_alloc.construct(begin() + pos + nb_elem2, *(begin() + pos + x));
-
-		// // std::cout << "first = " << pos_first << " last = " << pos_last << std::endl;
-		// for (size_t i = 0; pos_first <= nb_elem; pos++, pos_first++, i++)
-		// {
-		// 	_alloc.construct(begin() + pos, *(tmp + i));	
-		// 	// std::cout << "TMP = " << *(tmp + i)  << std::endl;
-		// }
-
-		// for (size_t i = 0; i < _size; i++)
-		// 		_alloc.destroy(tmp + i);
-		// 	_alloc.deallocate(tmp, _capacity);
-
-
-		// _size += nb_elem;
+		_size += nb_elem;
 	}
+
+
+
+
+
+
+	// template <class InputIterator>
+	// void
+	// insert (iterator position, InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last)
+	// {
+	// 	/*
+		
+	// 		1: Copier first et last dans un nouveau vector
+	// 			vector v(first, last);
+
+	// 		2: 	Cree un ptr * (attention a la taille)
+
+	// 			valeurs recuperable :
+	// 				- distance first - last
+	// 				- size
+	// 				- distance a = begin -> position & position -> end
+	// 				-> creer une fonction private -> (size, n) -> retourner la taille a reallouer
+
+	// 				realloue un nouveau pointer de n size;
+	// 				copier i < a ensuite first to last ensuite la fin.
+
+	// 				destroy vector
+
+	// 			copier tout
+	// 			free(old_ptr)
+		
+	// 	*/
+	// 	// ptrdiff_t	pos = position - begin();
+	// 	ptrdiff_t	nb_elem = ft::distance(first, last);
+
+	// 	// if (_size + (size_t)nb_elem >= _capacity)
+	// 	// {
+	// 	// 	if ((_size + (size_t)nb_elem) > _capacity * 2)
+	// 	// 		reserve (_size + (size_t)nb_elem);
+	// 	// 	else
+	// 	// 		reserve(_size * 2);
+	// 	// }
+	// 	// for (size_t i = 0; first != last; first++, i++)
+	// 	// 	insert(begin() + pos + i, *first);
+		
+		
+	// 	// ptrdiff_t	pos = position - begin();
+	// 	// ptrdiff_t	pos_first = first - begin();
+	// 	// // ptrdiff_t	pos_first = std::distance(first, begin());
+	// 	// ptrdiff_t	nb_elem = ft::distance(first, last);
+	// 	// ptrdiff_t	nb_elem2 = ft::distance(first, last);
+
+
+	// 	pointer tmp = _alloc.allocate(nb_elem);
+	// 	for (size_t i = 0; first != last; first++, i++)
+	// 		_alloc.construct(tmp + i, *first);
+
+	// 	if (_size + (size_t)nb_elem >= _capacity)
+	// 	{
+	// 		if ((_size + (size_t)nb_elem) > _capacity * 2)
+	// 			reserve (_size + (size_t)nb_elem);
+	// 		else
+	// 			reserve(_size * 2);
+	// 	}
+
+	// 	vector v(this);
+	// 	for (size_t i = 0; i < v.size(); i++)
+	// 		std::cout << "v[" << i <<"] = " << v[i] <<std::endl;
+
+	// 	// if (_size + (size_t)nb_elem >= _capacity)
+	// 	// 	reserve (_size * 2);
+
+	// 	// int			x = 0;
+	// 	// for (long i = _size - 1; i >= pos; i--, x++, nb_elem2++)
+	// 	// 	_alloc.construct(begin() + pos + nb_elem2, *(begin() + pos + x));
+
+	// 	// // std::cout << "first = " << pos_first << " last = " << pos_last << std::endl;
+	// 	// for (size_t i = 0; pos_first <= nb_elem; pos++, pos_first++, i++)
+	// 	// {
+	// 	// 	_alloc.construct(begin() + pos, *(tmp + i));	
+	// 	// 	// std::cout << "TMP = " << *(tmp + i)  << std::endl;
+	// 	// }
+
+	// 	for (size_t i = 0; i < _size; i++)
+	// 			_alloc.destroy(tmp + i);
+	// 		_alloc.deallocate(tmp, _capacity);
+
+
+	// 	_size += nb_elem;
+	// }
 
 	void 
 	swap (vector& x)
