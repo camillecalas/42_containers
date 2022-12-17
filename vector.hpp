@@ -86,12 +86,12 @@ public:
 	// DESTRUCTORS =================================================================
 	~vector()
 	{
-		destroy_vector();
+		_destroy_vector();
 	}
 
 private:
 	void
-	destroy_vector()
+	_destroy_vector()
 	{
 		if (_capacity)
 		{
@@ -99,6 +99,28 @@ private:
 				_alloc.destroy(_start + i);
 			_alloc.deallocate(_start, _capacity);
 		}
+	}
+
+	void	
+	_destroy_vector_args(pointer to_erase, size_t size, size_t capacity)
+	{
+		if (_capacity)
+		{
+			for (size_t i = 0; i < size; i++)
+			{
+				_alloc.destroy(to_erase + i);
+			}
+			_alloc.deallocate(to_erase, capacity);
+		}
+	}
+
+	void
+	_reserve_space (size_t nb_elem)
+	{
+		if ((_size + nb_elem) > _capacity * 2)
+			reserve(_size + nb_elem);
+		else if ((_size + nb_elem) > _capacity)
+			reserve(_size * 2);
 	}
 
 
@@ -110,7 +132,7 @@ public:
 	{
 		if (this == &x)
 			return (*this);
-		destroy_vector();
+		_destroy_vector();
 		if (x._size > _capacity)
 			_capacity = x._capacity;
 		_start = _alloc.allocate(x._capacity);
@@ -267,7 +289,7 @@ public:
 		pointer tmp = _alloc.allocate(n);
 		for(size_t i = 0; i < _size; i++)
 			_alloc.construct(tmp + i, *(_start + i));
-		destroy_vector();
+		_destroy_vector();
 		_start = tmp;
 		_capacity = n;
 	}
@@ -384,18 +406,19 @@ public:
 		ptrdiff_t	pos = position - begin();
 		int			x = 1;
 
-		//! potentiel rajout if _capiciy == 0 but why ?
+		if (_capacity == 0)
+			reserve(1);
 		if (_size >= _capacity)
 			reserve (_capacity * 2);
 
 		for (long i = _size; i > pos; i--, x++)
 			_alloc.construct(begin() + i, *(end() - x));
+
 		_alloc.construct(begin() + pos, val);
 		_size += 1;
 		return (begin() + pos);
 
 		// insert(position, 1, val);
-
 	}
 
 	void 
@@ -404,10 +427,7 @@ public:
 		ptrdiff_t	pos = position - begin();
 		int			x = 1;
 
-		if ((_size + n) > _capacity * 2)
-			reserve(_size + n);
-		else if ((_size + n) >= _capacity)
-			reserve(_size * 2);
+		_reserve_space (n);
 
 		for (long i = _size - 1; i >= pos; i--, x++)
 			_alloc.construct(begin() + i + n, *(end() - x));
@@ -416,157 +436,40 @@ public:
 			_alloc.construct(begin() + pos, val);
 		_size += n;
 
-
 		// vector v(n, val);
 		// insert(position, v.begin(), v.end());
+		// _destroy_vector_args(v.begin(), _size, _capacity);
 	}
-
-
 
 	template <class InputIterator>
 	void
 	insert (iterator position, InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last)
 	{
-		(void) position;
-		(void) first;
-
-		ptrdiff_t	pos = position - begin();
+		ptrdiff_t	pos = ft::distance(_start, position);
 		ptrdiff_t	nb_elem = ft::distance(first, last);
 
-		pointer tmp = _alloc.allocate(nb_elem);
+		pointer tmp_insert = _alloc.allocate(nb_elem);
 		for (size_t i = 0; first != last; first++, i++)
-			_alloc.construct(tmp + i, *first);
+			_alloc.construct(tmp_insert + i, *first);
 
-		pointer tmp2 = _alloc.allocate(_capacity);
+		pointer tmp_cpy = _alloc.allocate(_capacity);
 		for (size_t i = 0; i < _size; i++)
-			_alloc.construct(tmp2 + i, *(_start + i));
-
-		// for (size_t i = 0; i < (size_t) nb_elem; i++)
-		// 	std::cout << "v[" << i <<"] = " << tmp[i] <<std::endl;
-
+			_alloc.construct(tmp_cpy + i, *(_start + i));
 		
+		_reserve_space (nb_elem);
 
-		if (_size + (size_t)nb_elem > _capacity)
-		{
-			if ((_size + (size_t)nb_elem) > _capacity * 2)
-				reserve (_size + (size_t)nb_elem);
-			else
-				reserve(_size * 2);
-		}
-	
 		for (size_t i = 0; i < (size_t)nb_elem; i++)
-			_alloc.construct(_start + pos + i, *(tmp + i));
+			_alloc.construct(_start + pos + i, *(tmp_insert + i));
 
-		
-		size_t j = 0;
-		for (size_t i = nb_elem + pos; i < _size + nb_elem; i++, j++)
-			_alloc.construct(_start + i, *(tmp2 + pos + j));
+		size_t pos_insert = nb_elem + pos;
+		for (size_t i = 0; pos_insert < _size + nb_elem; pos_insert++, i++)
+			_alloc.construct(_start + pos_insert, *(tmp_cpy + pos + i));
 
-		// std::cout<<"ICI 4\n" << "size = " << _size << std::endl;
-		for (size_t i = 0; i < _size; i++)
-		{
-			_alloc.destroy(tmp2 + i);
-		}
-		for (size_t i = 0; i < (size_t)nb_elem; i++)
-			_alloc.destroy(tmp + i);
-
-		_alloc.deallocate(tmp, _capacity);
-		_alloc.deallocate(tmp2, _capacity);
-
-
+		_destroy_vector_args(tmp_cpy, _size, _capacity);
+		_destroy_vector_args(tmp_insert, nb_elem, nb_elem);
 
 		_size += nb_elem;
 	}
-
-
-
-
-
-
-	// template <class InputIterator>
-	// void
-	// insert (iterator position, InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last)
-	// {
-	// 	/*
-		
-	// 		1: Copier first et last dans un nouveau vector
-	// 			vector v(first, last);
-
-	// 		2: 	Cree un ptr * (attention a la taille)
-
-	// 			valeurs recuperable :
-	// 				- distance first - last
-	// 				- size
-	// 				- distance a = begin -> position & position -> end
-	// 				-> creer une fonction private -> (size, n) -> retourner la taille a reallouer
-
-	// 				realloue un nouveau pointer de n size;
-	// 				copier i < a ensuite first to last ensuite la fin.
-
-	// 				destroy vector
-
-	// 			copier tout
-	// 			free(old_ptr)
-		
-	// 	*/
-	// 	// ptrdiff_t	pos = position - begin();
-	// 	ptrdiff_t	nb_elem = ft::distance(first, last);
-
-	// 	// if (_size + (size_t)nb_elem >= _capacity)
-	// 	// {
-	// 	// 	if ((_size + (size_t)nb_elem) > _capacity * 2)
-	// 	// 		reserve (_size + (size_t)nb_elem);
-	// 	// 	else
-	// 	// 		reserve(_size * 2);
-	// 	// }
-	// 	// for (size_t i = 0; first != last; first++, i++)
-	// 	// 	insert(begin() + pos + i, *first);
-		
-		
-	// 	// ptrdiff_t	pos = position - begin();
-	// 	// ptrdiff_t	pos_first = first - begin();
-	// 	// // ptrdiff_t	pos_first = std::distance(first, begin());
-	// 	// ptrdiff_t	nb_elem = ft::distance(first, last);
-	// 	// ptrdiff_t	nb_elem2 = ft::distance(first, last);
-
-
-	// 	pointer tmp = _alloc.allocate(nb_elem);
-	// 	for (size_t i = 0; first != last; first++, i++)
-	// 		_alloc.construct(tmp + i, *first);
-
-	// 	if (_size + (size_t)nb_elem >= _capacity)
-	// 	{
-	// 		if ((_size + (size_t)nb_elem) > _capacity * 2)
-	// 			reserve (_size + (size_t)nb_elem);
-	// 		else
-	// 			reserve(_size * 2);
-	// 	}
-
-	// 	vector v(this);
-	// 	for (size_t i = 0; i < v.size(); i++)
-	// 		std::cout << "v[" << i <<"] = " << v[i] <<std::endl;
-
-	// 	// if (_size + (size_t)nb_elem >= _capacity)
-	// 	// 	reserve (_size * 2);
-
-	// 	// int			x = 0;
-	// 	// for (long i = _size - 1; i >= pos; i--, x++, nb_elem2++)
-	// 	// 	_alloc.construct(begin() + pos + nb_elem2, *(begin() + pos + x));
-
-	// 	// // std::cout << "first = " << pos_first << " last = " << pos_last << std::endl;
-	// 	// for (size_t i = 0; pos_first <= nb_elem; pos++, pos_first++, i++)
-	// 	// {
-	// 	// 	_alloc.construct(begin() + pos, *(tmp + i));	
-	// 	// 	// std::cout << "TMP = " << *(tmp + i)  << std::endl;
-	// 	// }
-
-	// 	for (size_t i = 0; i < _size; i++)
-	// 			_alloc.destroy(tmp + i);
-	// 		_alloc.deallocate(tmp, _capacity);
-
-
-	// 	_size += nb_elem;
-	// }
 
 	void 
 	swap (vector& x)
@@ -594,8 +497,6 @@ public:
 	{
 		return (_alloc);
 	}
-
-
 };
 
 // //TODO not sure at all
@@ -612,24 +513,7 @@ public:
 // template< class T, class Alloc >
 // bool
 // operator!=( const ft::vector<T,Alloc>& lhs,
-//             const ft::vector<T,bool 
-// operator==( const ft::vector<T,Alloc>& lhs,
 //             const ft::vector<T,Alloc>& rhs )
-// {
-// 	if (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()) == false)
-// 		return (true);
-// 	return (false);
-// }
-
-// template< class T, class Alloc >
-// bool
-// operator!=( const ft::vector<T,Alloc>& lhs,
-//             const ft::vector<T,Alloc>& rhs )
-// {
-// 	if (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()))
-// 		return (true);
-// 	return (false);
-// }Alloc>& rhs )
 // {
 // 	if (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()))
 // 		return (true);
@@ -641,7 +525,7 @@ public:
 // operator<(	const ft::vector<T,Alloc>& lhs,
 //         	const ft::vector<T,Alloc>& rhs )
 // {
-// 	return (lhs > rhs);
+// 	return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 // }
 
 // template< class T, class Alloc >
@@ -657,8 +541,9 @@ public:
 // operator>(	const ft::vector<T,Alloc>& lhs,
 //         	const ft::vector<T,Alloc>& rhs )
 // {
-// 	return (lhs < rhs);
+// 	return (ft::lexicographical_compare(rhs.begin(), rhs.end()),lhs.begin(), lhs.end());
 // }
+
 
 // template< class T, class Alloc >
 // bool
