@@ -9,11 +9,11 @@
 NAME_SPACE_START
 
 template< typename Iterator >
-class reverse_iterator: public ft::iterator<typename iterator_traits<Iterator>::iterator_category,
+class reverse_iterator: public ft::iterator< typename iterator_traits<Iterator>::iterator_category,
 											typename iterator_traits<Iterator>::value_type,
 											typename iterator_traits<Iterator>::difference_type,
 											typename iterator_traits<Iterator>::pointer,
-											typename iterator_traits<Iterator>::reference>
+											typename iterator_traits<Iterator>::reference >
 {
 	// =============================================================================
 	// TYPEDEF =====================================================================
@@ -28,26 +28,32 @@ public:
 
 	// =============================================================================
 	// ATTRIBUTS ===================================================================
-	// current (protected)	the underlying iterator of which base() returns a copy
+	// _current (protected)	the underlying iterator of which base() returns a copy
 protected:
-	iterator_type	current;
+	iterator_type	_current;
 
 
 	// =============================================================================
 	// CONSTRUCTORS ================================================================
 public:
-	reverse_iterator() : current()
+	reverse_iterator() : _current()
 	{}
 
 	explicit 
-	reverse_iterator(iterator_type it_to_adapt) : current(it_to_adapt)
+	reverse_iterator(iterator_type it_to_adapt) : _current(it_to_adapt)
 	{}
 
 	template< class U >
 	reverse_iterator(const reverse_iterator<U>& other)
 	{
-		current(other.base());
+		_current(other.base());
 	}
+	
+	//TODO check from Mathias code cause not sure at all
+	// operator reverse_iterator<const iterator_type>() const 
+	// {
+	// 	return (reverse_iterator<const iterator_type>(_current));
+	// }
 
 
 	// =============================================================================
@@ -58,7 +64,7 @@ public:
 	iterator_type
 	base() const
 	{
-		return (current);
+		return (_current);
 	}
 
 
@@ -66,14 +72,15 @@ public:
 	// ASSIGN ANOTHER ITERATOR ADAPTOR =============================================
 	//TODO careful no = in 98?
 
-	// template< class U >
-	// reverse_iterator& operator=(const reverse_iterator<U>& other)
-	// {
-	// 	if (*this == other)
-	// 		return (*this);
-	// 	current = other.base();
-	// 	return (*this);
-	// }
+	template< class U >
+	reverse_iterator& 
+	operator=(const reverse_iterator<U>& other)
+	{
+		if (*this == other)
+			return (*this);
+		_current = other.base();
+		return (*this);
+	}
 
 
 	// =============================================================================
@@ -81,7 +88,7 @@ public:
 	reference
 	operator*() const
 	{
-		iterator_type tmp = current;
+		iterator_type tmp = _current;
 		return (*--tmp);
 	}
 
@@ -102,14 +109,14 @@ public:
 	reverse_iterator& 
 	operator++()
 	{
-		current--;
+		_current--;
 		return (*this);
 	}
 
 	reverse_iterator&
 	operator--()
 	{
-		current++;
+		_current++;
 		return (*this);
 	}
 
@@ -144,14 +151,14 @@ public:
 	reverse_iterator& 
 	operator+=(difference_type n)
 	{
-		current -= n;
+		_current -= n;
 		return (*this);
 	}
 
 	reverse_iterator&
 	operator-=(difference_type n)
 	{
-		current += n;
+		_current += n;
 		return (*this);
 	}
 

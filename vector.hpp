@@ -7,7 +7,7 @@
 # include "distance.hpp"
 # include "enable_if.hpp"
 # include "is_integral.hpp"
-#include "lexicographical_compare.hpp"
+# include "lexicographical_compare.hpp"
 
 # include <iostream>
 #include <iterator>
@@ -86,20 +86,20 @@ public:
 	// DESTRUCTORS =================================================================
 	~vector()
 	{
-		_destroy_vector();
+		_destroy_vector_args(_start, _size, _capacity);
 	}
 
 private:
-	void
-	_destroy_vector()
-	{
-		if (_capacity)
-		{
-			for (size_t i = 0; i < _size; i++)
-				_alloc.destroy(_start + i);
-			_alloc.deallocate(_start, _capacity);
-		}
-	}
+	// void
+	// _destroy_vector()
+	// {
+	// 	if (_capacity)
+	// 	{
+	// 		for (size_t i = 0; i < _size; i++)
+	// 			_alloc.destroy(_start + i);
+	// 		_alloc.deallocate(_start, _capacity);
+	// 	}
+	// }
 
 	void	
 	_destroy_vector_args(pointer to_erase, size_t size, size_t capacity)
@@ -115,7 +115,7 @@ private:
 	}
 
 	void
-	_reserve_space (size_t nb_elem)
+	_reserve_space(size_t nb_elem)
 	{
 		if ((_size + nb_elem) > _capacity * 2)
 			reserve(_size + nb_elem);
@@ -128,11 +128,11 @@ private:
 	// OVERLOADS ===================================================================
 public:
 	vector&
-	operator= (const vector& x)
+	operator=(const vector& x)
 	{
 		if (this == &x)
 			return (*this);
-		_destroy_vector();
+		_destroy_vector_args(_start, _size, _capacity);
 		if (x._size > _capacity)
 			_capacity = x._capacity;
 		_start = _alloc.allocate(x._capacity);
@@ -289,7 +289,7 @@ public:
 		pointer tmp = _alloc.allocate(n);
 		for(size_t i = 0; i < _size; i++)
 			_alloc.construct(tmp + i, *(_start + i));
-		_destroy_vector();
+		_destroy_vector_args(_start, _size, _capacity);
 		_start = tmp;
 		_capacity = n;
 	}
@@ -500,58 +500,60 @@ public:
 };
 
 // //TODO not sure at all
-// template< class T, class Alloc >
-// bool 
-// operator==( const ft::vector<T,Alloc>& lhs,
-//             const ft::vector<T,Alloc>& rhs )
-// {
-// 	if (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()) == false)
-// 		return (true);
-// 	return (false);
-// }
+template< class T, class Alloc >
+bool 
+operator==( const ft::vector<T,Alloc>& lhs,
+            const ft::vector<T,Alloc>& rhs )
+{
+	if (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()) == false && lhs.size() == rhs.size())
+		return (true);
+	return (false);
+}
 
-// template< class T, class Alloc >
-// bool
-// operator!=( const ft::vector<T,Alloc>& lhs,
-//             const ft::vector<T,Alloc>& rhs )
-// {
-// 	if (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()))
-// 		return (true);
-// 	return (false);
-// }
+template< class T, class Alloc >
+bool
+operator!=( const ft::vector<T,Alloc>& lhs,
+            const ft::vector<T,Alloc>& rhs )
+{
+	// if (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()))
+	// 	return (true);
+	// return (false);
+	return (!(lhs == rhs));
+}
 
-// template< class T, class Alloc >
-// bool
-// operator<(	const ft::vector<T,Alloc>& lhs,
-//         	const ft::vector<T,Alloc>& rhs )
-// {
-// 	return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
-// }
+template< class T, class Alloc >
+bool
+operator<(	const ft::vector<T,Alloc>& lhs,
+        	const ft::vector<T,Alloc>& rhs )
+{
+	return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+}
 
-// template< class T, class Alloc >
-// bool
-// operator<=( const ft::vector<T,Alloc>& lhs,
-//             const ft::vector<T,Alloc>& rhs )
-// {
-// 	return (lhs >= rhs);
-// }
+template< class T, class Alloc >
+bool
+operator<=( const ft::vector<T,Alloc>& lhs,
+            const ft::vector<T,Alloc>& rhs )
+{
+	return (!(rhs < lhs));
+}
 
-// template< class T, class Alloc >
-// bool
-// operator>(	const ft::vector<T,Alloc>& lhs,
-//         	const ft::vector<T,Alloc>& rhs )
-// {
-// 	return (ft::lexicographical_compare(rhs.begin(), rhs.end()),lhs.begin(), lhs.end());
-// }
+template< class T, class Alloc >
+bool
+operator>(	const ft::vector<T,Alloc>& lhs,
+        	const ft::vector<T,Alloc>& rhs )
+{
+	// return (ft::lexicographical_compare(rhs.begin(), rhs.end(),lhs.begin(), lhs.end()));
+	return (rhs < lhs);
+}
 
 
-// template< class T, class Alloc >
-// bool
-// operator>=( const ft::vector<T,Alloc>& lhs,
-//             const ft::vector<T,Alloc>& rhs )
-// {
-// 	return (lhs <= rhs);
-// }
+template< class T, class Alloc >
+bool
+operator>=( const ft::vector<T,Alloc>& lhs,
+            const ft::vector<T,Alloc>& rhs )
+{
+	return (!(lhs < rhs));
+}
 
 
 template <class T, class Alloc>

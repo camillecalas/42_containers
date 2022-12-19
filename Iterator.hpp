@@ -29,8 +29,8 @@ struct random_access_iterator_tag : public bidirectional_iterator_tag { };
 
 // =============================================================================
 // ITERATOR BASE CLASS =========================================================
-template <typename Category, typename T, typename Distance = ptrdiff_t,
-          typename Pointer = T*, typename Reference = T&>
+template <class Category, class T, class Distance = std::ptrdiff_t,
+          class Pointer = T*, class Reference = T&>
 struct iterator 
 {
 	typedef T         value_type;
@@ -57,7 +57,7 @@ struct iterator_traits
 template< class T >
 struct iterator_traits<T*>
 {
-	typedef ptrdiff_t					difference_type;
+	typedef std::ptrdiff_t				difference_type;
 	typedef T							value_type;
 	typedef T*							pointer;
 	typedef T&							reference;
@@ -67,12 +67,13 @@ struct iterator_traits<T*>
 template< class T >
 struct iterator_traits<const T*>
 {
-	typedef ptrdiff_t					difference_type;
+	typedef std::ptrdiff_t				difference_type;
 	typedef T							value_type;
 	typedef const T*					pointer;
 	typedef const T&					reference;
 	typedef random_access_iterator_tag	iterator_category;
 };
+
 
 NAME_SPACE_END
 #endif

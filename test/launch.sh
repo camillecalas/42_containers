@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CC="clang++"
-CPPFLAGS="-Wall -Wextra -Werror -fsanitize=address -g3"
+CPPFLAGS="-Wall -Wextra -Werror -std=c++98 -fsanitize=address -g3"
 INCS="-I ../containers/ -I includes -I ../containers/utils"
 
 tmp_file=".tmp_file"
