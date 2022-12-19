@@ -9,28 +9,24 @@
 NAME_SPACE_START
 
 template< typename Iterator >
-class reverse_iterator: public ft::iterator< typename iterator_traits<Iterator>::iterator_category,
-											typename iterator_traits<Iterator>::value_type,
-											typename iterator_traits<Iterator>::difference_type,
-											typename iterator_traits<Iterator>::pointer,
-											typename iterator_traits<Iterator>::reference >
+class reverse_iterator
 {
-	// =============================================================================
-	// TYPEDEF =====================================================================
-public:
-	typedef Iterator													iterator_type;
-	typedef typename ft::iterator_traits<Iterator>::iterator_category	iterator_category;
-	typedef typename ft::iterator_traits<Iterator>::value_type			value_type; 
-	typedef typename ft::iterator_traits<Iterator>::difference_type		difference_type;
-	typedef typename ft::iterator_traits<Iterator>::pointer				pointer;
-	typedef typename ft::iterator_traits<Iterator>::reference			reference;
-
-
 	// =============================================================================
 	// ATTRIBUTS ===================================================================
 	// _current (protected)	the underlying iterator of which base() returns a copy
 protected:
-	iterator_type	_current;
+	Iterator	_current;
+	typedef reverse_iterator<Iterator> traits_type;
+
+
+	// =============================================================================
+	// TYPEDEF =====================================================================
+	//TODO not sure why no ft::iterator_traits ?
+public:
+	typedef Iterator												iterator_type;
+	typedef typename iterator_traits<Iterator>::difference_type		difference_type;
+	typedef typename iterator_traits<Iterator>::pointer				pointer;
+	typedef typename iterator_traits<Iterator>::reference			reference;
 
 
 	// =============================================================================
@@ -44,17 +40,9 @@ public:
 	{}
 
 	template< class U >
-	reverse_iterator(const reverse_iterator<U>& other)
-	{
-		_current(other.base());
-	}
+	reverse_iterator(const reverse_iterator<U>& other) : _current(other.base())
+	{}
 	
-	//TODO check from Mathias code cause not sure at all
-	// operator reverse_iterator<const iterator_type>() const 
-	// {
-	// 	return (reverse_iterator<const iterator_type>(_current));
-	// }
-
 
 	// =============================================================================
 	// OVERLOADS ===================================================================
@@ -71,8 +59,7 @@ public:
 	// =============================================================================
 	// ASSIGN ANOTHER ITERATOR ADAPTOR =============================================
 	//TODO careful no = in 98?
-
-	template< class U >
+	template<class U>
 	reverse_iterator& 
 	operator=(const reverse_iterator<U>& other)
 	{
@@ -88,7 +75,7 @@ public:
 	reference
 	operator*() const
 	{
-		iterator_type tmp = _current;
+		Iterator tmp = _current;
 		return (*--tmp);
 	}
 
@@ -194,8 +181,8 @@ operator-(	const reverse_iterator<Iterator1>& lhs,
 // COMPARES THE UNDERLYING ITERATORS ===========================================
 template< class Iterator1, class Iterator2 >
 bool 
-operator==( const ft::reverse_iterator<Iterator1>& lhs,
-            const ft::reverse_iterator<Iterator2>& rhs )
+operator==( const reverse_iterator<Iterator1>& lhs,
+            const reverse_iterator<Iterator2>& rhs )
 {
 	return (lhs.base() == rhs.base());
 }

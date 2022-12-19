@@ -36,8 +36,8 @@ public:
 	typedef typename Allocator::const_pointer				const_pointer;
 	typedef T*												iterator;
 	typedef const T*										const_iterator;
-	typedef typename ft::reverse_iterator<iterator>			reverse_iterator;
-	typedef typename ft::reverse_iterator<const iterator>	const_reverse_iterator;
+	typedef ft::reverse_iterator<iterator>			reverse_iterator;
+	typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
 
 	// =============================================================================
@@ -58,12 +58,20 @@ public:
 		: _alloc(alloc), _capacity(0), _start(NULL), _size(0)
 	{};
 
+	//TODO I did some changes with secrutity _capacity, not too sure needed
 	explicit 
 	vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
-		: _alloc(alloc), _capacity(n), _start(_alloc.allocate(n)), _size(n)
+		: _alloc(alloc), _capacity(n), _start(NULL), _size(n)
 	{
+		std::cout <<"capacity = " << _capacity << std::endl;
+		if (_capacity == 0)
+			_capacity = 1;
+		_start = _alloc.allocate(_capacity);
 		for(size_t i = 0; i < n; i++)
+		{
+			std::cout <<"ici\n = " << _capacity << std::endl;
 			_alloc.construct(_start + i, val);
+		}
 	};
 
 
