@@ -91,8 +91,10 @@ public:
 		return *(*this + n);
 	}
 
+
 	// =============================================================================
 	// ADVANCES/DECREMENTS THE ITERATOR ============================================
+	
 	reverse_iterator& 
 	operator++()
 	{
@@ -111,7 +113,7 @@ public:
 	operator++(int)
 	{
 		reverse_iterator temp = *this;
-		--(*this);
+		_current--;
 		return (temp);
 	}
 
@@ -119,7 +121,7 @@ public:
 	operator--(int)
 	{
 		reverse_iterator temp = *this;
-		++(*this);
+		_current++;
 		return (temp);
 	}
 

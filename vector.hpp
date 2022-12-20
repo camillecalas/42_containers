@@ -36,8 +36,8 @@ public:
 	typedef typename Allocator::const_pointer				const_pointer;
 	typedef T*												iterator;
 	typedef const T*										const_iterator;
-	typedef ft::reverse_iterator<iterator>			reverse_iterator;
-	typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+	typedef ft::reverse_iterator<iterator>					reverse_iterator;
+	typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 
 
 	// =============================================================================
@@ -63,15 +63,11 @@ public:
 	vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
 		: _alloc(alloc), _capacity(n), _start(NULL), _size(n)
 	{
-		std::cout <<"capacity = " << _capacity << std::endl;
 		if (_capacity == 0)
 			_capacity = 1;
 		_start = _alloc.allocate(_capacity);
 		for(size_t i = 0; i < n; i++)
-		{
-			std::cout <<"ici\n = " << _capacity << std::endl;
 			_alloc.construct(_start + i, val);
-		}
 	};
 
 
@@ -98,17 +94,6 @@ public:
 	}
 
 private:
-	// void
-	// _destroy_vector()
-	// {
-	// 	if (_capacity)
-	// 	{
-	// 		for (size_t i = 0; i < _size; i++)
-	// 			_alloc.destroy(_start + i);
-	// 		_alloc.deallocate(_start, _capacity);
-	// 	}
-	// }
-
 	void	
 	_destroy_vector_args(pointer to_erase, size_t size, size_t capacity)
 	{
