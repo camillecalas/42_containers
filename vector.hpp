@@ -118,9 +118,9 @@ private:
 	void
 	_reserve_space(size_t nb_elem)
 	{
-		if ((_size + nb_elem) > _capacity * 2)
+		if ((_size + nb_elem) >= _capacity * 2)
 			reserve(_size + nb_elem);
-		else if ((_size + nb_elem) >= _capacity)
+		else if ((_size + nb_elem) > _capacity)
 			reserve(_size * 2);
 	}
 
@@ -411,7 +411,7 @@ public:
 
 		if (_capacity == 0)
 			reserve(1);
-		if (_size >= _capacity)
+		else if (_size >= _capacity)
 			reserve (_capacity * 2);
 
 		for (long i = _size; i > pos; i--, x++)
@@ -423,8 +423,6 @@ public:
 		_alloc.construct(begin() + pos, val);
 		_size += 1;
 		return (begin() + pos);
-
-		// insert(position, 1, val);
 	}
 
 	void 
@@ -447,10 +445,6 @@ public:
 			_alloc.construct(begin() + pos, val);
 
 		_size += n;
-
-		// vector v(n, val);
-		// insert(position, v.begin(), v.end());
-		// _destroy_vector_args(v.begin(), _size, _capacity);
 	}
 
 	template <class InputIterator>
@@ -478,7 +472,6 @@ public:
 		_destroy_vector_args(_start, _size, _capacity);
 		_start = test;
 		_size += nb_elem;
-
 	}
 
 	void 
