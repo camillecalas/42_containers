@@ -63,6 +63,7 @@ public:
 	vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
 		: _alloc(alloc), _capacity(n), _start(_alloc.allocate(n)), _size(n)
 	{
+		
 		for(size_t i = 0; i < n; i++)
 			_alloc.construct(_start + i, val);
 	};
@@ -75,9 +76,8 @@ public:
 			_alloc.construct(_start + i, *first);
 	};
 
-	//TODO why alloc doesnt work here ?
 	vector (const vector& x)
-		:  _capacity(x._capacity), _start(_alloc.allocate(x._capacity)), _size(x._size)
+		:  _alloc(x._alloc), _capacity(x._capacity), _start(_alloc.allocate(x._capacity)), _size(x._size)
 	{
 		for(size_t i = 0; i < _size; i++)
 			_alloc.construct(_start + i, *(x._start + i));
@@ -112,8 +112,8 @@ private:
 		{
 			for (size_t i = 0; i < size; i++)
 				_alloc.destroy(to_erase + i);
-			_alloc.deallocate(to_erase, capacity);
 		}
+		_alloc.deallocate(to_erase, capacity);
 	}
 
 	void
@@ -295,7 +295,6 @@ public:
 		_destroy_vector_args(_start, _size, _capacity);
 		_start = tmp;
 		_capacity = n;
-		delete tmp;
 		
 	}
 
@@ -432,8 +431,8 @@ public:
 	void 
 	insert (iterator position, size_type n, const value_type& val)
 	{
-		if (n == 0)
-			return ;
+		// if (n == 0)
+		// 	return ;
 		ptrdiff_t	pos = position - begin();
 		int			x = 1;
 
@@ -459,46 +458,36 @@ public:
 	void
 	insert (iterator position, InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last)
 	{
+
 		ptrdiff_t	pos = ft::distance(_start, position);
 		ptrdiff_t	nb_elem = ft::distance(first, last);
 
-		std::cout << "pos = " << pos << "   nb_elem = " << nb_elem <<"\n";
-		std::cout << "_size = " << _size << "   _capacity = " << _capacity <<"\n";
-
+		//Copy in ins
 		pointer tmp_insert = _alloc.allocate(nb_elem);
 		for (size_t i = 0; first != last; first++, i++)
-		{
 			_alloc.construct(tmp_insert + i, *first);
-		}
 
 		pointer tmp_cpy = _alloc.allocate(_capacity);
 		for (size_t i = 0; i < _size; i++)
 			_alloc.construct(tmp_cpy + i, *(_start + i));
-		
+
 		_reserve_space (nb_elem);
-
-
-		std::cout << "_size = " << _size << "   _capacity = " << _capacity <<"\n";
-
+		// std::cout << "_size = " << _size << "   _capacity = " << _capacity <<"\n";
+	
 		for (size_t i = 0; i < (size_t)nb_elem; i++)
 		{
 			_alloc.construct(_start + pos + i, *(tmp_insert + i));
 		}
-		std::cout << "ici 1\n";
 
 		size_t pos_insert = nb_elem + pos;
 		for (size_t i = 0; pos_insert < _size + nb_elem; pos_insert++, i++)
 		{
-			// insert(_start + pos_insert, *(tmp_cpy + pos + i));
 			_alloc.construct(_start + pos_insert, *(tmp_cpy + pos + i));
 		}
-			std::cout << "ici 2\n";
-
+	
 		_destroy_vector_args(tmp_insert, nb_elem, nb_elem);
-			std::cout << "ici 3\n";
 		_destroy_vector_args(tmp_cpy, _size, _capacity);
-			std::cout << "ici 4\n";
-
+		
 		_size += nb_elem;
 	}
 

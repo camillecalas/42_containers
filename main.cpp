@@ -18,9 +18,9 @@ int main()
 
 	std::vector<int> c(3, 2);
 	std::cout << "SIZE = " << c.size() << " CAPACITY = " << c.capacity() << std::endl;
-	std::vector<int> d;
+	// std::vector<int> d;
 
-	d.insert(d.begin(), 3, c);
+	// d.insert(d.begin(), 3, c);
 
 	// c.push_back(1);
 	// c.push_back(2);
@@ -46,11 +46,11 @@ int main()
 	// std::cout << "************************"<< std::endl;
 
 
-	ft::vector<int> b(3, 2);
+	ft::vector<int> b(100);
 	std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
-	std::vector<int> a;
+	// std::vector<int> a;
 
-	d.insert(a.begin(), 3, b);
+	// d.insert(a.begin(), 3, b);
 
 
 	// b.push_back(1);
