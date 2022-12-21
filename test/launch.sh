@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CC="clang++"
-CPPFLAGS="-Wall -Wextra -Werror -std=c++98 -g3"
+CPPFLAGS="-Wall -Wextra -Werror -std=c++98 -fsanitize=address -g3"
 INCS="-I ../containers/ -I includes -I ../containers/utils"
 
 tmp_file=".tmp_file"
@@ -45,14 +45,14 @@ compare ()
 	mycmd="$CC $CPPFLAGS $INCS $1 -DNAMESPACE=ft -o mytest"
 	${mycmd}
 	start=`date +%s%N`
-	valgrind --leak-check=full ./mytest > ft_output/ft_${name}.log
+	./mytest > ft_output/ft_${name}.log
 	end=`date +%s%N`
 	runtime1=$( echo "($end - $start) / 20" | bc -l )
 	
 	reelcmd="$CC $CPPFLAGS $INCS $1 -DNAMESPACE=std -o reeltest "
 	${reelcmd}
 	start=`date +%s%N`
-	valgrind --leak-check=full ./reeltest > std_output/std_${name}.log
+	./reeltest > std_output/std_${name}.log
 	end=`date +%s%N`
 	runtime2=$( echo "($end - $start)" | bc -l )
 

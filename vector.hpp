@@ -76,7 +76,7 @@ public:
 	};
 
 	vector (const vector& x)
-		:  _alloc(x._alloc), _capacity(x._capacity), _start(_alloc.allocate(x._capacity)), _size(x._size)
+		:  _alloc(x._alloc), _capacity(x._size), _start(_alloc.allocate(x._capacity)), _size(x._size)
 	{
 		for(size_t i = 0; i < _size; i++)
 			_alloc.construct(_start + i, *(x._start + i));
@@ -428,8 +428,8 @@ public:
 	void 
 	insert (iterator position, size_type n, const value_type& val)
 	{
-		// if (n == 0)
-		// 	return ;
+		if (n == 0)
+			return ;
 		ptrdiff_t	pos = position - begin();
 		int			x = 1;
 
