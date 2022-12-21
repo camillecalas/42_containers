@@ -47,6 +47,7 @@ protected:
 	size_type 		_capacity;	// capacity of vector
 	pointer			_start;		// point on the beginning of vector 
 	size_type 		_size;		// taille utilisee du vector : size
+	pointer _end;
 
 
 	// =============================================================================
@@ -58,31 +59,28 @@ public:
 		: _alloc(alloc), _capacity(0), _start(NULL), _size(0)
 	{};
 
-	//TODO I did some changes with secrutity _capacity, not too sure needed
 	explicit 
 	vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
-		: _alloc(alloc), _capacity(n), _start(NULL), _size(n)
+		: _alloc(alloc), _capacity(n), _start(_alloc.allocate(n)), _size(n)
 	{
-		if (_capacity == 0)
-			_capacity = 1;
-		_start = _alloc.allocate(_capacity);
 		for(size_t i = 0; i < n; i++)
 			_alloc.construct(_start + i, val);
 	};
 
-
 	template< class InputIt >
-	vector(InputIt first, ENABLE_IF last, const allocator_type& alloc = allocator_type())
+	vector (InputIt first, ENABLE_IF last, const allocator_type& alloc = allocator_type())
 		: _alloc(alloc), _capacity(ft::distance(first, last)), _start(_alloc.allocate(ft::distance(first, last))), _size(ft::distance(first, last))
 	{
 		for (size_t i = 0; first != last; first++, i++)
 			_alloc.construct(_start + i, *first);
 	};
 
-
+	//TODO why alloc doesnt work here ?
 	vector (const vector& x)
+		:  _capacity(x._capacity), _start(_alloc.allocate(x._capacity)), _size(x._size)
 	{
-		*this = x;
+		for(size_t i = 0; i < _size; i++)
+			_alloc.construct(_start + i, *(x._start + i));
 	}
 
 
@@ -94,15 +92,26 @@ public:
 	}
 
 private:
+	// void	
+	// _destroy_vector()
+	// {
+	// 	if (_capacity)
+	// 	{
+	// 		for (size_t i = 0; i < _size; i++)
+	// 		{
+	// 			_alloc.destroy(_start + i);
+	// 		}
+	// 		_alloc.deallocate(_start, _capacity);
+	// 	}
+	// }
+
 	void	
 	_destroy_vector_args(pointer to_erase, size_t size, size_t capacity)
 	{
 		if (_capacity)
 		{
 			for (size_t i = 0; i < size; i++)
-			{
 				_alloc.destroy(to_erase + i);
-			}
 			_alloc.deallocate(to_erase, capacity);
 		}
 	}
@@ -112,7 +121,7 @@ private:
 	{
 		if ((_size + nb_elem) > _capacity * 2)
 			reserve(_size + nb_elem);
-		else if ((_size + nb_elem) > _capacity)
+		else if ((_size + nb_elem) >= _capacity)
 			reserve(_size * 2);
 	}
 
@@ -125,6 +134,7 @@ public:
 	{
 		if (this == &x)
 			return (*this);
+
 		_destroy_vector_args(_start, _size, _capacity);
 		if (x._size > _capacity)
 			_capacity = x._capacity;
@@ -277,7 +287,7 @@ public:
 		if (n < _capacity)
 			return ;
 		else if (n > _alloc.max_size())
-			throw std::length_error("vector::reserve\n");
+			throw std::length_error("vector::reserve");
 
 		pointer tmp = _alloc.allocate(n);
 		for(size_t i = 0; i < _size; i++)
@@ -285,6 +295,8 @@ public:
 		_destroy_vector_args(_start, _size, _capacity);
 		_start = tmp;
 		_capacity = n;
+		delete tmp;
+		
 	}
 
 
@@ -405,7 +417,10 @@ public:
 			reserve (_capacity * 2);
 
 		for (long i = _size; i > pos; i--, x++)
+		{
 			_alloc.construct(begin() + i, *(end() - x));
+			_alloc.destroy(end() - x);
+		}
 
 		_alloc.construct(begin() + pos, val);
 		_size += 1;
@@ -417,16 +432,22 @@ public:
 	void 
 	insert (iterator position, size_type n, const value_type& val)
 	{
+		if (n == 0)
+			return ;
 		ptrdiff_t	pos = position - begin();
 		int			x = 1;
 
 		_reserve_space (n);
 
 		for (long i = _size - 1; i >= pos; i--, x++)
+		{
 			_alloc.construct(begin() + i + n, *(end() - x));
+			_alloc.destroy(end() - x);
+		}
 	
 		for (size_t i = 0; i < n; pos++, i++)
 			_alloc.construct(begin() + pos, val);
+
 		_size += n;
 
 		// vector v(n, val);
@@ -441,9 +462,14 @@ public:
 		ptrdiff_t	pos = ft::distance(_start, position);
 		ptrdiff_t	nb_elem = ft::distance(first, last);
 
+		std::cout << "pos = " << pos << "   nb_elem = " << nb_elem <<"\n";
+		std::cout << "_size = " << _size << "   _capacity = " << _capacity <<"\n";
+
 		pointer tmp_insert = _alloc.allocate(nb_elem);
 		for (size_t i = 0; first != last; first++, i++)
+		{
 			_alloc.construct(tmp_insert + i, *first);
+		}
 
 		pointer tmp_cpy = _alloc.allocate(_capacity);
 		for (size_t i = 0; i < _size; i++)
@@ -451,15 +477,27 @@ public:
 		
 		_reserve_space (nb_elem);
 
+
+		std::cout << "_size = " << _size << "   _capacity = " << _capacity <<"\n";
+
 		for (size_t i = 0; i < (size_t)nb_elem; i++)
+		{
 			_alloc.construct(_start + pos + i, *(tmp_insert + i));
+		}
+		std::cout << "ici 1\n";
 
 		size_t pos_insert = nb_elem + pos;
 		for (size_t i = 0; pos_insert < _size + nb_elem; pos_insert++, i++)
+		{
+			// insert(_start + pos_insert, *(tmp_cpy + pos + i));
 			_alloc.construct(_start + pos_insert, *(tmp_cpy + pos + i));
+		}
+			std::cout << "ici 2\n";
 
-		_destroy_vector_args(tmp_cpy, _size, _capacity);
 		_destroy_vector_args(tmp_insert, nb_elem, nb_elem);
+			std::cout << "ici 3\n";
+		_destroy_vector_args(tmp_cpy, _size, _capacity);
+			std::cout << "ici 4\n";
 
 		_size += nb_elem;
 	}
