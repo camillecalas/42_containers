@@ -47,7 +47,6 @@ protected:
 	size_type 		_capacity;	// capacity of vector
 	pointer			_start;		// point on the beginning of vector 
 	size_type 		_size;		// taille utilisee du vector : size
-	pointer _end;
 
 
 	// =============================================================================
@@ -458,37 +457,28 @@ public:
 	void
 	insert (iterator position, InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last)
 	{
-
 		ptrdiff_t	pos = ft::distance(_start, position);
 		ptrdiff_t	nb_elem = ft::distance(first, last);
+		size_t 		i = 0;
 
-		//Copy in ins
-		pointer tmp_insert = _alloc.allocate(nb_elem);
-		for (size_t i = 0; first != last; first++, i++)
-			_alloc.construct(tmp_insert + i, *first);
+		if ((_size + nb_elem) > _capacity * 2)
+			_capacity = (_size + nb_elem);
+		else if ((_size + nb_elem) >= _capacity)
+			_capacity = (_size * 2);
 
-		pointer tmp_cpy = _alloc.allocate(_capacity);
-		for (size_t i = 0; i < _size; i++)
-			_alloc.construct(tmp_cpy + i, *(_start + i));
+		pointer test = _alloc.allocate(_capacity);
 
-		_reserve_space (nb_elem);
-		// std::cout << "_size = " << _size << "   _capacity = " << _capacity <<"\n";
-	
-		for (size_t i = 0; i < (size_t)nb_elem; i++)
-		{
-			_alloc.construct(_start + pos + i, *(tmp_insert + i));
-		}
+		for (; i < (size_t)pos; i++)
+			_alloc.construct(test + i, *(_start + i));
+		for (; first != last; first++, i++)
+			_alloc.construct(test + i, *first);
+		for (; (size_t)pos < _size; i++, pos++)
+			_alloc.construct(test + i, *(_start + pos));
 
-		size_t pos_insert = nb_elem + pos;
-		for (size_t i = 0; pos_insert < _size + nb_elem; pos_insert++, i++)
-		{
-			_alloc.construct(_start + pos_insert, *(tmp_cpy + pos + i));
-		}
-	
-		_destroy_vector_args(tmp_insert, nb_elem, nb_elem);
-		_destroy_vector_args(tmp_cpy, _size, _capacity);
-		
+		_destroy_vector_args(_start, _size, _capacity);
+		_start = test;
 		_size += nb_elem;
+
 	}
 
 	void 
@@ -535,9 +525,6 @@ bool
 operator!=( const ft::vector<T,Alloc>& lhs,
             const ft::vector<T,Alloc>& rhs )
 {
-	// if (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()))
-	// 	return (true);
-	// return (false);
 	return (!(lhs == rhs));
 }
 
@@ -562,7 +549,6 @@ bool
 operator>(	const ft::vector<T,Alloc>& lhs,
         	const ft::vector<T,Alloc>& rhs )
 {
-	// return (ft::lexicographical_compare(rhs.begin(), rhs.end(),lhs.begin(), lhs.end()));
 	return (rhs < lhs);
 }
 
