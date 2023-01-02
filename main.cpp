@@ -16,38 +16,32 @@ using namespace TESTED_NAMESPACE;
 int main()
 {
 
-	std::vector<int> c(3, 2);
-	std::cout << "SIZE = " << c.size() << " CAPACITY = " << c.capacity() << std::endl;
-	// std::vector<int> d;
+	std::cout << "TEST: CLEAR\n";
+	//Assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
 
-	// d.insert(d.begin(), 3, c);
+	std::vector<int> b;
 
-	// c.push_back(1);
-	// c.push_back(2);
-	// c.push_back(3);
-	// c.push_back(4);
-	// c.push_back(5);
-	// c.push_back(6);
-	// c.push_back(7);
-	// c.push_back(8);
-
-
-	// c.insert(c.begin() + 2, c.begin() + 1, c.end());
+	for (size_t i = 0; i < 1000; i++)
+		b.push_back(i);
+	b.clear();
+	b.pop_back();
+	// NAMESPACE::vector<TESTED_TYPE> c(b);
 	// std::cout << "SIZE = " << c.size() << " CAPACITY = " << c.capacity() << std::endl;
+	// b.resize(4);
+	// for (size_t i = 0; i < 3; i++)
+	// 	b.push_back(i);
+	// b.pop_back();
 
-	// std::vector<int>::iterator it2 = c.begin();
-	// std::vector<int>::const_iterator it4 = c.begin();
-	// it4[0] = 42;
-	// int i = 0;
-	// for (; it2 != c.end(); it2++)
-	// 	std::cout << i++ << " = " << *it2 << std::endl;
-	// std::cout << "SIZE = " << c.size() << " CAPACITY = " << c.capacity() << std::endl;
-	
+	std::vector<int>::iterator it;
+		
+	for (it = b.begin(); it != b.end(); it++)
+		std::cout << *it << std::endl;
+	std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
 	// std::cout << "************************"<< std::endl;
 
 
-	ft::vector<int> b(100);
-	std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
+	// ft::vector<int> b(100);
+	// std::cout << "SIZE = " << b.size() << " CAPACITY = " << b.capacity() << std::endl;
 	// std::vector<int> a;
 
 	// d.insert(a.begin(), 3, b);

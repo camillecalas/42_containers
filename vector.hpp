@@ -91,19 +91,6 @@ public:
 	}
 
 private:
-	// void	
-	// _destroy_vector()
-	// {
-	// 	if (_capacity)
-	// 	{
-	// 		for (size_t i = 0; i < _size; i++)
-	// 		{
-	// 			_alloc.destroy(_start + i);
-	// 		}
-	// 		_alloc.deallocate(_start, _capacity);
-	// 	}
-	// }
-
 	void	
 	_destroy_vector_args(pointer to_erase, size_t size, size_t capacity)
 	{
@@ -328,8 +315,8 @@ public:
 	void
 	pop_back()
 	{
-		if (_size == 0)
-			return ;
+		// if (_size == 0)
+		// 	return ;
 		_size -= 1;
 		_alloc.destroy(_start + _size);
 	}
@@ -386,7 +373,8 @@ public:
 		if (_capacity)
 			for (size_t i = 0; i < _size; i++)
 				_alloc.destroy(_start + i);
-		for (size_t i = 0; first != last; first++, i++)
+		// for (size_t i = 0; first != last; first++, i++)
+		for (size_t i = 0; first != last; ++first, i++)
 			_alloc.construct(_start + i, *first);
 		_size = size_btw;
 	}
@@ -464,7 +452,8 @@ public:
 
 		for (; i < (size_t)pos; i++)
 			_alloc.construct(test + i, *(_start + i));
-		for (; first != last; first++, i++)
+		// for (; first != last; first++, i++)
+		for (; first != last; ++first, i++)
 			_alloc.construct(test + i, *first);
 		for (; (size_t)pos < _size; i++, pos++)
 			_alloc.construct(test + i, *(_start + pos));
