@@ -13,7 +13,7 @@ int main()
 {
 
 	srand(time(NULL));
-	std::cout << "TEST: INSERT\n";
+	std::cout << "TEST: COPY CONSTRUCTOR\n";
 	//Assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
 
 	NAMESPACE::vector<TESTED_TYPE> b;

@@ -158,7 +158,6 @@ public:
 		return (reverse_iterator(_start));
 	}
 
-
 	const_iterator
 	begin() const
 	{
@@ -200,6 +199,24 @@ public:
 		return (*(_start + n));
 	}
 
+			// reference at(size_type n)
+			// {
+			// 	std::stringstream str;
+			// 	str << "vector::_M_range_check: __n (which is " << n << ") >= this->size() (which is " << this->_size << ")";
+			// 	if (n >= size())
+			// 		throw std::out_of_range(str.str());
+			// 	return (this->_start[n]);
+			// }
+
+			// const_reference at(size_type n) const
+			// {
+			// 	std::stringstream str;
+			// 	str << "vector::_M_range_check: __n (which is " << n << ") >= this->size() (which is " << this->_size << ")";
+			// 	if (n >= size())
+			// 		throw std::out_of_range(str.str());
+			// 	return (this->_start[n]);
+			// }
+
 	reference
 	front()
 	{
@@ -218,7 +235,8 @@ public:
 		return (const_reference(*(_start + n)));
 	}
 
-	const_reference at (size_type n) const
+	const_reference 
+	at (size_type n) const
 	{
 		if (n >= _size)
 			throw std::out_of_range("vector::at\n");
@@ -315,8 +333,6 @@ public:
 	void
 	pop_back()
 	{
-		// if (_size == 0)
-		// 	return ;
 		_size -= 1;
 		_alloc.destroy(_start + _size);
 	}
@@ -360,10 +376,12 @@ public:
 			}
 			for (; _size < n; _size++)
 				_alloc.construct((_start + _size), val);
+			//TODO added  to find pb tester :
+			_size = n;
 		}
 	}
 
-	//Any elements held in the container before the call are destroyed and replaced by newly constructed elements (no assignments of elements take place). This causes an automatic reallocation of the allocated storage space if -and only if- the new vector size surpasses the current vector capacity.
+	// Any elements held in the container before the call are destroyed and replaced by newly constructed elements (no assignments of elements take place). This causes an automatic reallocation of the allocated storage space if -and only if- the new vector size surpasses the current vector capacity.
 	template <class InputIterator>
 	void
 	assign (InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last)
@@ -452,9 +470,10 @@ public:
 
 		for (; i < (size_t)pos; i++)
 			_alloc.construct(test + i, *(_start + i));
-		// for (; first != last; first++, i++)
+
 		for (; first != last; ++first, i++)
 			_alloc.construct(test + i, *first);
+
 		for (; (size_t)pos < _size; i++, pos++)
 			_alloc.construct(test + i, *(_start + pos));
 

@@ -100,6 +100,18 @@ public:
     friend bool 
     operator<  (const ft::stack<T2,Container2>& lhs, const ft::stack<T2,Container2>& rhs);
 
+	template <class T2, class Container2>  
+    friend bool 
+    operator<=  (const ft::stack<T2,Container2>& lhs, const ft::stack<T2,Container2>& rhs);
+
+  	template <class T2, class Container2>  
+    friend bool 
+    operator>  (const ft::stack<T2,Container2>& lhs, const ft::stack<T2,Container2>& rhs);
+
+	template <class T2, class Container2>  
+    friend bool 
+    operator>=  (const ft::stack<T2,Container2>& lhs, const ft::stack<T2,Container2>& rhs);
+
 };
 
 
@@ -128,30 +140,26 @@ operator<  (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs
     return (false);
 }
 
-
 template <class T, class Container>
 bool
 operator<= (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs)
 {
-    return !(lhs < rhs);
+    return (lhs._c <= rhs._c);
 }
-
 
 template <class T, class Container>
 bool 
 operator>  (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs)
 {
-    return (rhs < lhs );
+    return (lhs._c > rhs._c );
 }
-
 
 template <class T, class Container>
 bool 
 operator>= (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs)
 {
-    return !(lhs < rhs );
+    return (lhs._c >= rhs._c );
 }
-
 
 NAME_SPACE_END
 #endif

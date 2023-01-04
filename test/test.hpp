@@ -8,6 +8,7 @@
 # include "../distance.hpp"
 # include "../enable_if.hpp"
 # include "../is_integral.hpp"
+# include "../stack.hpp"
 
 # include <vector>
 # include <stack>

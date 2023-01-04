@@ -78,7 +78,7 @@ compare ()
 
 launch_test ()
 {
-	test_files=$(find ./vector -type f -name '*.cpp' | sort)
+	test_files=$(find ./vector ./stack -type f -name '*.cpp' | sort)
 
 	mkdir std_output ft_output diff 2> /dev/null
 	rm -rf std_output/* ft_output/* diff/*

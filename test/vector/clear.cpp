@@ -12,7 +12,7 @@ int main()
 	for (size_t i = 0; i < 1000; i++)
 		b.push_back(i);
 	b.clear();
-	b.pop_back();
+	// b.pop_back();
 	// NAMESPACE::vector<TESTED_TYPE> c(b);
 	// std::cout << "SIZE = " << c.size() << " CAPACITY = " << c.capacity() << std::endl;
 	// b.resize(4);
