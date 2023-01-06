@@ -2,6 +2,7 @@
 # define VECTOR_HPP
 
 # include "ft_containers.hpp"
+# include "equal.hpp"
 # include "Iterator.hpp"
 # include "reverse_iterator.hpp"
 # include "distance.hpp"
@@ -124,13 +125,13 @@ public:
 		_destroy_vector_args(_start, _size, _capacity);
 		if (x._size > _capacity)
 			_capacity = x._capacity;
-		_start = _alloc.allocate(x._capacity);
+		//TODO understand why if it's(x._capacity) it's isnt working
+		_start = _alloc.allocate(_capacity);
 		_size = x._size;
 		for(size_t i = 0; i < _size; i++)
 			_alloc.construct(_start + i, *(x._start + i));
 		return (*this);
 	}
-
 
 	// =============================================================================
 	// ITERATORS ===================================================================
@@ -198,24 +199,6 @@ public:
 			throw std::out_of_range("vector::at\n");
 		return (*(_start + n));
 	}
-
-			// reference at(size_type n)
-			// {
-			// 	std::stringstream str;
-			// 	str << "vector::_M_range_check: __n (which is " << n << ") >= this->size() (which is " << this->_size << ")";
-			// 	if (n >= size())
-			// 		throw std::out_of_range(str.str());
-			// 	return (this->_start[n]);
-			// }
-
-			// const_reference at(size_type n) const
-			// {
-			// 	std::stringstream str;
-			// 	str << "vector::_M_range_check: __n (which is " << n << ") >= this->size() (which is " << this->_size << ")";
-			// 	if (n >= size())
-			// 		throw std::out_of_range(str.str());
-			// 	return (this->_start[n]);
-			// }
 
 	reference
 	front()
@@ -511,14 +494,20 @@ public:
 };
 
 // //TODO not sure at all
-template< class T, class Alloc >
-bool 
-operator==( const ft::vector<T,Alloc>& lhs,
-            const ft::vector<T,Alloc>& rhs )
-{
-	if (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()) == false && lhs.size() == rhs.size())
-		return (true);
-	return (false);
+// template< class T, class Alloc >
+// bool 
+// operator==( const ft::vector<T,Alloc>& lhs,
+//             const ft::vector<T,Alloc>& rhs )
+// {
+// 	if (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()) == false && lhs.size() == rhs.size())
+// 		return (true);
+// 	return (false);
+// }
+
+template<class T, class Alloc>
+bool
+operator== (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) {
+	return (ft::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 }
 
 template< class T, class Alloc >
