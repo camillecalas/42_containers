@@ -11,12 +11,7 @@
 # include "lexicographical_compare.hpp"
 
 # include <iostream>
-#include <iterator>
-
-//TODO erase later
-# include <vector>
-std::vector<int> res;
-
+# include <iterator>
 
 NAME_SPACE_START
 
@@ -91,6 +86,9 @@ public:
 		_destroy_vector_args(_start, _size, _capacity);
 	}
 
+
+	// =============================================================================
+	// ADDED FUNCTIONS =============================================================
 private:
 	void	
 	_destroy_vector_args(pointer to_erase, size_t size, size_t capacity)
@@ -132,6 +130,7 @@ public:
 			_alloc.construct(_start + i, *(x._start + i));
 		return (*this);
 	}
+
 
 	// =============================================================================
 	// ITERATORS ===================================================================
@@ -359,7 +358,6 @@ public:
 			}
 			for (; _size < n; _size++)
 				_alloc.construct((_start + _size), val);
-			//TODO added  to find pb tester :
 			_size = n;
 		}
 	}
@@ -374,8 +372,8 @@ public:
 		if (_capacity)
 			for (size_t i = 0; i < _size; i++)
 				_alloc.destroy(_start + i);
-		// for (size_t i = 0; first != last; first++, i++)
-		for (size_t i = 0; first != last; ++first, i++)
+		// for (size_t i = 0; first != last; ++first, i++)
+		for (size_t i = 0; first != last; first++, i++)
 			_alloc.construct(_start + i, *first);
 		_size = size_btw;
 	}
@@ -454,7 +452,8 @@ public:
 		for (; i < (size_t)pos; i++)
 			_alloc.construct(test + i, *(_start + i));
 
-		for (; first != last; ++first, i++)
+		// for (; first != last; ++first, i++)
+		for (; first != last; first++, i++)
 			_alloc.construct(test + i, *first);
 
 		for (; (size_t)pos < _size; i++, pos++)
@@ -484,6 +483,7 @@ public:
 		x._size		= tmp_size;
 	}
 
+
 	// =============================================================================
 	// ALLOCATOR ===================================================================
 	allocator_type 
@@ -493,21 +493,16 @@ public:
 	}
 };
 
-// //TODO not sure at all
-// template< class T, class Alloc >
-// bool 
-// operator==( const ft::vector<T,Alloc>& lhs,
-//             const ft::vector<T,Alloc>& rhs )
-// {
-// 	if (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()) == false && lhs.size() == rhs.size())
-// 		return (true);
-// 	return (false);
-// }
 
+// =============================================================================
+// NON-MEMBER OVERLOADS ========================================================
 template<class T, class Alloc>
 bool
 operator== (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) {
-	return (ft::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+
+	if (lhs.size() != rhs.size())
+		return (false);
+	return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 }
 
 template< class T, class Alloc >
@@ -542,7 +537,6 @@ operator>(	const ft::vector<T,Alloc>& lhs,
 	return (rhs < lhs);
 }
 
-
 template< class T, class Alloc >
 bool
 operator>=( const ft::vector<T,Alloc>& lhs,
@@ -550,7 +544,6 @@ operator>=( const ft::vector<T,Alloc>& lhs,
 {
 	return (!(lhs < rhs));
 }
-
 
 template <class T, class Alloc>
 void

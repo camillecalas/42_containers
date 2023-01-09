@@ -18,26 +18,6 @@ equal (	InputIt1 first1, InputIt1 last1,
 		++first1; ++first2;
 	}
 	return true;
-}	
-
-template< class InputIt1, class InputIt2 >
-bool equal(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2) {
-    for (; (first1 != last1 && first2 != last2) ; ++first1, ++first2) {
- 		if (!(*first1 == *first2))
-    		return (false);
-    }
-    return ((first1 == last1 && first2 == last2));
-}
-
-template <class InputIterator1, class InputIterator2, class BinaryPredicate>
-bool 
-equal ( InputIterator1 first1, InputIterator1 last1,
-    	InputIterator2 first2, BinaryPredicate pred)
-{
-	for (; first1 != last1; ++first1, ++first2)
-		if (!pred(*first1,*first2))
-			return (false);
-	return true;
 }
 
 NAME_SPACE_END
