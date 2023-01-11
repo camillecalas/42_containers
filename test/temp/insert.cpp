@@ -16,6 +16,17 @@ int main()
 	std::cout << "TEST: INSERT\n";
 	//Assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
 
+		{
+		NAMESPACE::vector<TESTED_TYPE> vct;
+
+		vct.insert(vct.begin(), 42);
+		vct.push_back(10);
+		vct.push_back(11);
+		vct.insert(vct.begin() + 1, 2);
+		print_vector(vct);
+
+	}
+
 	{
 		NAMESPACE::vector<TESTED_TYPE> vct(10);
 		NAMESPACE::vector<TESTED_TYPE> vct2;

@@ -122,8 +122,7 @@ public:
 
 		_destroy_vector_args(_start, _size, _capacity);
 		if (x._size > _capacity)
-			_capacity = x._capacity;
-		//TODO understand why if it's(x._capacity) it's isnt working
+			_capacity = x._size;
 		_start = _alloc.allocate(_capacity);
 		_size = x._size;
 		for(size_t i = 0; i < _size; i++)
@@ -270,6 +269,7 @@ public:
 	void 
 	reserve (size_type n)
 	{
+		// check : if (n < capacity())
 		if (n < _capacity)
 			return ;
 		else if (n > _alloc.max_size())
@@ -281,7 +281,6 @@ public:
 		_destroy_vector_args(_start, _size, _capacity);
 		_start = tmp;
 		_capacity = n;
-		
 	}
 
 
@@ -344,22 +343,22 @@ public:
 	void
 	resize (size_type n, value_type val = value_type())
 	{
-	
-		if (n < _size)
-			(*this).erase(begin() + n, end());
+		if (n > max_size())
+			throw std::length_error("vector::_M_fill_insert");
+		else if (n < size())
+			for ( ; _size > n; _size--)
+				_alloc.destroy(_start + (_size - 1));
 		else
 		{
-			if (n > _capacity)
-			{
-				if (_capacity * 2 > n)
-					reserve(_capacity * 2);
-				else
-					reserve(n);
-			}
+			if (n <= _capacity);
+			else if (n > _size * 2)
+				reserve(n);
+			else
+				reserve(_size * 2);
+		}
 			for (; _size < n; _size++)
 				_alloc.construct((_start + _size), val);
 			_size = n;
-		}
 	}
 
 	// Any elements held in the container before the call are destroyed and replaced by newly constructed elements (no assignments of elements take place). This causes an automatic reallocation of the allocated storage space if -and only if- the new vector size surpasses the current vector capacity.
@@ -372,7 +371,6 @@ public:
 		if (_capacity)
 			for (size_t i = 0; i < _size; i++)
 				_alloc.destroy(_start + i);
-		// for (size_t i = 0; first != last; ++first, i++)
 		for (size_t i = 0; first != last; first++, i++)
 			_alloc.construct(_start + i, *first);
 		_size = size_btw;
@@ -452,7 +450,6 @@ public:
 		for (; i < (size_t)pos; i++)
 			_alloc.construct(test + i, *(_start + i));
 
-		// for (; first != last; ++first, i++)
 		for (; first != last; first++, i++)
 			_alloc.construct(test + i, *first);
 
