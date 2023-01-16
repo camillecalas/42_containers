@@ -7,12 +7,11 @@
 
 NAME_SPACE_START
 
-//bool value by default is false = 0. In the Node 0 will be black
+//bool value by default is false = 0. 0 = black
 
 template <typename T>
 struct Node
 {
-
 	typedef T 	value_type;
 
 	// =============================================================================
@@ -35,7 +34,6 @@ struct Node
 	{}
 
 };
-// typedef Node *NodePtr;
 
 NAME_SPACE_END
 #endif

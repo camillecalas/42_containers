@@ -6,7 +6,7 @@
 #include "pair.hpp"
 #include "map.hpp"
 #include "node.hpp"
-#include "red_black_tree.hpp"
+// #include "red_black_tree.hpp"
 #include <vector>
 #include <map>
 
@@ -20,18 +20,19 @@ using namespace TESTED_NAMESPACE;
 
 int main()
 {
-	RedBlackTree bst;
-	bst.insert(55);
-	bst.insert(40);
-	bst.insert(65);
-	bst.insert(60);
-	bst.insert(75);
-	bst.insert(57);
+	map<int, int>a;
+	// RedBlackTree bst;
+	// bst.insert(55);
+	// bst.insert(40);
+	// bst.insert(65);
+	// bst.insert(60);
+	// bst.insert(75);
+	// bst.insert(57);
 
-	bst.printTree();
-	std::cout << std::endl << "After deleting" << std::endl;
-	bst.deleteNode(40);
-	bst.printTree();
+	// bst.printTree();
+	// std::cout << std::endl << "After deleting" << std::endl;
+	// bst.deleteNode(40);
+	// bst.printTree();
 
 	return (0);
 }

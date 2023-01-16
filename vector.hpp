@@ -346,7 +346,7 @@ public:
 		if (n > max_size())
 			throw std::length_error("vector::_M_fill_insert");
 		else if (n < size())
-			for ( ; _size > n; _size--)
+			for (; _size > n; _size--)
 				_alloc.destroy(_start + (_size - 1));
 		else
 		{
@@ -495,8 +495,9 @@ public:
 // NON-MEMBER OVERLOADS ========================================================
 template<class T, class Alloc>
 bool
-operator== (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs) {
-
+operator==(	const ft::vector<T,Alloc>& lhs,
+			const ft::vector<T,Alloc>& rhs) 
+{
 	if (lhs.size() != rhs.size())
 		return (false);
 	return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));

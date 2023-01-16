@@ -2,11 +2,10 @@
 # define NULLPTR_HPP
 
 # include "ft_containers.hpp"
-# include "Iterator.hpp"
 
 NAME_SPACE_START
 
-const                         	/* this is a const object...*/
+const                         		/* this is a const object...*/
 class nullptr_t
 {
 	public:
@@ -15,7 +14,7 @@ class nullptr_t
 			{ return 0; }           /* pointer...               */
 
 		template<class C, class T> 	/* or any type of null      */
-		operator T C::*() const /* member pointer...        */
+		operator T C::*() const 	/* member pointer...        */
 			{ return 0; }   
 
 	private:

@@ -3,6 +3,7 @@
 # define RED_BLACK_TREE_HPP
 
 # include "node.hpp"
+# include "nullptr.hpp"
 # include <iostream>
 
 //TODO erase later
@@ -11,14 +12,103 @@ using namespace std;
 
 NAME_SPACE_START
 
-typedef Node *NodePtr;
 
+template <class T, class Compare, class Node = ft::Node<T>, class Allocator = std::allocator<Node> >
 class RedBlackTree 
 {
-private:
-	NodePtr root;
-	NodePtr TNULL;
+	// =============================================================================
+	// TYPEDEF =====================================================================
+public:
+	typedef T							value_type;
+	typedef value_type &				reference;
+	typedef typename Allocator::pointer	pointer;
+	typedef	Node						node_type;
+	typedef	std::size_t					size_type;
+	typedef Compare						value_compare;
+	typedef Allocator					allocator_type;
+	typedef typename Node::color		color_type;
 
+
+	// =============================================================================
+	// ATTRIBUTS ===================================================================
+private:
+	pointer			_root;
+	pointer			_end;
+	value_compare	_comp;
+	allocator_type	_alloc;
+	size_type		_size;
+	// NodePtr root;
+	// NodePtr TNULL;
+
+
+	// =============================================================================
+	// CONSTRUCTORS ================================================================
+public:
+	RedBlackTree(const value_compare &cmp) 
+		: _root(ft::nullptr), _end(ft::nullptr), _comp(cmp), _alloc(allocator_type()), _size(0)
+	{
+		_end = _alloc.allocate(1);
+		_alloc.construct(_end, Node(value_type()), 1);
+		_root = _end;
+	}
+
+
+	// =============================================================================
+	// DESTRUCTORS =================================================================
+	~RedBlackTree()
+	{
+		//delete like in vector 
+	}
+
+	// =============================================================================
+	// ADDED FUNCTIONS =============================================================
+	pointer
+	minimum(pointer node)
+	{
+		if (!node || node == _end)
+			return (node);
+		while (node->left != _end)
+			node = node->left;
+		return (node);
+	}
+
+	pointer
+	minimum(pointer node) const
+	{
+		if (!node || node == _end)
+			return (node);
+		while (node->left != _end)
+			node = node->left;
+		return (node);
+	}
+	
+
+
+	// =============================================================================
+	// ITERATORS ===================================================================
+	pointer
+	begin()
+	{
+		return (minimum(_root));
+	}
+
+	pointer
+	const_begin() const
+	{
+		return (minimum(_root));
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	void initializeNULLNode(NodePtr node, NodePtr parent) 
 	{
 		node->data = 0;
