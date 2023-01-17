@@ -9,6 +9,7 @@
 # include "Iterator.hpp"
 # include "reverse_iterator.hpp"
 # include "nullptr.hpp"
+# include "iterator_map.hpp"
 // # include "distance.hpp"
 // # include "enable_if.hpp"
 // # include "is_integral.hpp"
@@ -30,12 +31,10 @@ class map
 public:
 typedef struct s_node
 {
-	typedef T 	value_type;
-
 	// =============================================================================
 	// ATTRIBUTS ===================================================================
 	ft::pair<const Key, T>	data;
-	bool					color;
+	size_t					color;
 	struct s_node			*parent;
 	struct s_node			*left;
 	struct s_node			*right;
@@ -83,7 +82,7 @@ public:
 // CLASS VALUE COMPARE	============================================================
 class value_compare : public std::binary_function<value_type,value_type,bool>
 {
-	friend class map;
+	// friend class map;
 
 protected:
 	key_compare	comp;
@@ -103,30 +102,7 @@ public:
 //! ================================================================================
 
 
-//! ================================================================================
-// CLASS MAP ITERATOR ==============================================================
-template <bool Const = false>
-class iterator_map
-{
-	// =============================================================================
-	// TYPEDEF =====================================================================
-public:
-	typedef typename ft::iterator<std::bidirectional_iterator_tag, T>::value_type			value_type;
-	typedef typename ft::iterator<std::bidirectional_iterator_tag, T>::difference_type		difference_type;
-	typedef typename ft::iterator<std::bidirectional_iterator_tag, T>::pointer				pointer;
-	typedef typename ft::iterator<std::bidirectional_iterator_tag, T>::reference			reference;
-	typedef typename ft::iterator<std::bidirectional_iterator_tag, T>::iterator_category	iterator_category;
-	
 
-	// =============================================================================
-	// ATTRIBUTS ===================================================================
-private:
-	Node *	_current;
-	Node *	_root;
-	Node *	_end;
-
-};
-//! ================================================================================
 
 	// =============================================================================
 	// ATTRIBUTS ===================================================================
