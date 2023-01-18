@@ -93,17 +93,96 @@ public:
 	iterator_map &
 	operator++()
 	{
+		_increment();
 		return (*this);
 	}
 
-
-
-	void
-	increment()
+	iterator_map
+	operator++(int)
 	{
-		if (_current == _end)
+		iterator_map tmp(*this);
+		_increment();
+		return (tmp);
 	}
 
+	iterator_map &
+	operator--()
+	{
+		_decrement();
+		return (*this);
+	}
+
+	iterator_map
+	operator--(int)
+	{
+		iterator_map tmp(*this);
+		_decrement();
+		return (tmp);
+	}
+
+
+
+private:
+	void
+	_increment()
+	{
+		if (_current == _end)
+		{
+			_current = _max(_root);
+			return ;
+		}
+		node_ptr tmp_current = _current;
+		if (tmp_current->right != _end)
+			_current = _min(tmp_current->right);
+		else
+		{
+			node_ptr tmp_parent = tmp_current->parent;
+			for (; tmp_parent != ft::nullptr && tmp_current == tmp_parent->right; tmp_parent = tmp_current->parent)
+				tmp_current = tmp_parent;
+
+			if (tmp_parent == ft::nullptr)
+				_current = _end;
+			else
+				_current = tmp_parent;
+		}
+	}
+
+	void
+	_decrement() 
+	{
+		if (_current == _end)
+		{
+			_current = _max(_root);
+			return ;
+		}
+		if (_current->left != _end)
+			_current = _max(_current->left);
+		else
+		{
+			node_ptr tmp_parent = _current->parent;
+			for (; tmp_parent && tmp_parent != _end && _current == tmp_parent->left; _current = tmp_parent)
+				_current = tmp_parent;
+			_current = tmp_parent;
+		}
+	}
+
+	node_ptr
+	_max(node_ptr x)
+	{
+		if (!x || x == _end)
+			return (_end);
+		for (; x->right != _end && x->right; x = x->right);
+		return (x);
+	}
+
+	node_ptr
+	_min(node_ptr x)
+	{
+		if (!x || x == _end)
+			return(_end);
+		for (; x->left != _end && x->left; x = x->left);
+		return (x);
+	}
 
 };
 

@@ -22,6 +22,8 @@ using namespace TESTED_NAMESPACE;
 int main()
 {
 	map<int, int>a;
+	// a[1] = 10;
+	
 	// RedBlackTree bst;
 	// bst.insert(55);
 	// bst.insert(40);
