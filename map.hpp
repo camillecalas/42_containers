@@ -59,23 +59,22 @@ typedef struct s_node
 	// =============================================================================
 	// TYPEDEF =====================================================================
 public:
-	typedef Key 									key_type;
-	typedef T 										mapped_type;
-	typedef ft::pair<const Key, T> 					value_type;
-	typedef std::size_t 							size_type;
-	typedef std::ptrdiff_t 							difference_type;
-	typedef Compare									key_compare;
-	//TODO alloc with RedBlack TREE
-	typedef Allocator 								allocator_type;
-	typedef value_type &							reference;
-	typedef const value_type &						const_reference;
-	typedef typename Allocator::pointer 			pointer;
-	typedef typename Allocator::const_pointer 		const_pointer;
-	// TODO check on iterator on map
-	typedef T *										iterator;
-	typedef const T *								const_iterator;
-	typedef ft::reverse_iterator<iterator> 			reverse_iterator;
-	typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+	typedef Key 															key_type;
+	typedef T 																mapped_type;
+	typedef ft::pair<const Key, T> 											value_type;
+	typedef std::size_t 													size_type;
+	typedef std::ptrdiff_t 													difference_type;
+	typedef Compare															key_compare;
+	//TODO alloc with RedBlack TREE						
+	typedef Allocator 														allocator_type;
+	typedef value_type &													reference;
+	typedef const value_type &												const_reference;
+	typedef typename Allocator::pointer 									pointer;
+	typedef typename Allocator::const_pointer 								const_pointer;
+	typedef typename ft::iterator_map<value_type, Node<value_type> >		iterator;
+	typedef typename ft::iterator_map<const value_type, Node<value_type> >	const_iterator;
+	typedef ft::reverse_iterator<iterator> 									reverse_iterator;
+	typedef ft::reverse_iterator<const_iterator>							const_reverse_iterator;
 
 
 //! ================================================================================
@@ -120,7 +119,7 @@ public:
 	{}
 
 	explicit 
-	map(const Compare &comp, const Allocator &alloc = Allocator()) : _alloc(alloc), _comp(comp), pointer(NULL)
+	map(const Compare &comp, const Allocator &alloc = Allocator()) : _alloc(alloc), _comp(comp), _root(NULL)
 	{}
 
 // 	template <class InputIterator>
