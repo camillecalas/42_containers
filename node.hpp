@@ -7,33 +7,67 @@
 
 NAME_SPACE_START
 
+#define BLACK 0
+#define RED 1
 //bool value by default is false = 0. 0 = black
 
 template <typename T>
 struct Node
 {
-	typedef T 	value_type;
+	typedef T 				value_type;
+	typedef std::size_t		size_t;
 
 	// =============================================================================
 	// ATTRIBUTS ===================================================================
-	T			key;
-	bool		color;
+	value_type	data;
+	size_t		color;
 	Node		*parent;
 	Node		*left;
 	Node		*right;
 
 	// =============================================================================
 	// CONSTRUCTORS ================================================================
-	Node() : key(), color(0), parent(ft::nullptr), left(ft::nullptr), right(ft::nullptr)
+	Node() : data(), color(BLACK), parent(ft::nullptr), left(ft::nullptr), right(ft::nullptr)
 	{}
 
-	Node (const T & new_key) : key(new_key), color(1), parent(ft::nullptr), left(ft::nullptr), right(ft::nullptr)
+	Node (const T & data) : data(data), color(RED), parent(ft::nullptr), left(ft::nullptr), right(ft::nullptr)
 	{}
 
-	Node (const T & new_key, Node *ptr_left, Node *ptr_right) : key(new_key), color(1), parent(ft::nullptr), left(ptr_left), right(ptr_right)
+	Node (const T & data, Node *ptr_left, Node *ptr_right) : data(data), color(RED), parent(ft::nullptr), left(ptr_left), right(ptr_right)
 	{}
 
 };
 
+
 NAME_SPACE_END
 #endif
+
+
+// //! ================================================================================
+// // STRUCTURE NODE	================================================================
+// public:
+// typedef struct s_node
+// {
+// 	// =============================================================================
+// 	// ATTRIBUTS ===================================================================
+// 	ft::pair<const Key, T>	data;
+// 	size_t					color;
+// 	struct s_node			*parent;
+// 	struct s_node			*left;
+// 	struct s_node			*right;
+
+// 	// =============================================================================
+// 	// CONSTRUCTORS ================================================================
+// 	s_node(ft::pair<const Key, T> data) : data(data), color(RED)
+// 	{}
+
+// 	// =============================================================================
+// 	// GETTERS =====================================================================
+// 	const Key &
+// 	key() { return (data.first); }
+
+// 	T &
+// 	value() { return (data.second); }
+
+// } Node;
+// //! ================================================================================

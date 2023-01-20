@@ -3,6 +3,9 @@
 # define RED_BLACK_TREE_HPP
 
 # include "node.hpp"
+# include "map.hpp"
+# include "pair.hpp"
+# include "iterator_map.hpp"
 # include "nullptr.hpp"
 # include <iostream>
 
@@ -23,10 +26,10 @@ public:
 	typedef value_type &				reference;
 	typedef typename Allocator::pointer	pointer;
 	typedef	Node						node_type;
-	typedef	std::size_t					size_type;
+	typedef Compare						key_compare;
 	typedef Compare						value_compare;
+	typedef	std::size_t					size_type;
 	typedef Allocator					allocator_type;
-	typedef typename Node::color		color_type;
 
 
 	// =============================================================================
@@ -37,21 +40,43 @@ private:
 	value_compare	_comp;
 	allocator_type	_alloc;
 	size_type		_size;
-	// NodePtr root;
-	// NodePtr TNULL;
+	// pointer root;
+	pointer TNULL;
 
 
 	// =============================================================================
 	// CONSTRUCTORS ================================================================
 public:
-	RedBlackTree(const value_compare &cmp) 
-		: _root(ft::nullptr), _end(ft::nullptr), _comp(cmp), _alloc(allocator_type()), _size(0)
+	RedBlackTree(const value_compare &comp = value_compare()) 
+		: _comp(comp), _alloc(allocator_type()), _size(0)
 	{
-		_end = _alloc.allocate(1);
-		_alloc.construct(_end, Node(value_type()), 1);
-		_root = _end;
-	}
 
+			// _end = _alloc.allocate(1);
+			// _alloc.construct(_end, Node(value_type(), RED));
+			// _root = _end;
+		_end = TNULL;
+		// _comp = key_compare();
+		_alloc = allocator_type();
+
+		TNULL = new Node;
+		TNULL->color = 0;
+		TNULL->left = nullptr;
+		TNULL->right = nullptr;
+		_root = TNULL;
+	}
+	// RedBlackTree() : _comp(comp), _alloc(allocator_type()), _size(0)
+	// {
+
+	// 	_end = TNULL;
+	// 	// _comp = key_compare();
+	// 	_alloc = allocator_type();
+
+	// 	TNULL = new Node;
+	// 	TNULL->color = 0;
+	// 	TNULL->left = nullptr;
+	// 	TNULL->right = nullptr;
+	// 	_root = TNULL;
+	// }
 
 	// =============================================================================
 	// DESTRUCTORS =================================================================
@@ -71,6 +96,13 @@ public:
 			node = node->left;
 		return (node);
 	}
+
+	// pointer minimum(pointer node) 
+	// {
+	// 	while (node->left != TNULL)
+	// 		node = node->left;
+	// 	return node;
+	// }
 
 	pointer
 	minimum(pointer node) const
@@ -109,7 +141,7 @@ public:
 	
 	
 	
-	void initializeNULLNode(NodePtr node, NodePtr parent) 
+	void initializeNULLNode(pointer node, pointer parent) 
 	{
 		node->data = 0;
 		node->parent = parent;
@@ -119,7 +151,7 @@ public:
 	}
 
 	// Preorder
-	void preOrderHelper(NodePtr node) 
+	void preOrderHelper(pointer node) 
 	{
 		if (node != TNULL) 
 		{
@@ -130,7 +162,7 @@ public:
 	}
 
 	// Inorder
-	void inOrderHelper(NodePtr node) 
+	void inOrderHelper(pointer node) 
 	{
 		if (node != TNULL) 
 		{
@@ -141,7 +173,7 @@ public:
 	}
 
 	// Post order
-	void postOrderHelper(NodePtr node) 
+	void postOrderHelper(pointer node) 
 	{
 		if (node != TNULL) 
 		{
@@ -151,7 +183,7 @@ public:
 		}
 	}
 
-	NodePtr searchTreeHelper(NodePtr node, int key) 
+	pointer searchTreeHelper(pointer node, int key) 
 	{
 		if (node == TNULL || key == node->data)
 			return node;
@@ -161,10 +193,10 @@ public:
 	}
 
 	// For balancing the tree after deletion
-	void deleteFix(NodePtr x) 
+	void deleteFix(pointer x) 
 	{
-		NodePtr s;
-		while (x != root && x->color == 0) 
+		pointer s;
+		while (x != _root && x->color == 0) 
 		{
 			if (x == x->parent->left) 
 			{
@@ -195,7 +227,7 @@ public:
 					x->parent->color = 0;
 					s->right->color = 0;
 					leftRotate(x->parent);
-					x = root;
+					x = _root;
 				}
 			} 
 			else 
@@ -228,17 +260,17 @@ public:
 					x->parent->color = 0;
 					s->left->color = 0;
 					rightRotate(x->parent);
-					x = root;
+					x = _root;
 				}
 			}
 		}
 		x->color = 0;
 	}
 
-	void rbTransplant(NodePtr u, NodePtr v) 
+	void rbTransplant(pointer u, pointer v) 
 	{
 		if (u->parent == nullptr)
-			root = v;
+			_root = v;
 		else if (u == u->parent->left)
 			u->parent->left = v;
 		else
@@ -246,10 +278,10 @@ public:
 		v->parent = u->parent;
 	}
 
-	void deleteNodeHelper(NodePtr node, int key) 
+	void deleteNodeHelper(pointer node, int key) 
 	{
-		NodePtr z = TNULL;
-		NodePtr x, y;
+		pointer z = TNULL;
+		pointer x, y;
 		while (node != TNULL)
 		{
 			if (node->data == key)
@@ -303,9 +335,9 @@ public:
 	}
 
 	// For balancing the tree after insertion
-	void insertFix(NodePtr k) 
+	void insertFix(pointer k) 
 	{
-		NodePtr u;
+		pointer u;
 		while (k->parent->color == 1) 
 		{
 			if (k->parent == k->parent->parent->right) 
@@ -353,13 +385,13 @@ public:
 					rightRotate(k->parent->parent);
 				}
 			}
-			if (k == root)
+			if (k == _root)
 				break;
 		}
-		root->color = 0;
+		_root->color = 0;
 	}
 
-	void printHelper(NodePtr root, string indent, bool last) 
+	void printHelper(pointer root, string indent, bool last) 
 	{
 		if (root != TNULL) 
 		{
@@ -383,55 +415,48 @@ public:
 	}
 
 public:
-	RedBlackTree() 
-	{
-		TNULL = new Node;
-		TNULL->color = 0;
-		TNULL->left = nullptr;
-		TNULL->right = nullptr;
-		root = TNULL;
-	}
+
 
 	void preorder() 
 	{
-		preOrderHelper(this->root);
+		preOrderHelper(this->_root);
 	}
 
 	void inorder() 
 	{
-		inOrderHelper(this->root);
+		inOrderHelper(this->_root);
 	}
 
 	void postorder() 
 	{
-		postOrderHelper(this->root);
+		postOrderHelper(this->_root);
 	}
 
-	NodePtr searchTree(int k) 
+	pointer searchTree(int k) 
 	{
-		return searchTreeHelper(this->root, k);
+		return searchTreeHelper(this->_root, k);
 	}
 
-	NodePtr minimum(NodePtr node) 
-	{
-		while (node->left != TNULL)
-			node = node->left;
-		return node;
-	}
+	// pointer minimum(pointer node) 
+	// {
+	// 	while (node->left != TNULL)
+	// 		node = node->left;
+	// 	return node;
+	// }
 
-	NodePtr maximum(NodePtr node) 
+	pointer maximum(pointer node) 
 	{
 		while (node->right != TNULL)
 		node = node->right;
 		return node;
 	}
 
-	NodePtr successor(NodePtr x) 
+	pointer successor(pointer x) 
 	{
 		if (x->right != TNULL) 
 		return minimum(x->right);
 
-		NodePtr y = x->parent;
+		pointer y = x->parent;
 		while (y != TNULL && x == y->right)
 		{
 		x = y;
@@ -440,12 +465,12 @@ public:
 		return y;
 	}
 
-	NodePtr predecessor(NodePtr x) 
+	pointer predecessor(pointer x) 
 	{
 		if (x->left != TNULL)
 			return maximum(x->left);
 
-		NodePtr y = x->parent;
+		pointer y = x->parent;
 		while (y != TNULL && x == y->left) 
 		{
 			x = y;
@@ -454,16 +479,16 @@ public:
 		return y;
 	}
 
-	void leftRotate(NodePtr x) 
+	void leftRotate(pointer x) 
 	{
-		NodePtr y = x->right;
+		pointer y = x->right;
 		x->right = y->left;
 		if (y->left != TNULL)
 			y->left->parent = x;
 		y->parent = x->parent;
 
 		if (x->parent == nullptr)
-			this->root = y;
+			this->_root = y;
 		else if (x == x->parent->left)
 			x->parent->left = y;
 		else
@@ -472,16 +497,16 @@ public:
 		x->parent = y;
 	}
 
-	void rightRotate(NodePtr x) 
+	void rightRotate(pointer x) 
 	{
-		NodePtr y = x->left;
+		pointer y = x->left;
 		x->left = y->right;
 		if (y->right != TNULL)
 			y->right->parent = x;
 		y->parent = x->parent;
 
 		if (x->parent == nullptr)
-			this->root = y;
+			this->_root = y;
 		else if (x == x->parent->right)
 			x->parent->right = y;
 		else
@@ -493,15 +518,15 @@ public:
 // Inserting a node
 	void insert(int key) 
 	{
-		NodePtr node = new Node;
+		pointer node = new Node;
 		node->parent = nullptr;
 		node->data = key;
 		node->left = TNULL;
 		node->right = TNULL;
 		node->color = 1;
 
-		NodePtr y = nullptr;
-		NodePtr x = this->root;
+		pointer y = nullptr;
+		pointer x = this->_root;
 
 		while (x != TNULL) 
 		{
@@ -514,7 +539,7 @@ public:
 
 		node->parent = y;
 		if (y == nullptr)
-			root = node;
+			_root = node;
 		else if (node->data < y->data)
 			y->left = node;
 		else
@@ -531,7 +556,7 @@ public:
 		insertFix(node);
 	}
 
-	NodePtr getRoot() 
+	pointer getRoot() 
 	{
 		return this->root;
 	}
@@ -543,7 +568,7 @@ public:
 
 	void printTree()
 	{
-		if (root)
+		if (_root)
 			printHelper(this->root, "", true);
 	}
 };

@@ -21,7 +21,7 @@ using namespace TESTED_NAMESPACE;
 
 int main()
 {
-	map<int, int>a;
+	ft::map<int, int>a;
 	// a[1] = 10;
 	
 	// RedBlackTree bst;
