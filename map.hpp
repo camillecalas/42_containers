@@ -89,9 +89,6 @@ protected:
 	// CONSTRUCTORS ================================================================
 	// Allocate return a pointer to the initial element in the block of storage
 public:
-	// map()
-	// {}
-
 	explicit 
 	map(const key_compare &comp = key_compare(), const Allocator &alloc = allocator_type())
 		: _alloc(alloc), _comp(value_compare(comp)), _rbt(_comp)
@@ -106,6 +103,35 @@ public:
 		insert(first, last);
 	}
 
+	map(const map & copy)
+	{
+		*this = copy
+	}
+
+	// =============================================================================
+	// DESTRUCTORS =================================================================
+	~map()
+	{}
+
+	// =============================================================================
+	// OVERLOADS ===================================================================
+public:
+	map&
+	operator=(const map& x)
+	{
+		if (this == &x)
+			return (*this);
+		//TODO todo
+		return (*this);
+	}
+
+	// =============================================================================
+	// MODIFIERS ===================================================================
+	// ft::pair<iterator, bool>
+	// insert(const value_type &data)
+	// {
+	// 	if (_rbt.insert(data) == ft::nullptr)
+	// }
 
 	// =============================================================================
 	// GETTERS =====================================================================
