@@ -22,6 +22,7 @@ using namespace TESTED_NAMESPACE;
 int main()
 {
 	ft::map<int, int>a;
+	a.insert(ft::pair<int, int>(1, 100));
 	// a[1] = 10;
 	
 	// RedBlackTree bst;

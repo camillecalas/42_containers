@@ -36,47 +36,35 @@ public:
 	// ATTRIBUTS ===================================================================
 private:
 	pointer			_root;
-	pointer			_end;
 	value_compare	_comp;
 	allocator_type	_alloc;
-	size_type		_size;
-	// pointer root;
-	pointer TNULL;
+	// pointer			_end;
+	// size_type		_size;
 
+public:
+	pointer 		TNULL;
+	pointer			root;
 
 	// =============================================================================
 	// CONSTRUCTORS ================================================================
 public:
 	RedBlackTree(const value_compare &comp = value_compare()) 
-		: _comp(comp), _alloc(allocator_type()), _size(0)
+		: _comp(comp), _alloc(allocator_type())
 	{
+		// _end = _alloc.allocate(1);
+		// _alloc.construct(_end, Node(value_type(), RED));
+		// _root = _end;
 
-			// _end = _alloc.allocate(1);
-			// _alloc.construct(_end, Node(value_type(), RED));
-			// _root = _end;
-		_end = TNULL;
-		// _comp = key_compare();
-		_alloc = allocator_type();
+		TNULL = _alloc.allocate(1);
+		_alloc.construct(TNULL, Node(value_type()));
 
-		TNULL = new Node;
-		TNULL->color = 0;
-		TNULL->left = nullptr;
-		TNULL->right = nullptr;
-		_root = TNULL;
+		TNULL->parent = ft::nullptr;
+		TNULL->left = ft::nullptr;
+		TNULL->right = ft::nullptr;
+		TNULL->color = BLACK;
+		root = TNULL;
 	}
-	// RedBlackTree() : _comp(comp), _alloc(allocator_type()), _size(0)
-	// {
-
-	// 	_end = TNULL;
-	// 	// _comp = key_compare();
-	// 	_alloc = allocator_type();
-
-	// 	TNULL = new Node;
-	// 	TNULL->color = 0;
-	// 	TNULL->left = nullptr;
-	// 	TNULL->right = nullptr;
-	// 	_root = TNULL;
-	// }
+	
 
 	// =============================================================================
 	// DESTRUCTORS =================================================================
@@ -87,57 +75,93 @@ public:
 
 	// =============================================================================
 	// ADDED FUNCTIONS =============================================================
-	pointer
-	minimum(pointer node)
+	pointer 
+	minimum(pointer node) const
 	{
-		if (!node || node == _end)
-			return (node);
-		while (node->left != _end)
+		while (node->left != TNULL)
 			node = node->left;
+		return node;
+	}
+
+	pointer
+	maximun(pointer node) const
+	{
+		while (node->right != TNULL)
+			node = node->right;
 		return (node);
 	}
 
-	// pointer minimum(pointer node) 
+
+	// pointer
+	// find_intern(pointer node, const value_type & value) const
 	// {
-	// 	while (node->left != TNULL)
-	// 		node = node->left;
-	// 	return node;
+	// 	if (value == node->data.first)
+	// 		return (node);
+	// 	else if (node == TNULL)
+	// 		return (TNULL);
+	// 	else if (_comp(value, node->data.first))
+	// 		return (find_intern(node->left, value));
+	// 	else
+	// 		return (find_intern(node->right, value));
+	// }
+
+	// pointer
+	// find(const value_type &value) const
+	// {
+	// 	return (find_intern(root, value));
 	// }
 
 	pointer
-	minimum(pointer node) const
+	_find_intern(const value_type & value, const pointer node) const
 	{
-		if (!node || node == _end)
+		if (value == node->data)
 			return (node);
-		while (node->left != _end)
-			node = node->left;
-		return (node);
+		else if (node == TNULL)
+			return (TNULL);
+		else if (_comp(value, node->data))
+			return (_find_intern(value, node->left));
+		else
+			return (_find_intern(value, node->right));
 	}
-	
+
+	pointer
+	find(const value_type &value) const
+	{
+		return (_find_intern(value, root));
+	}
+
+
+	// =============================================================================
+	// GETTERS =====================================================================
+	//TODO not sure 
+	pointer
+	get_tnull() const
+	{
+		return (TNULL);
+	}
+
+	pointer
+	get_root() const
+	{
+		return (root);
+	}
 
 
 	// =============================================================================
 	// ITERATORS ===================================================================
 	pointer
-	begin()
+	begin() const
 	{
-		return (minimum(_root));
+		return (minimum(root));
 	}
 
 	pointer
-	const_begin() const
+	end() const
 	{
-		return (minimum(_root));
+		return (maximum(root));
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	
@@ -338,7 +362,7 @@ public:
 	void insertFix(pointer k) 
 	{
 		pointer u;
-		while (k->parent->color == 1) 
+		while (k->parent->color == RED) 
 		{
 			if (k->parent == k->parent->parent->right) 
 			{
@@ -516,44 +540,56 @@ public:
 	}
 
 // Inserting a node
-	void insert(int key) 
+	pointer
+	insert(value_type key) 
 	{
-		pointer node = new Node;
-		node->parent = nullptr;
-		node->data = key;
-		node->left = TNULL;
-		node->right = TNULL;
-		node->color = 1;
+		pointer node = _alloc.allocate(1);
+		_alloc.construct(node, Node(key, TNULL, TNULL));
 
-		pointer y = nullptr;
-		pointer x = this->_root;
+
+		// _alloc.construct(TNULL, Node(value_type()));
+		// node->parent = nullptr;
+		// node->data = key;
+		// node->left = TNULL;
+		// node->right = TNULL;
+		// node->color = 1;
+
+		pointer y = ft::nullptr;
+		pointer x = this->root;
 
 		while (x != TNULL) 
 		{
 			y = x;
-			if (node->data < x->data)
+			if (_comp(node->data, x->data))
 				x = x->left;
-			else
+			else if (_comp(x->data, node->data))
 				x = x->right;
+			else
+			{
+				_alloc.destroy(node);
+				_alloc.deallocate(node, 1);
+				return (ft::nullptr);
+			}
 		}
 
 		node->parent = y;
 		if (y == nullptr)
-			_root = node;
-		else if (node->data < y->data)
+			root = node;
+		else if (_comp(node->data, y->data))
 			y->left = node;
 		else
 			y->right = node;
 
-		if (node->parent == nullptr)
+		if (node->parent == ft::nullptr)
 		{
-			node->color = 0;
-			return;
+			node->color = BLACK;
+			return (node);
 		}
 
 		if (node->parent->parent == nullptr)
-			return;
+			return (node);
 		insertFix(node);
+		return (node);
 	}
 
 	pointer getRoot() 

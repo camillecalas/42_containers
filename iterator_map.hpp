@@ -37,9 +37,9 @@ public:
 
 	iterator_map(const iterator_map & copy)
 	{
-		_current(copy._current);
-		_root(copy._root);
-		_end(copy._end);
+		_current = copy._current;
+		_root = copy._root;
+		_end = copy._end;
 	}
 		
 	// =============================================================================
@@ -119,7 +119,6 @@ public:
 		_decrement();
 		return (tmp);
 	}
-
 
 
 private:
