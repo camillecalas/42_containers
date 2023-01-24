@@ -62,6 +62,12 @@ public:
 };
 //! ================================================================================
 
+	//TODO to erase later
+	void
+	print_tree()
+	{
+		_rbt.printTree();
+	}
 
 	// =============================================================================
 	// TYPEDEF =====================================================================
@@ -113,7 +119,11 @@ public:
 	// =============================================================================
 	// DESTRUCTORS =================================================================
 	~map()
-	{}
+	{
+		if (_size != 0)
+			_rbt.delete_tree();
+		_rbt.destroy_tnull();
+	}
 
 	// =============================================================================
 	// OVERLOADS ===================================================================
@@ -206,6 +216,14 @@ public:
 			return(ft::make_pair(iterator(_rbt.find(data),  _rbt.get_root(), _rbt.get_tnull()), false));
 		_size++;
 		return (ft::make_pair(iterator(_rbt.find(data), _rbt.get_root(), _rbt.get_tnull()), true));
+	}
+
+	iterator
+	insert (iterator position, const value_type& val)
+	{
+		(void)position;
+		_rbt.insert(val);
+		return (iterator(_rbt.find(val), _rbt.get_root(), _rbt.get_tnull));
 	}
 
 	// =============================================================================

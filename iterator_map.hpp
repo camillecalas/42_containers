@@ -67,13 +67,13 @@ public:
 	}
 
 	bool
-	operator==(const iterator_map & x)
+	operator==(const iterator_map & x) const
 	{
 		return (_current = x._current);
 	}
 
 	bool 
-	operator!=(const iterator_map & x)
+	operator!=(const iterator_map & x) const
 	{
 		return (_current != x._current);
 	}

@@ -15,7 +15,7 @@ template <typename T>
 struct Node
 {
 	// typedef T 				value_type;
-	typedef std::size_t		size_t;
+	// typedef std::size_t		size_t;
 
 	// =============================================================================
 	// ATTRIBUTS ===================================================================

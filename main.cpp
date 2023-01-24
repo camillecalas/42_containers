@@ -23,6 +23,11 @@ int main()
 {
 	ft::map<int, int>a;
 	a.insert(ft::pair<int, int>(1, 100));
+	a.insert(ft::pair<int, int>(2, 200));
+	a.insert(ft::pair<int, int>(3, 300));
+	a.print_tree();
+	ft::map<int,int>::iterator it = a.begin();
+	// std::cout << it->first << std::endl;
 	// a[1] = 10;
 	
 	// RedBlackTree bst;

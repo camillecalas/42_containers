@@ -12,6 +12,71 @@
 //TODO erase later
 using namespace std;
 
+//Regular bold text
+# define BBLK "\e[1;30m"
+# define BRED "\e[1;31m"
+# define BGRN "\e[1;32m"
+# define BYEL "\e[1;33m"
+# define BBLU "\e[1;34m"
+# define BMAG "\e[1;35m"
+# define BCYN "\e[1;36m"
+# define BWHT "\e[1;37m"
+
+//Regular underline text
+# define UBLK "\e[4;30m"
+# define URED "\e[4;31m"
+# define UGRN "\e[4;32m"
+# define UYEL "\e[4;33m"
+# define UBLU "\e[4;34m"
+# define UMAG "\e[4;35m"
+# define UCYN "\e[4;36m"
+# define UWHT "\e[4;37m"
+
+//Regular background
+# define BLKB "\e[40m"
+# define REDB "\e[41m"
+# define GRNB "\e[42m"
+# define YELB "\e[43m"
+# define BLUB "\e[44m"
+# define MAGB "\e[45m"
+# define CYNB "\e[46m"
+# define WHTB "\e[47m"
+
+//High intensty background 
+# define BLKHB "\e[0;100m"
+# define REDHB "\e[0;101m"
+# define GRNHB "\e[0;102m"
+# define YELHB "\e[0;103m"
+# define BLUHB "\e[0;104m"
+# define MAGHB "\e[0;105m"
+# define CYNHB "\e[0;106m"
+# define WHTHB "\e[0;107m"
+
+//High intensty text
+# define HBLK "\e[0;90m"
+# define HRED "\e[0;91m"
+# define HGRN "\e[0;92m"
+# define HYEL "\e[0;93m"
+# define HBLU "\e[0;94m"
+# define HMAG "\e[0;95m"
+# define HCYN "\e[0;96m"
+# define HWHT "\e[0;97m"
+
+//Bold high intensity text
+# define BHBLK "\e[1;90m"
+# define BHRED "\e[1;91m"
+# define BHGRN "\e[1;92m"
+# define BHYEL "\e[1;93m"
+# define BHBLU "\e[1;94m"
+# define BHMAG "\e[1;95m"
+# define BHCYN "\e[1;96m"
+# define BHWHT "\e[1;97m"
+
+//Reset
+// # define reset "\e[0m"
+# define CRESET "\e[0m"
+# define COLOR_RESET "\e[0m"
+
 
 NAME_SPACE_START
 
@@ -35,7 +100,6 @@ public:
 	// =============================================================================
 	// ATTRIBUTS ===================================================================
 private:
-	pointer			_root;
 	value_compare	_comp;
 	allocator_type	_alloc;
 	// pointer			_end;
@@ -69,9 +133,7 @@ public:
 	// =============================================================================
 	// DESTRUCTORS =================================================================
 	~RedBlackTree()
-	{
-		//delete like in vector 
-	}
+	{}
 
 	// =============================================================================
 	// ADDED FUNCTIONS =============================================================
@@ -92,24 +154,18 @@ public:
 	}
 
 
-	// pointer
-	// find_intern(pointer node, const value_type & value) const
-	// {
-	// 	if (value == node->data.first)
-	// 		return (node);
-	// 	else if (node == TNULL)
-	// 		return (TNULL);
-	// 	else if (_comp(value, node->data.first))
-	// 		return (find_intern(node->left, value));
-	// 	else
-	// 		return (find_intern(node->right, value));
-	// }
+private:
+	void
+	_delete_intern(pointer node)
+	{
+		if (node == TNULL)
+			return ;
+		_delete_intern(node->left);
+		_delete_intern(node->right);
 
-	// pointer
-	// find(const value_type &value) const
-	// {
-	// 	return (find_intern(root, value));
-	// }
+		_alloc.destroy(node);
+		_alloc.deallocate(node, 1);
+	}
 
 	pointer
 	_find_intern(const value_type & value, const pointer node) const
@@ -122,6 +178,21 @@ public:
 			return (_find_intern(value, node->left));
 		else
 			return (_find_intern(value, node->right));
+	}
+
+public:
+	void
+	delete_tree()
+	{
+		_delete_intern(root);
+		root = TNULL;
+	}
+
+	void
+	destroy_tnull()
+	{
+		_alloc.destroy(TNULL);
+		_alloc.deallocate(TNULL, 1);
 	}
 
 	pointer
@@ -220,7 +291,7 @@ public:
 	void deleteFix(pointer x) 
 	{
 		pointer s;
-		while (x != _root && x->color == 0) 
+		while (x != root && x->color == 0) 
 		{
 			if (x == x->parent->left) 
 			{
@@ -251,7 +322,7 @@ public:
 					x->parent->color = 0;
 					s->right->color = 0;
 					leftRotate(x->parent);
-					x = _root;
+					x = root;
 				}
 			} 
 			else 
@@ -284,7 +355,7 @@ public:
 					x->parent->color = 0;
 					s->left->color = 0;
 					rightRotate(x->parent);
-					x = _root;
+					x = root;
 				}
 			}
 		}
@@ -294,7 +365,7 @@ public:
 	void rbTransplant(pointer u, pointer v) 
 	{
 		if (u->parent == nullptr)
-			_root = v;
+			root = v;
 		else if (u == u->parent->left)
 			u->parent->left = v;
 		else
@@ -409,10 +480,10 @@ public:
 					rightRotate(k->parent->parent);
 				}
 			}
-			if (k == _root)
+			if (k == root)
 				break;
 		}
-		_root->color = 0;
+		root->color = 0;
 	}
 
 	void printHelper(pointer root, string indent, bool last) 
@@ -443,22 +514,22 @@ public:
 
 	void preorder() 
 	{
-		preOrderHelper(this->_root);
+		preOrderHelper(this->root);
 	}
 
 	void inorder() 
 	{
-		inOrderHelper(this->_root);
+		inOrderHelper(this->root);
 	}
 
 	void postorder() 
 	{
-		postOrderHelper(this->_root);
+		postOrderHelper(this->root);
 	}
 
 	pointer searchTree(int k) 
 	{
-		return searchTreeHelper(this->_root, k);
+		return searchTreeHelper(this->root, k);
 	}
 
 	// pointer minimum(pointer node) 
@@ -512,7 +583,7 @@ public:
 		y->parent = x->parent;
 
 		if (x->parent == nullptr)
-			this->_root = y;
+			this->root = y;
 		else if (x == x->parent->left)
 			x->parent->left = y;
 		else
@@ -530,7 +601,7 @@ public:
 		y->parent = x->parent;
 
 		if (x->parent == nullptr)
-			this->_root = y;
+			this->root = y;
 		else if (x == x->parent->right)
 			x->parent->right = y;
 		else
@@ -545,14 +616,6 @@ public:
 	{
 		pointer node = _alloc.allocate(1);
 		_alloc.construct(node, Node(key, TNULL, TNULL));
-
-
-		// _alloc.construct(TNULL, Node(value_type()));
-		// node->parent = nullptr;
-		// node->data = key;
-		// node->left = TNULL;
-		// node->right = TNULL;
-		// node->color = 1;
 
 		pointer y = ft::nullptr;
 		pointer x = this->root;
@@ -604,8 +667,42 @@ public:
 
 	void printTree()
 	{
-		if (_root)
-			printHelper(this->root, "", true);
+		if (root)
+			print_tree(this->root, "", true);
+	}
+
+
+
+
+	void print_tree(pointer root, std::string indent, bool last)
+	{
+	// if (root == ft::_nullptr)
+	// 	return ;
+	if (root != TNULL)
+	{
+		std::cout << indent;
+		if (last)
+		{
+			std::cout << "R----";
+			indent += "   ";
+		}
+		else
+		{
+			std::cout << "L----";
+			indent += "|  ";
+		}
+
+		if (root->color == RED)
+		{
+			std::cout << BRED << root->data.first << "(" << "RED" << ")" << "--->" << root->data.second << CRESET<< std::endl;
+		}
+		else
+		{
+			std::cout << BBLU << root->data.first << "(" << "BLACK" << ")" << "--->" << root->data.second << CRESET << std::endl;
+		}
+		print_tree(root->left, indent, false);
+		print_tree(root->right, indent, true);
+	}
 	}
 };
 
