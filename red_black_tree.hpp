@@ -102,8 +102,6 @@ public:
 private:
 	value_compare	_comp;
 	allocator_type	_alloc;
-	// pointer			_end;
-	// size_type		_size;
 
 public:
 	pointer 		TNULL;
@@ -111,7 +109,6 @@ public:
 
 	// =============================================================================
 	// CONSTRUCTORS ================================================================
-public:
 	RedBlackTree(const value_compare &comp = value_compare()) 
 		: _comp(comp), _alloc(allocator_type())
 	{
@@ -156,35 +153,35 @@ public:
 
 private:
 	void
-	_delete_intern(pointer node)
+	_delete_tree(pointer node)
 	{
 		if (node == TNULL)
 			return ;
-		_delete_intern(node->left);
-		_delete_intern(node->right);
+		_delete_tree(node->left);
+		_delete_tree(node->right);
 
 		_alloc.destroy(node);
 		_alloc.deallocate(node, 1);
 	}
 
 	pointer
-	_find_intern(const value_type & value, const pointer node) const
+	_find(const value_type & key, const pointer node) const
 	{
-		if (value == node->data)
+		if (key == node->data)
 			return (node);
 		else if (node == TNULL)
 			return (TNULL);
-		else if (_comp(value, node->data))
-			return (_find_intern(value, node->left));
+		else if (_comp(key, node->data))
+			return (_find(key, node->left));
 		else
-			return (_find_intern(value, node->right));
+			return (_find(key, node->right));
 	}
 
 public:
 	void
 	delete_tree()
 	{
-		_delete_intern(root);
+		_delete_tree(root);
 		root = TNULL;
 	}
 
@@ -196,10 +193,35 @@ public:
 	}
 
 	pointer
-	find(const value_type &value) const
+	find(const value_type &key) const
 	{
-		return (_find_intern(value, root));
+		return (_find(key, root));
 	}
+
+
+
+	////////////////////////////////////////////////////////////
+	// pointer
+	// _find(pointer node, value_type value) const
+	// {
+	// 	if (!node)
+	// 		return (NULL);
+	// 	else if (this->_comp(value, node->data) && !this->_comp(node->data, value))
+	// 		return (this->_find(node->left, value));
+	// 	else if (!this->_comp(value, node->data) && this->_comp(node->data, value))
+	// 		return (this->_find(node->right, value));
+	// 	return (node);
+	// }
+
+	// pointer
+	// find(value_type value) const
+	// {
+	// 	pointer node = _find(root, value);
+	// 	if (!node)
+	// 		return (TNULL);
+	// 	return (node);
+	// }
+	////////////////////////////////////////////////////////////
 
 
 	// =============================================================================
@@ -233,9 +255,6 @@ public:
 	}
 
 
-	
-	
-	
 	void initializeNULLNode(pointer node, pointer parent) 
 	{
 		node->data = 0;
@@ -373,7 +392,8 @@ public:
 		v->parent = u->parent;
 	}
 
-	void deleteNodeHelper(pointer node, int key) 
+	bool
+	deleteNode2(pointer node, value_type key) 
 	{
 		pointer z = TNULL;
 		pointer x, y;
@@ -388,10 +408,7 @@ public:
 		}
 
 		if (z == TNULL) 
-		{
-			cout << "Key not found in the tree" << endl;
-			return;
-		}
+			return false;
 
 		y = z;
 		int y_original_color = y->color;
@@ -425,8 +442,9 @@ public:
 			y->color = z->color;
 		}
 		delete z;
-		if (y_original_color == 0)
+		if (y_original_color == BLACK)
 			deleteFix(x);
+		return (true);
 	}
 
 	// For balancing the tree after insertion
@@ -438,11 +456,11 @@ public:
 			if (k->parent == k->parent->parent->right) 
 			{
 				u = k->parent->parent->left;
-				if (u->color == 1)
+				if (u->color == RED)
 				{
-					u->color = 0;
-					k->parent->color = 0;
-					k->parent->parent->color = 1;
+					u->color = BLACK;
+					k->parent->color = BLACK;
+					k->parent->parent->color = RED;
 					k = k->parent->parent;
 				} 
 				else 
@@ -452,8 +470,8 @@ public:
 						k = k->parent;
 						rightRotate(k);
 					}
-					k->parent->color = 0;
-					k->parent->parent->color = 1;
+					k->parent->color = BLACK;
+					k->parent->parent->color = RED;
 					leftRotate(k->parent->parent);
 				}
 			} 
@@ -463,9 +481,9 @@ public:
 
 				if (u->color == 1) 
 				{
-					u->color = 0;
-					k->parent->color = 0;
-					k->parent->parent->color = 1;
+					u->color = BLACK;
+					k->parent->color = BLACK;
+					k->parent->parent->color = RED;
 					k = k->parent->parent;
 				} 
 				else 
@@ -475,15 +493,15 @@ public:
 						k = k->parent;
 						leftRotate(k);
 					}
-					k->parent->color = 0;
-					k->parent->parent->color = 1;
+					k->parent->color = BLACK;
+					k->parent->parent->color = RED;
 					rightRotate(k->parent->parent);
 				}
 			}
 			if (k == root)
 				break;
 		}
-		root->color = 0;
+		root->color = BLACK;
 	}
 
 	void printHelper(pointer root, string indent, bool last) 
@@ -618,7 +636,7 @@ public:
 		_alloc.construct(node, Node(key, TNULL, TNULL));
 
 		pointer y = ft::nullptr;
-		pointer x = this->root;
+		pointer x = root;
 
 		while (x != TNULL) 
 		{
@@ -649,7 +667,7 @@ public:
 			return (node);
 		}
 
-		if (node->parent->parent == nullptr)
+		if (node->parent->parent == ft::nullptr)
 			return (node);
 		insertFix(node);
 		return (node);
@@ -660,9 +678,10 @@ public:
 		return this->root;
 	}
 
-	void deleteNode(int data) 
+	bool
+	deleteNode(value_type data) 
 	{
-		deleteNodeHelper(this->root, data);
+		return (deleteNode2(root, data));
 	}
 
 	void printTree()

@@ -168,40 +168,52 @@ public:
 
 	// =============================================================================
 	// ELEMENTS ACCESS =============================================================
-	// iterator
-	// find(const key_type & k)
-	// {
-	// 	if (_size == 0)
-	// 		return (end());
-	// 	Node<value_type> *node = _rbt.find(k);
-	// 	if (node == _rbt.get_tnull())
-	// 		return (end());
-	// 	return(iterator(node, _rbt.get_tnull(), _rbt.get_root()));
-	// }
-
-	// const_iterator
-	// find(const key_type & k) const
-	// {
-	// 	if (_size == 0)
-	// 		return (end());
-	// 	Node<value_type> *node = _rbt.find(k);
-	// 	if (node == _rbt.get_tnull())
-	// 		return (end());
-	// 	return(const_iterator(node, _rbt.get_tnull(), _rbt.get_root()));
-	// }
-
+	mapped_type &
+	operator[](const key_type & k)
+	{
+		iterator it = iterator(_rbt.find(value_type(k.mapped_type(k))), _rbt.get_root(), _rbt.get_tnull());
+		if (it == end())
+		{
+			iterator it2 = iterator(_rbt.insert(value_type(k.mapped_type(k)), _rbt.get_root(), _rbt.get_tnull()));
+			retrurn (it2->second);
+		}
+		return (it->second);
+	}
 
 	iterator
 	find(const key_type & k)
 	{
-		return(iterator(_rbt.find(value_type(k, mapped_type()), _rbt.get_root(), _rbt.get_tnull())));
+		if (_size == 0)
+			return (end());
+		Node<value_type> *node = _rbt.find(k);
+		if (node == _rbt.get_tnull())
+			return (end());
+		return(iterator(node, _rbt.get_tnull(), _rbt.get_root()));
 	}
 
 	const_iterator
 	find(const key_type & k) const
 	{
-		return(const_iterator(_rbt.find(value_type(k, mapped_type()), _rbt.get_root(), _rbt.get_tnull())));
+		if (_size == 0)
+			return (end());
+		Node<value_type> *node = _rbt.find(k);
+		if (node == _rbt.get_tnull())
+			return (end());
+		return(const_iterator(node, _rbt.get_tnull(), _rbt.get_root()));
 	}
+
+
+	// iterator
+	// find(const key_type & k)
+	// {
+	// 	return(iterator(_rbt.find(value_type(k, mapped_type())), _rbt.get_root(), _rbt.get_tnull()));
+	// }
+
+	// const_iterator
+	// find(const key_type & k) const
+	// {
+	// 	return(const_iterator(_rbt.find(value_type(k, mapped_type()), _rbt.get_root(), _rbt.get_tnull())));
+	// }
 
 
 
@@ -209,6 +221,7 @@ public:
 
 	// =============================================================================
 	// MODIFIERS ===================================================================
+	// The single element versions (1) return a pair, with its member pair::first set to an iterator pointing to either the newly inserted element or to the element with an equivalent key in the map. The pair::second element in the pair is set to true if a new element was inserted or false if an equivalent key already existed.
 	ft::pair<iterator, bool>
 	insert(const value_type &data)
 	{
@@ -218,12 +231,30 @@ public:
 		return (ft::make_pair(iterator(_rbt.find(data), _rbt.get_root(), _rbt.get_tnull()), true));
 	}
 
+	// The versions with a hint (2) return an iterator pointing to either the newly inserted element or to the element that already had an equivalent key in the map.
 	iterator
 	insert (iterator position, const value_type& val)
 	{
 		(void)position;
 		_rbt.insert(val);
-		return (iterator(_rbt.find(val), _rbt.get_root(), _rbt.get_tnull));
+		return (iterator(_rbt.find(val), _rbt.get_root(), _rbt.get_tnull()));
+	}
+
+	template <class InputIterator>  
+	void 
+	insert (InputIterator first, InputIterator last)
+	{
+		for (; first != last; first++)
+			_rbt.insert(*first);	
+	}
+
+	void
+	erase (iterator position)
+	{
+		if (_size == 0)
+			return ;
+		if (_rbt.deleteNode(*position))
+			_size--;
 	}
 
 	// =============================================================================
@@ -233,16 +264,6 @@ public:
 	{
 		return (_comp);
 	}
-
-
-
-
-
-	// iterator
-	// find(const key_type & k)
-	// {
-
-	// }
 
 
 

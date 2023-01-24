@@ -21,27 +21,49 @@ using namespace TESTED_NAMESPACE;
 
 int main()
 {
+
+	std::cout << "*******STD******\n";
+	std::map<int, int>c;
+	c.insert(std::pair<int, int>(1, 100));
+	c.insert(std::pair<int, int>(2, 200));
+	c.insert(std::pair<int, int>(3, 300));
+	c.insert(std::pair<int, int>(45, 4500));
+	c.insert(std::pair<int, int>(24, 2400));
+	std::map<int,int>::iterator it2 = c.find(45);
+	std::cout << it2->first << std::endl;
+	// c.insert (it2, std::pair<int,int>(77,7700));  
+	// // c.print_tree();
+	// std::cout << "\n" << "******************\n";
+	// std::map<int,int> d;
+	// d.insert(c.begin(),c.find(45));
+	// // d.print_tree();
+
+	std::cout << "\n*******FT******\n";
+
 	ft::map<int, int>a;
 	a.insert(ft::pair<int, int>(1, 100));
 	a.insert(ft::pair<int, int>(2, 200));
 	a.insert(ft::pair<int, int>(3, 300));
+	a.insert(ft::pair<int, int>(45, 4500));
+	a.insert(ft::pair<int, int>(24, 2400));
+	// ft::map<int,int>::iterator it = a.begin();
+	// a.insert (it, ft::pair<int,int>(77,7700));  
 	a.print_tree();
-	ft::map<int,int>::iterator it = a.begin();
-	// std::cout << it->first << std::endl;
-	// a[1] = 10;
-	
-	// RedBlackTree bst;
-	// bst.insert(55);
-	// bst.insert(40);
-	// bst.insert(65);
-	// bst.insert(60);
-	// bst.insert(75);
-	// bst.insert(57);
+	std::cout << "\n" << "******************\n";
+	ft::map<int,int>::iterator it = a.find(300);
+	std::cout << it->first << std::endl;
+	a.erase(it);
+	// if (it != a.end())
+	// a.insert (it, ft::pair<int,int>(77,7700)); 
+	a.print_tree();
 
-	// bst.printTree();
-	// std::cout << std::endl << "After deleting" << std::endl;
-	// bst.deleteNode(40);
-	// bst.printTree();
+
+
+	// std::cout << "\n" << "******************\n";
+	// ft::map<int,int> b;
+	// b.insert(a.begin(), a.find(1));
+	// b.print_tree();
+
 
 	return (0);
 }
