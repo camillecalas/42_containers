@@ -1,0 +1,6 @@
+TEST: SIZE
+mymap.size() is 3
+a => 10
+b => 20
+c => 30
+The map contains 1000 elements.

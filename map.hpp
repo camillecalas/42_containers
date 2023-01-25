@@ -138,7 +138,6 @@ public:
 	}
 
 
-
 	// =============================================================================
 	// ITERATORS ===================================================================
 	iterator
@@ -165,6 +164,52 @@ public:
 		return (const_iterator(_rbt.get_tnull(), _rbt.get_root(), _rbt.get_tnull()));
 	}
 
+	reverse_iterator
+	rbegin()
+	{
+		return (reverse_iterator(end()));
+	}
+
+	const_reverse_iterator 
+	rbegin() const
+	{
+		return (const_reverse_iterator(end()));
+	}
+	
+	reverse_iterator
+	rend()
+	{
+		return (reverse_iterator(begin()));
+	}
+	
+	const_reverse_iterator
+	rend() const
+	{
+		return (const_reverse_iterator(begin()));
+	}
+
+
+	// =============================================================================
+	// CAPACITY ====================================================================
+	size_type
+	size() const
+	{
+		return (_size);
+	}
+
+	bool
+	empty() const
+	{
+		if (_size == 0)
+			return (1);
+		return (0);
+	}
+
+	size_type
+	max_size() const
+	{
+		return (_alloc.max_size());
+	}
 
 	// =============================================================================
 	// ELEMENTS ACCESS =============================================================
@@ -180,6 +225,27 @@ public:
 		return (it->second);
 	}
 
+	mapped_type&
+	at (const key_type& k)
+	{
+		iterator it = find(k);
+		if (it == end())
+			throw std::out_of_range("map::at\n");
+		return (it->second);
+	}
+	
+	const mapped_type& 
+	at (const key_type& k) const
+	{
+		const_iterator it = find(k);
+		if (it == end())
+			throw std::out_of_range("map::at\n");
+		return (it->second);
+	}
+
+
+	// =============================================================================
+	// OPERATIONS ==================================================================
 	iterator
 	find(const key_type & k)
 	{
@@ -189,12 +255,17 @@ public:
 	const_iterator
 	find(const key_type & k) const
 	{
-		return(const_iterator(_rbt.find(value_type(k, mapped_type()), _rbt.get_root(), _rbt.get_tnull())));
+		return(const_iterator(_rbt.find(value_type(k, mapped_type())), _rbt.get_root(), _rbt.get_tnull()));
 	}
 
-
-
-
+	size_type 
+	count(const key_type& k) const
+	{
+		const_iterator it = find(k);
+		if (it == end())
+			return (0);
+		return (1);
+	}
 
 
 	// =============================================================================
@@ -235,7 +306,6 @@ public:
 			_size--;
 	}
 	
-	//value_type data
 	size_type
 	erase (const key_type& k)
 	{
@@ -246,6 +316,13 @@ public:
 			return (0);
 		erase(it);
 		return (1);
+	}
+
+	void
+	erase (iterator first, iterator last)
+	{
+		for (; first != last; _size--)
+			_rbt.deleteNode(*(first++));
 	}
 
 	// =============================================================================

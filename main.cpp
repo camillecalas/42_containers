@@ -38,8 +38,8 @@ int main()
 
   mymap.erase ('c');                  // erasing by key
 
-//   it=mymap.find ('e');
-//   mymap.erase ( it, mymap.end() );    // erasing by range
+  it=mymap.find ('e');
+  mymap.erase ( it, mymap.end() );    // erasing by range
 
   // show content:
   for (it=mymap.begin(); it!=mymap.end(); ++it)
@@ -97,20 +97,13 @@ int main()
   mymap2['e']=50;
   mymap2['f']=60;
 
-  	// mymap2.insert(ft::pair<char, int>('a', 10));
-	// mymap2.insert(ft::pair<char, int>('b', 20));
-	// mymap2.insert(ft::pair<char, int>('c', 30));
-	// mymap2.insert(ft::pair<char, int>('d', 40));
-	// mymap2.insert(ft::pair<char, int>('e', 50));
-	// mymap2.insert(ft::pair<char, int>('f', 60));
-
   it2=mymap2.find('b');
   mymap2.erase (it2);                   // erasing by iterator
 
   mymap2.erase ('c');                  // erasing by key
 
-//   it2=mymap2.find ('e');
-//   mymap2.erase ( it2, mymap2.end() );    // erasing by range
+  it2=mymap2.find ('e');
+  mymap2.erase ( it2, mymap2.end() );    // erasing by range
 
 //   show content:
   for (it2=mymap2.begin(); it2!=mymap2.end(); ++it2)
