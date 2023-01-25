@@ -46,16 +46,16 @@ int main()
 	a.insert(ft::pair<int, int>(3, 300));
 	a.insert(ft::pair<int, int>(45, 4500));
 	a.insert(ft::pair<int, int>(24, 2400));
-	// ft::map<int,int>::iterator it = a.begin();
-	// a.insert (it, ft::pair<int,int>(77,7700));  
+	ft::map<int,int>::iterator it = a.begin();
+	a.insert (it, ft::pair<int,int>(77,7700));  
 	a.print_tree();
-	std::cout << "\n" << "******************\n";
-	ft::map<int,int>::iterator it = a.find(300);
-	std::cout << it->first << std::endl;
-	a.erase(it);
+	// std::cout << "\n" << "******************\n";
+	// ft::map<int,int>::iterator it = a.find(45);
+	// std::cout << it->first << std::endl;
+	// a.erase(it);
 	// if (it != a.end())
 	// a.insert (it, ft::pair<int,int>(77,7700)); 
-	a.print_tree();
+	// a.print_tree();
 
 
 

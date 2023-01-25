@@ -180,27 +180,27 @@ public:
 		return (it->second);
 	}
 
-	iterator
-	find(const key_type & k)
-	{
-		if (_size == 0)
-			return (end());
-		Node<value_type> *node = _rbt.find(k);
-		if (node == _rbt.get_tnull())
-			return (end());
-		return(iterator(node, _rbt.get_tnull(), _rbt.get_root()));
-	}
+	// iterator
+	// find(const key_type & k)
+	// {
+	// 	if (_size == 0)
+	// 		return (end());
+	// 	Node<value_type> *node = _rbt.find(value_type(k, mapped_type()));
+	// 	if (node == _rbt.get_tnull())
+	// 		return (end());
+	// 	return(iterator(node, _rbt.get_tnull(), _rbt.get_root()));
+	// }
 
-	const_iterator
-	find(const key_type & k) const
-	{
-		if (_size == 0)
-			return (end());
-		Node<value_type> *node = _rbt.find(k);
-		if (node == _rbt.get_tnull())
-			return (end());
-		return(const_iterator(node, _rbt.get_tnull(), _rbt.get_root()));
-	}
+	// const_iterator
+	// find(const key_type & k) const
+	// {
+	// 	if (_size == 0)
+	// 		return (end());
+	// 	Node<value_type> *node = _rbt.find(value_type(k, mapped_type()));
+	// 	if (node == _rbt.get_tnull())
+	// 		return (end());
+	// 	return(const_iterator(node, _rbt.get_tnull(), _rbt.get_root()));
+	// }
 
 
 	// iterator
@@ -214,6 +214,20 @@ public:
 	// {
 	// 	return(const_iterator(_rbt.find(value_type(k, mapped_type()), _rbt.get_root(), _rbt.get_tnull())));
 	// }
+
+
+	iterator
+	find(const key_type & k)
+	{
+		return(iterator(_rbt.find(value_type(k, mapped_type())), _rbt.get_root(), _rbt.get_tnull()));
+	}
+
+	const_iterator
+	find(const key_type & k) const
+	{
+		return(const_iterator(_rbt.find(value_type(k, mapped_type()), _rbt.get_root(), _rbt.get_tnull())));
+	}
+
 
 
 

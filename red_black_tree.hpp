@@ -95,6 +95,7 @@ public:
 	typedef Compare						value_compare;
 	typedef	std::size_t					size_type;
 	typedef Allocator					allocator_type;
+	
 
 
 	// =============================================================================
@@ -167,14 +168,13 @@ private:
 	pointer
 	_find(const value_type & key, const pointer node) const
 	{
-		if (key == node->data)
-			return (node);
-		else if (node == TNULL)
+		if (node == TNULL)
 			return (TNULL);
 		else if (_comp(key, node->data))
 			return (_find(key, node->left));
-		else
+		else if (_comp(node->data, key))
 			return (_find(key, node->right));
+		return (node);
 	}
 
 public:
