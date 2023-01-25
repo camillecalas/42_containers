@@ -171,50 +171,14 @@ public:
 	mapped_type &
 	operator[](const key_type & k)
 	{
-		iterator it = iterator(_rbt.find(value_type(k.mapped_type(k))), _rbt.get_root(), _rbt.get_tnull());
+		iterator it = find(k);
 		if (it == end())
 		{
-			iterator it2 = iterator(_rbt.insert(value_type(k.mapped_type(k)), _rbt.get_root(), _rbt.get_tnull()));
-			retrurn (it2->second);
+			insert(value_type(k, mapped_type()));
+			it = find(k);
 		}
 		return (it->second);
 	}
-
-	// iterator
-	// find(const key_type & k)
-	// {
-	// 	if (_size == 0)
-	// 		return (end());
-	// 	Node<value_type> *node = _rbt.find(value_type(k, mapped_type()));
-	// 	if (node == _rbt.get_tnull())
-	// 		return (end());
-	// 	return(iterator(node, _rbt.get_tnull(), _rbt.get_root()));
-	// }
-
-	// const_iterator
-	// find(const key_type & k) const
-	// {
-	// 	if (_size == 0)
-	// 		return (end());
-	// 	Node<value_type> *node = _rbt.find(value_type(k, mapped_type()));
-	// 	if (node == _rbt.get_tnull())
-	// 		return (end());
-	// 	return(const_iterator(node, _rbt.get_tnull(), _rbt.get_root()));
-	// }
-
-
-	// iterator
-	// find(const key_type & k)
-	// {
-	// 	return(iterator(_rbt.find(value_type(k, mapped_type())), _rbt.get_root(), _rbt.get_tnull()));
-	// }
-
-	// const_iterator
-	// find(const key_type & k) const
-	// {
-	// 	return(const_iterator(_rbt.find(value_type(k, mapped_type()), _rbt.get_root(), _rbt.get_tnull())));
-	// }
-
 
 	iterator
 	find(const key_type & k)
@@ -270,6 +234,19 @@ public:
 		if (_rbt.deleteNode(*position))
 			_size--;
 	}
+	
+	//value_type data
+	size_type
+	erase (const key_type& k)
+	{
+		if (_size == 0)
+			return (0);
+		iterator it = find(k);
+		if (it == end())
+			return (0);
+		erase(it);
+		return (1);
+	}
 
 	// =============================================================================
 	// GETTERS =====================================================================
@@ -282,8 +259,6 @@ public:
 
 
 };
-
-
 
 
 template <class Key, class T, class Compare, class Alloc>
@@ -346,3 +321,39 @@ void	swap(ft::map<Key, T, Compare, Alloc>& x, ft::map<Key, T, Compare, Alloc>& y
 
 NAME_SPACE_END
 #endif
+
+
+	// iterator
+	// find(const key_type & k)
+	// {
+	// 	if (_size == 0)
+	// 		return (end());
+	// 	Node<value_type> *node = _rbt.find(value_type(k, mapped_type()));
+	// 	if (node == _rbt.get_tnull())
+	// 		return (end());
+	// 	return(iterator(node, _rbt.get_tnull(), _rbt.get_root()));
+	// }
+
+	// const_iterator
+	// find(const key_type & k) const
+	// {
+	// 	if (_size == 0)
+	// 		return (end());
+	// 	Node<value_type> *node = _rbt.find(value_type(k, mapped_type()));
+	// 	if (node == _rbt.get_tnull())
+	// 		return (end());
+	// 	return(const_iterator(node, _rbt.get_tnull(), _rbt.get_root()));
+	// }
+
+
+	// iterator
+	// find(const key_type & k)
+	// {
+	// 	return(iterator(_rbt.find(value_type(k, mapped_type())), _rbt.get_root(), _rbt.get_tnull()));
+	// }
+
+	// const_iterator
+	// find(const key_type & k) const
+	// {
+	// 	return(const_iterator(_rbt.find(value_type(k, mapped_type()), _rbt.get_root(), _rbt.get_tnull())));
+	// }

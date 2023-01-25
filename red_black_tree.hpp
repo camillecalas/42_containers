@@ -199,31 +199,6 @@ public:
 	}
 
 
-
-	////////////////////////////////////////////////////////////
-	// pointer
-	// _find(pointer node, value_type value) const
-	// {
-	// 	if (!node)
-	// 		return (NULL);
-	// 	else if (this->_comp(value, node->data) && !this->_comp(node->data, value))
-	// 		return (this->_find(node->left, value));
-	// 	else if (!this->_comp(value, node->data) && this->_comp(node->data, value))
-	// 		return (this->_find(node->right, value));
-	// 	return (node);
-	// }
-
-	// pointer
-	// find(value_type value) const
-	// {
-	// 	pointer node = _find(root, value);
-	// 	if (!node)
-	// 		return (TNULL);
-	// 	return (node);
-	// }
-	////////////////////////////////////////////////////////////
-
-
 	// =============================================================================
 	// GETTERS =====================================================================
 	//TODO not sure 
@@ -393,7 +368,7 @@ public:
 	}
 
 	bool
-	deleteNode2(pointer node, value_type key) 
+	_deleteNode(pointer node, value_type key) 
 	{
 		pointer z = TNULL;
 		pointer x, y;
@@ -448,7 +423,8 @@ public:
 	}
 
 	// For balancing the tree after insertion
-	void insertFix(pointer k) 
+	void 
+	_insertFix(pointer k) 
 	{
 		pointer u;
 		while (k->parent->color == RED) 
@@ -504,7 +480,8 @@ public:
 		root->color = BLACK;
 	}
 
-	void printHelper(pointer root, string indent, bool last) 
+	void
+	printHelper(pointer root, string indent, bool last) 
 	{
 		if (root != TNULL) 
 		{
@@ -530,22 +507,26 @@ public:
 public:
 
 
-	void preorder() 
+	void 
+	preorder() 
 	{
 		preOrderHelper(this->root);
 	}
 
-	void inorder() 
+	void 
+	inorder() 
 	{
 		inOrderHelper(this->root);
 	}
 
-	void postorder() 
+	void 
+	postorder() 
 	{
 		postOrderHelper(this->root);
 	}
 
-	pointer searchTree(int k) 
+	pointer 
+	searchTree(int k) 
 	{
 		return searchTreeHelper(this->root, k);
 	}
@@ -557,14 +538,16 @@ public:
 	// 	return node;
 	// }
 
-	pointer maximum(pointer node) 
+	pointer 
+	maximum(pointer node) 
 	{
 		while (node->right != TNULL)
 		node = node->right;
 		return node;
 	}
 
-	pointer successor(pointer x) 
+	pointer 
+	successor(pointer x) 
 	{
 		if (x->right != TNULL) 
 		return minimum(x->right);
@@ -578,7 +561,8 @@ public:
 		return y;
 	}
 
-	pointer predecessor(pointer x) 
+	pointer 
+	predecessor(pointer x) 
 	{
 		if (x->left != TNULL)
 			return maximum(x->left);
@@ -592,7 +576,8 @@ public:
 		return y;
 	}
 
-	void leftRotate(pointer x) 
+	void 
+	leftRotate(pointer x) 
 	{
 		pointer y = x->right;
 		x->right = y->left;
@@ -610,7 +595,8 @@ public:
 		x->parent = y;
 	}
 
-	void rightRotate(pointer x) 
+	void 
+	rightRotate(pointer x) 
 	{
 		pointer y = x->left;
 		x->left = y->right;
@@ -669,7 +655,7 @@ public:
 
 		if (node->parent->parent == ft::nullptr)
 			return (node);
-		insertFix(node);
+		_insertFix(node);
 		return (node);
 	}
 
@@ -681,7 +667,7 @@ public:
 	bool
 	deleteNode(value_type data) 
 	{
-		return (deleteNode2(root, data));
+		return (_deleteNode(root, data));
 	}
 
 	void printTree()

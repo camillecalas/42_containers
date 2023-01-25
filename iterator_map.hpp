@@ -69,7 +69,7 @@ public:
 	bool
 	operator==(const iterator_map & x) const
 	{
-		return (_current = x._current);
+		return (_current == x._current);
 	}
 
 	bool 
