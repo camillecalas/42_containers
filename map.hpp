@@ -14,7 +14,7 @@
 // # include "distance.hpp"
 // # include "enable_if.hpp"
 // # include "is_integral.hpp"
-// # include "lexicographical_compare.hpp"
+# include "lexicographical_compare.hpp"
 
 # include <iostream>
 
@@ -112,6 +112,7 @@ public:
 	}
 
 	map(const map & copy)
+		: _comp(copy._comp), _alloc(copy._alloc), _rbt(_comp), _size(copy._size)
 	{
 		*this = copy;
 	}
@@ -133,7 +134,12 @@ public:
 	{
 		if (this == &x)
 			return (*this);
-		//TODO todo
+		_comp = x._comp;
+		_alloc = x._alloc;
+		_size = x._size;
+		_rbt.delete_tree();
+		insert(x.begin(), x.end());
+
 		return (*this);
 	}
 
@@ -267,6 +273,29 @@ public:
 		return (1);
 	}
 
+	iterator
+	lower_bound (const key_type& k)
+	{
+		return (iterator(_rbt.lower_bound_rbt(value_type(k, mapped_type())), _rbt.get_root(), _rbt.get_tnull()));
+	}
+	
+	const_iterator lower_bound (const key_type& k) const
+	{
+		return (const_iterator(_rbt.lower_bound_rbt(value_type(k, mapped_type())), _rbt.get_root(), _rbt.get_tnull()));
+	}
+
+	iterator
+	upper_bound (const key_type& k)
+	{
+		return (iterator(_rbt.upper_bound_rbt(value_type(k, mapped_type())), _rbt.get_root(), _rbt.get_tnull()));
+	}
+	 
+	const_iterator
+	upper_bound (const key_type& k) const
+	{
+		return (const_iterator(_rbt.upper_bound_rbt(value_type(k, mapped_type())), _rbt.get_root(), _rbt.get_tnull()));
+	}
+
 
 	// =============================================================================
 	// MODIFIERS ===================================================================
@@ -286,6 +315,7 @@ public:
 	{
 		(void)position;
 		_rbt.insert(val);
+		_size++;
 		return (iterator(_rbt.find(val), _rbt.get_root(), _rbt.get_tnull()));
 	}
 
@@ -325,12 +355,27 @@ public:
 			_rbt.deleteNode(*(first++));
 	}
 
+	void
+	clear()
+	{
+		if (_size != 0)
+			_rbt.delete_tree();
+		_size = 0;
+
+	}
+
 	// =============================================================================
 	// GETTERS =====================================================================
 	key_compare
 	key_comp() const
 	{
 		return (_comp);
+	}
+
+	value_compare
+	value_comp() const
+	{
+		return (value_compare(_comp));
 	}
 
 
@@ -400,37 +445,37 @@ NAME_SPACE_END
 #endif
 
 
-	// iterator
-	// find(const key_type & k)
-	// {
-	// 	if (_size == 0)
-	// 		return (end());
-	// 	Node<value_type> *node = _rbt.find(value_type(k, mapped_type()));
-	// 	if (node == _rbt.get_tnull())
-	// 		return (end());
-	// 	return(iterator(node, _rbt.get_tnull(), _rbt.get_root()));
-	// }
+// iterator
+// find(const key_type & k)
+// {
+// 	if (_size == 0)
+// 		return (end());
+// 	Node<value_type> *node = _rbt.find(value_type(k, mapped_type()));
+// 	if (node == _rbt.get_tnull())
+// 		return (end());
+// 	return(iterator(node, _rbt.get_tnull(), _rbt.get_root()));
+// }
 
-	// const_iterator
-	// find(const key_type & k) const
-	// {
-	// 	if (_size == 0)
-	// 		return (end());
-	// 	Node<value_type> *node = _rbt.find(value_type(k, mapped_type()));
-	// 	if (node == _rbt.get_tnull())
-	// 		return (end());
-	// 	return(const_iterator(node, _rbt.get_tnull(), _rbt.get_root()));
-	// }
+// const_iterator
+// find(const key_type & k) const
+// {
+// 	if (_size == 0)
+// 		return (end());
+// 	Node<value_type> *node = _rbt.find(value_type(k, mapped_type()));
+// 	if (node == _rbt.get_tnull())
+// 		return (end());
+// 	return(const_iterator(node, _rbt.get_tnull(), _rbt.get_root()));
+// }
 
 
-	// iterator
-	// find(const key_type & k)
-	// {
-	// 	return(iterator(_rbt.find(value_type(k, mapped_type())), _rbt.get_root(), _rbt.get_tnull()));
-	// }
+// iterator
+// find(const key_type & k)
+// {
+// 	return(iterator(_rbt.find(value_type(k, mapped_type())), _rbt.get_root(), _rbt.get_tnull()));
+// }
 
-	// const_iterator
-	// find(const key_type & k) const
-	// {
-	// 	return(const_iterator(_rbt.find(value_type(k, mapped_type()), _rbt.get_root(), _rbt.get_tnull())));
-	// }
+// const_iterator
+// find(const key_type & k) const
+// {
+// 	return(const_iterator(_rbt.find(value_type(k, mapped_type()), _rbt.get_root(), _rbt.get_tnull())));
+// }

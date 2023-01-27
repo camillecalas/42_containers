@@ -22,28 +22,51 @@ using namespace TESTED_NAMESPACE;
 int main()
 {
 
-	std::map<char,int> mymap;
-	 std::map<char,int>::iterator it;
 
-  // insert some values:
-  mymap['a']=10;
-  mymap['b']=20;
-  mymap['c']=30;
-  mymap['d']=40;
-  mymap['e']=50;
-  mymap['f']=60;
 
-  it=mymap.find('b');
-  mymap.erase (it);                   // erasing by iterator
+  ft::map<char,int> mymap;
+  ft::map<char,int>::iterator itlow,itup;
 
-  mymap.erase ('c');                  // erasing by key
+  mymap['a']=20;
+  mymap['b']=40;
+  mymap['c']=60;
+  mymap['d']=80;
+  mymap['e']=100;
 
-  it=mymap.find ('e');
-  mymap.erase ( it, mymap.end() );    // erasing by range
+  itlow=mymap.lower_bound ('b');  // itlow points to b
+  itup=mymap.upper_bound ('d');   // itup points to e (not d!)
 
-  // show content:
-  for (it=mymap.begin(); it!=mymap.end(); ++it)
-    std::cout << it->first << " => " << it->second << '\n';
+  	std::cout << itlow->first << " = " << itlow->second << std::endl;
+	std::cout << itup->first << " = " << itup->second << std::endl;
+
+//   mymap.erase(itlow,itup);        // erases [itlow,itup)
+
+//   // print content:
+//   for (std::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+//     std::cout << it->first << " => " << it->second << '\n';
+
+// 	std::map<char,int> mymap;
+// 	 std::map<char,int>::iterator it;
+
+//   // insert some values:
+//   mymap['a']=10;
+//   mymap['b']=20;
+//   mymap['c']=30;
+//   mymap['d']=40;
+//   mymap['e']=50;
+//   mymap['f']=60;
+
+//   it=mymap.find('b');
+//   mymap.erase (it);                   // erasing by iterator
+
+//   mymap.erase ('c');                  // erasing by key
+
+//   it=mymap.find ('e');
+//   mymap.erase ( it, mymap.end() );    // erasing by range
+
+//   // show content:
+//   for (it=mymap.begin(); it!=mymap.end(); ++it)
+//     std::cout << it->first << " => " << it->second << '\n';
 
 	// std::cout << "*******STD******\n";
 	// std::map<int, int>c;
@@ -86,28 +109,28 @@ int main()
 
 
 
-	ft::map<char,int> mymap2;
-	ft::map<char,int>::iterator it2;
+// 	ft::map<char,int> mymap2;
+// 	ft::map<char,int>::iterator it2;
 
-  // insert some values:
-  mymap2['a']=10;
-  mymap2['b']=20;
-  mymap2['c']=30;
-  mymap2['d']=40;
-  mymap2['e']=50;
-  mymap2['f']=60;
+//   // insert some values:
+//   mymap2['a']=10;
+//   mymap2['b']=20;
+//   mymap2['c']=30;
+//   mymap2['d']=40;
+//   mymap2['e']=50;
+//   mymap2['f']=60;
 
-  it2=mymap2.find('b');
-  mymap2.erase (it2);                   // erasing by iterator
+//   it2=mymap2.find('b');
+//   mymap2.erase (it2);                   // erasing by iterator
 
-  mymap2.erase ('c');                  // erasing by key
+//   mymap2.erase ('c');                  // erasing by key
 
-  it2=mymap2.find ('e');
-  mymap2.erase ( it2, mymap2.end() );    // erasing by range
+//   it2=mymap2.find ('e');
+//   mymap2.erase ( it2, mymap2.end() );    // erasing by range
 
-//   show content:
-  for (it2=mymap2.begin(); it2!=mymap2.end(); ++it2)
-    std::cout << it2->first << " => " << it2->second << '\n';
+// //   show content:
+//   for (it2=mymap2.begin(); it2!=mymap2.end(); ++it2)
+//     std::cout << it2->first << " => " << it2->second << '\n';
 
 
 	// std::cout << "\n" << "******************\n";

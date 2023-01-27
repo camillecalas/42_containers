@@ -32,15 +32,13 @@ public:
 	iterator_map() : _current(ft::nullptr), _root(ft::nullptr), _end(ft::nullptr)
 	{}
 
-	iterator_map(const node_ptr &current, const node_ptr &root, const node_ptr &end) : _current(current), _root(root), _end(end)
+	iterator_map(const node_ptr &current, const node_ptr &root, const node_ptr &end)
+		: _current(current), _root(root), _end(end)
 	{}
 
 	iterator_map(const iterator_map & copy)
-	{
-		_current = copy._current;
-		_root = copy._root;
-		_end = copy._end;
-	}
+		: _current(copy._current), _root(copy._root), _end(copy._end)
+	{}
 		
 	// =============================================================================
 	// DESTRUCTORS =================================================================

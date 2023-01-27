@@ -113,10 +113,6 @@ public:
 	RedBlackTree(const value_compare &comp = value_compare()) 
 		: _comp(comp), _alloc(allocator_type())
 	{
-		// _end = _alloc.allocate(1);
-		// _alloc.construct(_end, Node(value_type(), RED));
-		// _root = _end;
-
 		TNULL = _alloc.allocate(1);
 		_alloc.construct(TNULL, Node(value_type()));
 
@@ -166,16 +162,51 @@ private:
 	}
 
 	pointer
-	_find(const value_type & key, const pointer node) const
+	_find(const value_type & val, const pointer node) const
 	{
 		if (node == TNULL)
 			return (TNULL);
-		else if (_comp(key, node->data))
-			return (_find(key, node->left));
-		else if (_comp(node->data, key))
-			return (_find(key, node->right));
+		else if (_comp(val, node->data))
+			return (_find(val, node->left));
+		else if (_comp(node->data, val))
+			return (_find(val, node->right));
 		return (node);
 	}
+
+	pointer
+	_lower_bound_rbt(const value_type &val, pointer node) const
+	{
+		pointer tmp = node;
+		pointer	res = TNULL;
+
+		while(tmp != TNULL)
+			if (_comp(tmp->data, val) == false)
+			{
+				res = node;
+				tmp = tmp->left;
+			}
+			else
+				tmp = tmp->right;
+		return (res);
+	}
+
+	pointer
+	_upper_bound_rbt(const value_type &val, pointer node) const
+	{
+		pointer tmp = node;
+		pointer	res = TNULL;
+
+		while(tmp != TNULL)
+			if (_comp(val, tmp->data) == true)
+			{
+				res = tmp;
+				tmp = tmp->left;
+			}
+			else
+				tmp = tmp->right;
+		return (res);
+	}
+
 
 public:
 	void
@@ -193,9 +224,21 @@ public:
 	}
 
 	pointer
-	find(const value_type &key) const
+	find(const value_type &val) const
 	{
-		return (_find(key, root));
+		return (_find(val, root));
+	}
+
+	pointer
+	lower_bound_rbt(const value_type &val) const
+	{
+		return (_lower_bound_rbt(val, root));
+	}
+
+	pointer
+	upper_bound_rbt(const value_type &val) const
+	{
+		return (_upper_bound_rbt(val, root));
 	}
 
 
@@ -538,13 +581,13 @@ public:
 	// 	return node;
 	// }
 
-	pointer 
-	maximum(pointer node) 
-	{
-		while (node->right != TNULL)
-		node = node->right;
-		return node;
-	}
+	// pointer 
+	// maximum(pointer node) 
+	// {
+	// 	while (node->right != TNULL)
+	// 	node = node->right;
+	// 	return node;
+	// }
 
 	pointer 
 	successor(pointer x) 
