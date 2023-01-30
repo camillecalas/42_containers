@@ -30,11 +30,7 @@ class map
 	// =============================================================================
 	// TYPEDEF =====================================================================
 public:
-	typedef Key 															key_type;
-	typedef T 																mapped_type;
 	typedef ft::pair<const Key, T> 											value_type;
-	typedef std::size_t 													size_type;
-	typedef std::ptrdiff_t 													difference_type;
 	typedef Compare															key_compare;	
 
 
@@ -51,8 +47,8 @@ protected:
 
 public:
 	typedef bool	result_type;
-	value_type		first_argument_type; 
-	value_type		second_argument_type;
+	typedef value_type		first_argument_type; 
+	typedef value_type		second_argument_type;
 	
 	bool
 	operator() (const value_type & x, const value_type & y) const
@@ -60,6 +56,7 @@ public:
 		return (comp(x.first, y.first));
 	}
 };
+
 //! ================================================================================
 
 	//TODO to erase later
@@ -72,6 +69,10 @@ public:
 	// =============================================================================
 	// TYPEDEF =====================================================================
 public:					
+	typedef Key 															key_type;
+	typedef T 																mapped_type;
+	typedef std::size_t 													size_type;
+	typedef std::ptrdiff_t 													difference_type;
 	typedef typename ft::RedBlackTree<value_type, value_compare>			red_black_tree;
 	typedef Allocator 														allocator_type;
 	typedef value_type &													reference;
@@ -112,7 +113,7 @@ public:
 	}
 
 	map(const map & copy)
-		: _comp(copy._comp), _alloc(copy._alloc), _rbt(_comp), _size(copy._size)
+	:  _alloc(copy._alloc), _comp(copy._comp), _rbt(_comp), _size(copy._size)
 	{
 		*this = copy;
 	}
@@ -136,9 +137,9 @@ public:
 			return (*this);
 		_comp = x._comp;
 		_alloc = x._alloc;
-		_size = x._size;
 		_rbt.delete_tree();
 		insert(x.begin(), x.end());
+		_size = x._size;
 
 		return (*this);
 	}
@@ -206,16 +207,15 @@ public:
 	bool
 	empty() const
 	{
-		if (_size == 0)
-			return (1);
-		return (0);
+		return (_rbt.empty());
 	}
 
 	size_type
 	max_size() const
 	{
-		return (_alloc.max_size());
+		return (_rbt.max_size());
 	}
+
 
 	// =============================================================================
 	// ELEMENTS ACCESS =============================================================
@@ -296,6 +296,20 @@ public:
 		return (const_iterator(_rbt.upper_bound_rbt(value_type(k, mapped_type())), _rbt.get_root(), _rbt.get_tnull()));
 	}
 
+	ft::pair<const_iterator,const_iterator>
+	equal_range (const key_type& k) const
+	{
+		return (ft::make_pair(lower_bound(k), upper_bound(k)));
+	}
+
+
+	ft::pair<iterator,iterator>
+	equal_range (const key_type& k)
+	{
+		return (ft::make_pair(lower_bound(k), upper_bound(k)));
+	}
+
+
 
 	// =============================================================================
 	// MODIFIERS ===================================================================
@@ -323,8 +337,8 @@ public:
 	void 
 	insert (InputIterator first, InputIterator last)
 	{
-		for (; first != last; first++)
-			_rbt.insert(*first);	
+		for (; first != last; first++, _size++)
+			_rbt.insert(*first);
 	}
 
 	void
@@ -375,7 +389,7 @@ public:
 	value_compare
 	value_comp() const
 	{
-		return (value_compare(_comp));
+		return (_comp);
 	}
 
 

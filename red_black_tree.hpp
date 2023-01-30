@@ -97,7 +97,6 @@ public:
 	typedef Allocator					allocator_type;
 	
 
-
 	// =============================================================================
 	// ATTRIBUTS ===================================================================
 private:
@@ -134,6 +133,8 @@ public:
 	pointer 
 	minimum(pointer node) const
 	{
+		if (node == TNULL)
+			return (node);
 		while (node->left != TNULL)
 			node = node->left;
 		return node;
@@ -142,6 +143,8 @@ public:
 	pointer
 	maximun(pointer node) const
 	{
+		if (node == TNULL)
+			return (node);
 		while (node->right != TNULL)
 			node = node->right;
 		return (node);
@@ -149,6 +152,7 @@ public:
 
 
 private:
+
 	void
 	_delete_tree(pointer node)
 	{
@@ -209,6 +213,20 @@ private:
 
 
 public:
+	size_type
+	max_size() const
+	{
+		return (_alloc.max_size());
+	}
+
+	bool
+	empty() const
+	{
+		if (root == TNULL)
+			return (1);
+		return (0);
+	}
+
 	void
 	delete_tree()
 	{
@@ -585,7 +603,7 @@ public:
 	// maximum(pointer node) 
 	// {
 	// 	while (node->right != TNULL)
-	// 	node = node->right;
+	// 		node = node->right;
 	// 	return node;
 	// }
 
