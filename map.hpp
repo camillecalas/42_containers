@@ -11,9 +11,6 @@
 # include "nullptr.hpp"
 # include "iterator_map.hpp"
 # include "red_black_tree.hpp"
-// # include "distance.hpp"
-// # include "enable_if.hpp"
-// # include "is_integral.hpp"
 # include "lexicographical_compare.hpp"
 
 # include <iostream>
@@ -79,8 +76,8 @@ public:
 	typedef const value_type &												const_reference;
 	typedef typename Allocator::pointer 									pointer;
 	typedef typename Allocator::const_pointer 								const_pointer;
-	typedef typename ft::iterator_map<value_type, Node<value_type> >		iterator;
-	typedef typename ft::iterator_map<const value_type, Node<value_type> >	const_iterator;
+	typedef typename ft::iterator_map<value_type, node_type>		iterator;
+	typedef typename ft::iterator_map<const value_type, node_type>	const_iterator;
 	typedef typename ft::reverse_iterator<iterator> 						reverse_iterator;
 	typedef typename ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 
@@ -383,7 +380,7 @@ public:
 	key_compare
 	key_comp() const
 	{
-		return (_comp);
+		return (key_compare());
 	}
 
 	value_compare
@@ -392,9 +389,8 @@ public:
 		return (_comp);
 	}
 
-
-
 };
+
 
 
 template <class Key, class T, class Compare, class Alloc>

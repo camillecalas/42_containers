@@ -62,7 +62,8 @@ void	ft_comp(const _map &mp, const const_it &it1, const const_it &it2)
 
 int		main(void)
 {
-	_map	mp;
+	srand(time(NULL));
+	NAMESPACE::map<T1, T2>	mp;
 
 	mp['a'] = 2.3;
 	mp['b'] = 1.4;

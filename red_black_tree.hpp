@@ -152,7 +152,6 @@ public:
 
 
 private:
-
 	void
 	_delete_tree(pointer node)
 	{
@@ -180,6 +179,9 @@ private:
 	pointer
 	_lower_bound_rbt(const value_type &val, pointer node) const
 	{
+		if (node == TNULL)
+			return (TNULL);
+
 		pointer tmp = node;
 		pointer	res = TNULL;
 
@@ -197,6 +199,9 @@ private:
 	pointer
 	_upper_bound_rbt(const value_type &val, pointer node) const
 	{
+		if (node == TNULL)
+			return (TNULL);
+
 		pointer tmp = node;
 		pointer	res = TNULL;
 
