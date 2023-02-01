@@ -48,7 +48,7 @@ void	printReverse(NAMESPACE::map<T1, T2> &mp)
 #define T1 int
 #define T2 std::string
 typedef NAMESPACE::map<T1, T2>::value_type T3;
-// typedef NAMESPACE::map<T1, T2>::iterator iterator;
+typedef NAMESPACE::map<T1, T2>::iterator iterator;
 
 static int iter = 0;
 

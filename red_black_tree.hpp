@@ -177,23 +177,39 @@ private:
 	}
 
 	pointer
-	_lower_bound_rbt(const value_type &val, pointer node) const
+	_lower_bound_rbt(const value_type &k, pointer node) const
 	{
+		// if (node == TNULL)
+		// 	return (TNULL);
+
+		// pointer tmp = node;
+		// pointer	res = TNULL;
+
+		// while(tmp != TNULL)
+		// 	if (_comp(tmp->data, val) == false)
+		// 	{
+		// 		res = node;
+		// 		tmp = tmp->left;
+		// 	}
+		// 	else
+		// 		tmp = tmp->right;
+		// return (res);
+
+		pointer tmp = TNULL;
+		
 		if (node == TNULL)
-			return (TNULL);
-
-		pointer tmp = node;
-		pointer	res = TNULL;
-
-		while(tmp != TNULL)
-			if (_comp(tmp->data, val) == false)
+			return (node);
+		while (node != TNULL)
+		{
+			if (_comp(node->data, k) == false)
 			{
-				res = node;
-				tmp = tmp->left;
+				tmp = node;
+				node = node->left;
 			}
 			else
-				tmp = tmp->right;
-		return (res);
+				node = node->right;
+		}
+			return (tmp);
 	}
 
 	pointer
@@ -255,8 +271,27 @@ public:
 	pointer
 	lower_bound_rbt(const value_type &val) const
 	{
-		return (_lower_bound_rbt(val, root));
+		return (_lower_bound_rbt(val, get_root()));
 	}
+
+	// pointer	lower_bound_rbt(pointer node, const value_type &k) const
+	// {
+	// 	pointer tmp = TNULL;
+		
+	// 	if (node == TNULL)
+	// 		return (node);
+	// 	while (node != TNULL)
+	// 	{
+	// 		if (_comp(node->data, k) == false)
+	// 		{
+	// 			tmp = node;
+	// 			node = node->left;
+	// 		}
+	// 		else
+	// 			node = node->right;
+	// 	}
+	// 		return (tmp);
+	// }
 
 	pointer
 	upper_bound_rbt(const value_type &val) const

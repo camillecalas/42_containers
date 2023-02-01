@@ -59,10 +59,10 @@ public:
 		return (*this);
 	}
 
-	operator iterator_map<const T, Node>(void) const
-	{
-		return (iterator_map<const T, Node>(_current, _root, _end));
-	}
+		operator iterator_map<const T, Node>(void) const
+		{
+			return (iterator_map<const T, Node>(_current, _root, _end));
+		}
 
 	bool
 	operator==(const iterator_map & x) const

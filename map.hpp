@@ -12,6 +12,9 @@
 # include "iterator_map.hpp"
 # include "red_black_tree.hpp"
 # include "lexicographical_compare.hpp"
+# include "enable_if.hpp"
+# include "is_integral.hpp"
+# include "lexicographical_compare.hpp"
 
 # include <iostream>
 
@@ -75,7 +78,7 @@ public:
 	typedef value_type &													reference;
 	typedef const value_type &												const_reference;
 	typedef typename Allocator::pointer 									pointer;
-	typedef typename Allocator::const_pointer						const_pointer;
+	typedef typename Allocator::const_pointer							const_pointer;
 	//TODO iter problem node_type ? Node<value_type> 
 	typedef typename ft::iterator_map<value_type, Node<value_type> >		iterator;
 	typedef typename ft::iterator_map<const value_type, Node<value_type> >	const_iterator;
@@ -335,7 +338,7 @@ public:
 
 	template <class InputIterator>  
 	void 
-	insert (InputIterator first, InputIterator last)
+	insert (InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last)
 	{
 		for (; first != last; first++, _size++)
 			_rbt.insert(*first);
