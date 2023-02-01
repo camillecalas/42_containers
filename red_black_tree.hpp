@@ -3,14 +3,10 @@
 # define RED_BLACK_TREE_HPP
 
 # include "node.hpp"
-# include "map.hpp"
 # include "pair.hpp"
 # include "iterator_map.hpp"
 # include "nullptr.hpp"
 # include <iostream>
-
-//TODO erase later
-using namespace std;
 
 //Regular bold text
 # define BBLK "\e[1;30m"
@@ -234,6 +230,25 @@ private:
 
 
 public:
+
+
+		// pointer search_occurence_normal(pointer node, const value_type &key)
+		// 	{
+		// 		if (key == node->data)
+		// 			return node;
+		// 		if (node == TNULL)
+		// 			return TNULL;
+		// 		if (_comp(key, node->data))
+		// 			return search_occurence_normal(node->left, key);
+		// 		return search_occurence_normal(node->right, key);
+		// 	}
+
+
+		// pointer search_in_tree(const value_type &key)
+		// 	{
+		// 		return search_occurence_normal(this->root, key);
+		// 	}
+
 	size_type
 	max_size() const
 	{
@@ -599,7 +614,7 @@ public:
 			}
 
 			string sColor = root->color ? "RED" : "BLACK";
-			cout << root->data << "(" << sColor << ")" << endl;
+			cout << root->data << "(" << sColor << ")" << std::endl;
 			printHelper(root->left, indent, false);
 			printHelper(root->right, indent, true);
 		}

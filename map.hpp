@@ -19,8 +19,8 @@
 # include <iostream>
 
 //TODO erase later
-# include <map>
-std::map<int, int> salut;
+// # include <map>
+// std::map<int, int> salut;
 
 NAME_SPACE_START
 template <class Key, class T, class Compare = std::less<Key>,
@@ -46,9 +46,9 @@ protected:
 	value_compare(key_compare c) : comp(c) {}
 
 public:
-	typedef bool	result_type;
-	typedef value_type		first_argument_type; 
-	typedef value_type		second_argument_type;
+	// typedef bool	result_type;
+	// typedef value_type		first_argument_type; 
+	// typedef value_type		second_argument_type;
 	
 	bool
 	operator() (const value_type & x, const value_type & y) const
@@ -344,6 +344,35 @@ public:
 			_rbt.insert(*first);
 	}
 
+
+			// //*single element
+			// ft::pair<iterator,bool> insert (const value_type& val)
+			// {
+			// 	if (_rbt.insert(val) == ft::nullptr)
+			// 		return ft::make_pair(iterator(_rbt.search_in_tree(val), _rbt.get_root(), _rbt.get_tnull()), false);
+			// 	this->_size++;
+			// 	return ft::make_pair(iterator(_rbt.search_in_tree(val), _rbt.get_root(), _rbt.get_tnull()), true);
+			// }
+			
+			// //*with hint
+			// iterator insert (iterator position, const value_type& val)
+			// {
+			// 	(void)position;
+			// 	insert(val);
+			// 	return (iterator(_rbt.search_in_tree(val), _rbt.get_root(), _rbt.get_tnull()));
+			// }
+			
+			// //*ranges
+			// template <class InputIterator>
+			// void insert (InputIterator first, InputIterator last)
+			// {
+			// 	while (first != last)
+			// 	{
+			// 		insert(*first);
+			// 		first++;
+			// 	}
+			// }
+
 	void
 	erase (iterator position)
 	{
@@ -454,6 +483,42 @@ void	swap(ft::map<Key, T, Compare, Alloc>& x, ft::map<Key, T, Compare, Alloc>& y
 		return ;
 	x.swap(y);
 }
+
+
+// template< class Key, class T, class Compare, class Alloc >
+// bool operator== (const ft::map<Key,T,Compare,Alloc>& lhs, const ft::map<Key,T,Compare,Alloc>& rhs) {
+// 	return (ft::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+// }
+
+// template< class Key, class T, class Compare, class Alloc >
+// bool operator!= (const ft::map<Key,T,Compare,Alloc>& lhs, const ft::map<Key,T,Compare,Alloc>& rhs) {
+// 	return (!(lhs == rhs));
+// }
+
+// template< class Key, class T, class Compare, class Alloc >
+// bool operator< (const ft::map<Key,T,Compare,Alloc>& lhs, const ft::map<Key,T,Compare,Alloc>& rhs) {
+// 	return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+// }
+
+// template< class Key, class T, class Compare, class Alloc >
+// bool operator> (const ft::map<Key,T,Compare,Alloc>& lhs, const ft::map<Key,T,Compare,Alloc>& rhs) {
+// 	return (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end()));
+// }
+
+// template< class Key, class T, class Compare, class Alloc >
+// bool operator<= (const ft::map<Key,T,Compare,Alloc>& lhs, const ft::map<Key,T,Compare,Alloc>& rhs) {
+// 	return (!(lhs > rhs));
+// }
+
+// template< class Key, class T, class Compare, class Alloc >
+// bool operator>= (const ft::map<Key,T,Compare,Alloc>& lhs, const ft::map<Key,T,Compare,Alloc>& rhs) {
+// 	return (!(lhs < rhs));
+// }
+
+// template< class Key, class T, class Compare, class Alloc >
+// void swap (ft::map<Key,T,Compare,Alloc>& lhs, ft::map<Key,T,Compare,Alloc>& rhs) {
+// 	lhs.swap(rhs);
+// }
 
 
 
