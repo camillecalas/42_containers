@@ -75,9 +75,12 @@ public:
 	typedef value_type &													reference;
 	typedef const value_type &												const_reference;
 	typedef typename Allocator::pointer 									pointer;
-	typedef typename Allocator::const_pointer 								const_pointer;
-	typedef typename ft::iterator_map<value_type, node_type>		iterator;
-	typedef typename ft::iterator_map<const value_type, node_type>	const_iterator;
+	typedef typename Allocator::const_pointer						const_pointer;
+	//TODO iter problem node_type ? Node<value_type> 
+	typedef typename ft::iterator_map<value_type, Node<value_type> >		iterator;
+	typedef typename ft::iterator_map<const value_type, Node<value_type> >	const_iterator;
+	// typedef typename ft::iterator_map<value_type, node_type>		iterator;
+	// typedef typename ft::iterator_map<const value_type, node_type>	const_iterator;
 	typedef typename ft::reverse_iterator<iterator> 						reverse_iterator;
 	typedef typename ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 

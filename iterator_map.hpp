@@ -64,18 +64,17 @@ public:
 		return (iterator_map<const T, Node>(_current, _root, _end));
 	}
 
+	bool
+	operator==(const iterator_map & x) const
+	{
+		return (_current == x._current);
+	}
 
-	// bool
-	// operator==(const iterator_map & x) const
-	// {
-	// 	return (_current == x._current);
-	// }
-
-	// bool 
-	// operator!=(const iterator_map & x) const
-	// {
-	// 	return (_current != x._current);
-	// }
+	bool 
+	operator!=(const iterator_map & x) const
+	{
+		return (_current != x._current);
+	}
 
 	reference
 	operator*() const
@@ -185,4 +184,4 @@ private:
 };
 
 NAME_SPACE_END
-#endi
+#endif
