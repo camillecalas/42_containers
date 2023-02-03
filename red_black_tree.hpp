@@ -8,71 +8,6 @@
 # include "nullptr.hpp"
 # include <iostream>
 
-//Regular bold text
-# define BBLK "\e[1;30m"
-# define BRED "\e[1;31m"
-# define BGRN "\e[1;32m"
-# define BYEL "\e[1;33m"
-# define BBLU "\e[1;34m"
-# define BMAG "\e[1;35m"
-# define BCYN "\e[1;36m"
-# define BWHT "\e[1;37m"
-
-//Regular underline text
-# define UBLK "\e[4;30m"
-# define URED "\e[4;31m"
-# define UGRN "\e[4;32m"
-# define UYEL "\e[4;33m"
-# define UBLU "\e[4;34m"
-# define UMAG "\e[4;35m"
-# define UCYN "\e[4;36m"
-# define UWHT "\e[4;37m"
-
-//Regular background
-# define BLKB "\e[40m"
-# define REDB "\e[41m"
-# define GRNB "\e[42m"
-# define YELB "\e[43m"
-# define BLUB "\e[44m"
-# define MAGB "\e[45m"
-# define CYNB "\e[46m"
-# define WHTB "\e[47m"
-
-//High intensty background 
-# define BLKHB "\e[0;100m"
-# define REDHB "\e[0;101m"
-# define GRNHB "\e[0;102m"
-# define YELHB "\e[0;103m"
-# define BLUHB "\e[0;104m"
-# define MAGHB "\e[0;105m"
-# define CYNHB "\e[0;106m"
-# define WHTHB "\e[0;107m"
-
-//High intensty text
-# define HBLK "\e[0;90m"
-# define HRED "\e[0;91m"
-# define HGRN "\e[0;92m"
-# define HYEL "\e[0;93m"
-# define HBLU "\e[0;94m"
-# define HMAG "\e[0;95m"
-# define HCYN "\e[0;96m"
-# define HWHT "\e[0;97m"
-
-//Bold high intensity text
-# define BHBLK "\e[1;90m"
-# define BHRED "\e[1;91m"
-# define BHGRN "\e[1;92m"
-# define BHYEL "\e[1;93m"
-# define BHBLU "\e[1;94m"
-# define BHMAG "\e[1;95m"
-# define BHCYN "\e[1;96m"
-# define BHWHT "\e[1;97m"
-
-//Reset
-// # define reset "\e[0m"
-# define CRESET "\e[0m"
-# define COLOR_RESET "\e[0m"
-
 
 NAME_SPACE_START
 
@@ -249,6 +184,26 @@ public:
 		// 		return search_occurence_normal(this->root, key);
 		// 	}
 
+
+	// void	swap(RedBlackTree& src)
+	// {
+
+	// 	pointer			root_tmp = root;
+	// 	pointer			TNULL_tmp = TNULL;
+	// 	value_compare	_comp_tmp = _comp;
+	// 	allocator_type	_alloc_tmp = _alloc;
+
+	// 	root = src.root;
+	// 	_comp = src._comp;
+	// 	_alloc = src._alloc;
+	// 	TNULL = src.TNULL;
+
+	// 	src.root = root_tmp;
+	// 	src._comp = _comp_tmp;
+	// 	src._alloc = _alloc_tmp;
+	// 	src.TNULL = TNULL_tmp;
+	// }
+
 	size_type
 	max_size() const
 	{
@@ -356,37 +311,37 @@ public:
 	}
 
 	// Preorder
-	void preOrderHelper(pointer node) 
-	{
-		if (node != TNULL) 
-		{
-			cout << node->data << " ";
-			preOrderHelper(node->left);
-			preOrderHelper(node->right);
-		}
-	}
+	// void preOrderHelper(pointer node) 
+	// {
+	// 	if (node != TNULL) 
+	// 	{
+	// 		cout << node->data << " ";
+	// 		preOrderHelper(node->left);
+	// 		preOrderHelper(node->right);
+	// 	}
+	// }
 
 	// Inorder
-	void inOrderHelper(pointer node) 
-	{
-		if (node != TNULL) 
-		{
-			inOrderHelper(node->left);
-			cout << node->data << " ";
-			inOrderHelper(node->right);
-		}
-	}
+	// void inOrderHelper(pointer node) 
+	// {
+	// 	if (node != TNULL) 
+	// 	{
+	// 		inOrderHelper(node->left);
+	// 		cout << node->data << " ";
+	// 		inOrderHelper(node->right);
+	// 	}
+	// }
 
 	// Post order
-	void postOrderHelper(pointer node) 
-	{
-		if (node != TNULL) 
-		{
-			postOrderHelper(node->left);
-			postOrderHelper(node->right);
-			cout << node->data << " ";
-		}
-	}
+	// void postOrderHelper(pointer node) 
+	// {
+	// 	if (node != TNULL) 
+	// 	{
+	// 		postOrderHelper(node->left);
+	// 		postOrderHelper(node->right);
+	// 		cout << node->data << " ";
+	// 	}
+	// }
 
 	pointer searchTreeHelper(pointer node, int key) 
 	{
@@ -596,29 +551,29 @@ public:
 		root->color = BLACK;
 	}
 
-	void
-	printHelper(pointer root, string indent, bool last) 
-	{
-		if (root != TNULL) 
-		{
-			cout << indent;
-			if (last) 
-			{
-				cout << "R----";
-				indent += "   ";
-			} 
-			else 
-			{
-				cout << "L----";
-				indent += "|  ";
-			}
+	// void
+	// printHelper(pointer root, string indent, bool last) 
+	// {
+	// 	if (root != TNULL) 
+	// 	{
+	// 		cout << indent;
+	// 		if (last) 
+	// 		{
+	// 			cout << "R----";
+	// 			indent += "   ";
+	// 		} 
+	// 		else 
+	// 		{
+	// 			cout << "L----";
+	// 			indent += "|  ";
+	// 		}
 
-			string sColor = root->color ? "RED" : "BLACK";
-			cout << root->data << "(" << sColor << ")" << std::endl;
-			printHelper(root->left, indent, false);
-			printHelper(root->right, indent, true);
-		}
-	}
+	// 		string sColor = root->color ? "RED" : "BLACK";
+	// 		cout << root->data << "(" << sColor << ")" << std::endl;
+	// 		printHelper(root->left, indent, false);
+	// 		printHelper(root->right, indent, true);
+	// 	}
+	// }
 
 public:
 
@@ -786,45 +741,43 @@ public:
 		return (_deleteNode(root, data));
 	}
 
-	void printTree()
-	{
-		if (root)
-			print_tree(this->root, "", true);
-	}
+// void printTree()
+// {
+// 	if (root)
+// 		print_tree(this->root, "", true);
+// }
 
+// 	void print_tree(pointer root, std::string indent, bool last)
+// 	{
+// 	// if (root == ft::_nullptr)
+// 	// 	return ;
+// 	if (root != TNULL)
+// 	{
+// 		std::cout << indent;
+// 		if (last)
+// 		{
+// 			std::cout << "R----";
+// 			indent += "   ";
+// 		}
+// 		else
+// 		{
+// 			std::cout << "L----";
+// 			indent += "|  ";
+// 		}
 
+// 		if (root->color == RED)
+// 		{
+// 			std::cout << BRED << root->data.first << "(" << "RED" << ")" << "--->" << root->data.second << CRESET<< std::endl;
+// 		}
+// 		else
+// 		{
+// 			std::cout << BBLU << root->data.first << "(" << "BLACK" << ")" << "--->" << root->data.second << CRESET << std::endl;
+// 		}
+// 		print_tree(root->left, indent, false);
+// 		print_tree(root->right, indent, true);
+// 	}
+// 	}
 
-
-	void print_tree(pointer root, std::string indent, bool last)
-	{
-	// if (root == ft::_nullptr)
-	// 	return ;
-	if (root != TNULL)
-	{
-		std::cout << indent;
-		if (last)
-		{
-			std::cout << "R----";
-			indent += "   ";
-		}
-		else
-		{
-			std::cout << "L----";
-			indent += "|  ";
-		}
-
-		if (root->color == RED)
-		{
-			std::cout << BRED << root->data.first << "(" << "RED" << ")" << "--->" << root->data.second << CRESET<< std::endl;
-		}
-		else
-		{
-			std::cout << BBLU << root->data.first << "(" << "BLACK" << ")" << "--->" << root->data.second << CRESET << std::endl;
-		}
-		print_tree(root->left, indent, false);
-		print_tree(root->right, indent, true);
-	}
-	}
 };
 
 NAME_SPACE_END
