@@ -96,36 +96,20 @@ private:
 	}
 
 	pointer
-	_find(const value_type & val, const pointer node) const
+	_find(const pointer node, const value_type & val)  const
 	{
 		if (node == TNULL)
 			return (TNULL);
 		else if (_comp(val, node->data))
-			return (_find(val, node->left));
+			return (_find(node->left, val));
 		else if (_comp(node->data, val))
-			return (_find(val, node->right));
+			return (_find(node->right, val));
 		return (node);
 	}
 
 	pointer
 	_lower_bound_rbt(const value_type &k, pointer node) const
 	{
-		// if (node == TNULL)
-		// 	return (TNULL);
-
-		// pointer tmp = node;
-		// pointer	res = TNULL;
-
-		// while(tmp != TNULL)
-		// 	if (_comp(tmp->data, val) == false)
-		// 	{
-		// 		res = node;
-		// 		tmp = tmp->left;
-		// 	}
-		// 	else
-		// 		tmp = tmp->right;
-		// return (res);
-
 		pointer tmp = TNULL;
 		
 		if (node == TNULL)
@@ -165,45 +149,6 @@ private:
 
 
 public:
-
-
-		// pointer search_occurence_normal(pointer node, const value_type &key)
-		// 	{
-		// 		if (key == node->data)
-		// 			return node;
-		// 		if (node == TNULL)
-		// 			return TNULL;
-		// 		if (_comp(key, node->data))
-		// 			return search_occurence_normal(node->left, key);
-		// 		return search_occurence_normal(node->right, key);
-		// 	}
-
-
-		// pointer search_in_tree(const value_type &key)
-		// 	{
-		// 		return search_occurence_normal(this->root, key);
-		// 	}
-
-
-	// void	swap(RedBlackTree& src)
-	// {
-
-	// 	pointer			root_tmp = root;
-	// 	pointer			TNULL_tmp = TNULL;
-	// 	value_compare	_comp_tmp = _comp;
-	// 	allocator_type	_alloc_tmp = _alloc;
-
-	// 	root = src.root;
-	// 	_comp = src._comp;
-	// 	_alloc = src._alloc;
-	// 	TNULL = src.TNULL;
-
-	// 	src.root = root_tmp;
-	// 	src._comp = _comp_tmp;
-	// 	src._alloc = _alloc_tmp;
-	// 	src.TNULL = TNULL_tmp;
-	// }
-
 	size_type
 	max_size() const
 	{
@@ -232,10 +177,12 @@ public:
 		_alloc.deallocate(TNULL, 1);
 	}
 
+
+
 	pointer
-	find(const value_type &val) const
+	find(const pointer node, const value_type &val) const
 	{
-		return (_find(val, root));
+		return (_find(node, val));
 	}
 
 	pointer
@@ -243,25 +190,6 @@ public:
 	{
 		return (_lower_bound_rbt(val, get_root()));
 	}
-
-	// pointer	lower_bound_rbt(pointer node, const value_type &k) const
-	// {
-	// 	pointer tmp = TNULL;
-		
-	// 	if (node == TNULL)
-	// 		return (node);
-	// 	while (node != TNULL)
-	// 	{
-	// 		if (_comp(node->data, k) == false)
-	// 		{
-	// 			tmp = node;
-	// 			node = node->left;
-	// 		}
-	// 		else
-	// 			node = node->right;
-	// 	}
-	// 		return (tmp);
-	// }
 
 	pointer
 	upper_bound_rbt(const value_type &val) const
@@ -438,37 +366,97 @@ public:
 		v->parent = u->parent;
 	}
 
-	bool
-	_deleteNode(pointer node, value_type key) 
+	// bool
+	// _deleteNode(pointer node, value_type key) 
+	// {
+	// 	pointer z = TNULL;
+	// 	pointer x, y;
+	// 	while (node != TNULL)
+	// 	{
+	// 		if (node->data == key)
+	// 			z = node;
+	// 		if (node->data <= key)
+	// 			node = node->right;
+	// 		else
+	// 			node = node->left;
+	// 	}
+
+	// 	if (z == TNULL) 
+	// 		return false;
+
+	// 	y = z;
+	// 	int y_original_color = y->color;
+	// 	if (z->left == TNULL) 
+	// 	{
+	// 		x = z->right;
+	// 		rbTransplant(z, z->right);
+	// 	} 
+	// 	else if (z->right == TNULL)
+	// 	{
+	// 		x = z->left;
+	// 		rbTransplant(z, z->left);
+	// 	} 
+	// 	else 
+	// 	{
+	// 		y = minimum(z->right);
+	// 		y_original_color = y->color;
+	// 		x = y->right;
+	// 		if (y->parent == z)
+	// 			x->parent = y;
+	// 		else 
+	// 		{
+	// 			rbTransplant(y, y->right);
+	// 			y->right = z->right;
+	// 			y->right->parent = y;
+	// 		}
+
+	// 		rbTransplant(z, y);
+	// 		y->left = z->left;
+	// 		y->left->parent = y;
+	// 		y->color = z->color;
+	// 	}
+	// 	delete z;
+	// 	if (y_original_color == BLACK)
+	// 		deleteFix(x);
+	// 	return (true);
+	// }
+
+
+		bool _deleteNode(pointer node, value_type key)
 	{
 		pointer z = TNULL;
 		pointer x, y;
+
+		// Searching the node to delete
 		while (node != TNULL)
 		{
-			if (node->data == key)
+			if (node->data == key) 
+			{
 				z = node;
-			if (node->data <= key)
+			}
+			if (_comp(node->data, key))
 				node = node->right;
 			else
 				node = node->left;
 		}
 
-		if (z == TNULL) 
-			return false;
+		// The searched node is not in the tree
+		if (z == TNULL)
+			return (false);
 
 		y = z;
 		int y_original_color = y->color;
-		if (z->left == TNULL) 
+		if (z->left == TNULL)
 		{
 			x = z->right;
 			rbTransplant(z, z->right);
-		} 
+		}
 		else if (z->right == TNULL)
 		{
 			x = z->left;
 			rbTransplant(z, z->left);
-		} 
-		else 
+		}
+		else
 		{
 			y = minimum(z->right);
 			y_original_color = y->color;
@@ -481,14 +469,13 @@ public:
 				y->right = z->right;
 				y->right->parent = y;
 			}
-
 			rbTransplant(z, y);
 			y->left = z->left;
 			y->left->parent = y;
 			y->color = z->color;
 		}
 		delete z;
-		if (y_original_color == BLACK)
+		if (y_original_color == 0)
 			deleteFix(x);
 		return (true);
 	}

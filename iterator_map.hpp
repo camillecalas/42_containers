@@ -2,6 +2,7 @@
 # define ITERATOR_MAP_HPP
 
 # include "ft_containers.hpp"
+  
 // # include "Iterators.hpp"
 
 NAME_SPACE_START
@@ -123,6 +124,7 @@ public:
 
 
 private:
+
 	void
 	_increment()
 	{
@@ -150,22 +152,85 @@ private:
 	void
 	_decrement() 
 	{
+		// std::cout  << "DECREMENT" << std::endl;
+
 		if (_current == _end)
 		{
 			_current = _max(_root);
 			return ;
 		}
 		if (_current->left != _end)
+		{
 			_current = _max(_current->left);
+		}
 		else
 		{
+
 			node_ptr tmp_parent = _current->parent;
-			for (; tmp_parent && tmp_parent != _end && _current == tmp_parent->left; _current = tmp_parent)
+
+			while (tmp_parent && tmp_parent != _end && _current == tmp_parent->left) // == + petite key_value
+			{
+				_current = tmp_parent;
 				tmp_parent = tmp_parent->parent;
-				// _current = tmp_parent;
+			}
+			// if (tmp_parent && tmp_parent != _end && _current == tmp_parent->left) // == + petite key_value
+			// {
+			// 	_current = _root;
+			// 	return ;
+			// }
 			_current = tmp_parent;
 		}
 	}
+	// void
+	// _increment()
+	// {
+	// 	if (_current == _end)
+	// 	{
+	// 		_current = _max(_root);
+	// 		return ;
+	// 	}
+	// 	node_ptr tmp_current = _current;
+	// 	if (tmp_current->right != _end)
+	// 		_current = _min(tmp_current->right);
+	// 	else
+	// 	{
+	// 		node_ptr tmp_parent = tmp_current->parent;
+	// 		for (; tmp_parent != ft::nullptr && tmp_current == tmp_parent->right; tmp_parent = tmp_current->parent)
+	// 			tmp_current = tmp_parent;
+
+	// 		if (tmp_parent == ft::nullptr)
+	// 			_current = _end;
+	// 		else
+	// 			_current = tmp_parent;
+	// 	}
+	// }
+
+	// void
+	// _decrement() 
+	// {
+	// 	if (_current == _end)
+	// 	{
+	// 		_current = _max(_root);
+	// 		return ;
+	// 	}
+	// 	if (_current->left != _end)
+	// 		_current = _max(_current->left);
+	// 	else
+	// 	{
+	// 		node_ptr tmp_parent = _current->parent;
+	// 		while (tmp_parent && tmp_parent != _end && _current == tmp_parent->left)
+	// 		{
+	// 			_current = tmp_parent;
+	// 			tmp_parent = tmp_parent->parent;
+	// 		}
+	// 		if (tmp_parent && tmp_parent != _end && _current == tmp_parent->left) // == + petite key_value
+	// 		{
+	// 			_current = _root;
+	// 			return ;
+	// 		}
+	// 		_current = tmp_parent;
+	// 	}
+	// }
 
 	node_ptr
 	_max(node_ptr x)
