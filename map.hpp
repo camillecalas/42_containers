@@ -340,8 +340,13 @@ public:
 	void 
 	insert (InputIterator first, InputIterator last)
 	{
-		for (; first != last; first++, _size++)
-			_rbt.insert(*first);
+		// for (; first != last; first++, _size++)
+		// 	_rbt.insert(*first);
+			while (first != last)
+			{
+				insert(*first);
+				first++;
+			}
 	}
 
 	void
@@ -386,7 +391,7 @@ public:
 // 	template <class U> 
 // 	void _swap ( U& a, U& b )
 // 	{
-// 		L tmp = a;
+// 		U tmp = a;
 // 		a = b;
 // 		b = tmp;
 // 	}
@@ -402,6 +407,24 @@ public:
 // 		// x._size = size_tmp;
 // 		// _rbt.swap(x._rbt);
 // 	}
+
+
+		void swap (map& x)
+		{
+			size_t tmp = x._size;
+			x._size = _size;
+			_size = tmp;
+
+			swap2(_rbt, x._rbt);
+		}
+		
+		template <class U>
+		void swap2 (U& RBT, U& RBT2)
+		{
+			U	tmp = RBT2;
+			RBT2 = RBT;
+			RBT = tmp;
+		}
 
 	// =============================================================================
 	// GETTERS =====================================================================

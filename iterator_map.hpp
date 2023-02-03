@@ -161,7 +161,8 @@ private:
 		{
 			node_ptr tmp_parent = _current->parent;
 			for (; tmp_parent && tmp_parent != _end && _current == tmp_parent->left; _current = tmp_parent)
-				_current = tmp_parent;
+				tmp_parent = tmp_parent->parent;
+				// _current = tmp_parent;
 			_current = tmp_parent;
 		}
 	}

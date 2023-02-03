@@ -4,143 +4,290 @@
 #include "equal.hpp"
 #include "vector.hpp"
 #include "pair.hpp"
-#include "map.hpp"
 
 #include "node.hpp"
 // #include "red_black_tree.hpp"
 #include <vector>
 #include <map>
 
+using namespace NAMESPACE;
 
-#ifndef TESTED_NAMESPACE
-# define TESTED_NAMESPACE ft
-#endif
-
-using namespace TESTED_NAMESPACE;
-
-
-int main()
+template <class Key, class T>
+void	print(NAMESPACE::map<Key, T>& lst)
 {
-
-
-
-  ft::map<char,int> mymap;
-  ft::map<char,int>::iterator itlow,itup;
-
-  mymap['a']=20;
-  mymap['b']=40;
-  mymap['c']=60;
-  mymap['d']=80;
-  mymap['e']=100;
-
-  itlow=mymap.lower_bound ('b');  // itlow points to b
-  itup=mymap.upper_bound ('d');   // itup points to e (not d!)
-
-  	std::cout << itlow->first << " = " << itlow->second << std::endl;
-	std::cout << itup->first << " = " << itup->second << std::endl;
-
-//   mymap.erase(itlow,itup);        // erases [itlow,itup)
-
-//   // print content:
-//   for (std::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
-//     std::cout << it->first << " => " << it->second << '\n';
-
-// 	std::map<char,int> mymap;
-// 	 std::map<char,int>::iterator it;
-
-//   // insert some values:
-//   mymap['a']=10;
-//   mymap['b']=20;
-//   mymap['c']=30;
-//   mymap['d']=40;
-//   mymap['e']=50;
-//   mymap['f']=60;
-
-//   it=mymap.find('b');
-//   mymap.erase (it);                   // erasing by iterator
-
-//   mymap.erase ('c');                  // erasing by key
-
-//   it=mymap.find ('e');
-//   mymap.erase ( it, mymap.end() );    // erasing by range
-
-//   // show content:
-//   for (it=mymap.begin(); it!=mymap.end(); ++it)
-//     std::cout << it->first << " => " << it->second << '\n';
-
-	// std::cout << "*******STD******\n";
-	// std::map<int, int>c;
-	// c.insert(std::pair<int, int>(1, 100));
-	// c.insert(std::pair<int, int>(2, 200));
-	// c.insert(std::pair<int, int>(3, 300));
-	// c.insert(std::pair<int, int>(45, 4500));
-	// c.insert(std::pair<int, int>(24, 2400));
-	// std::map<int,int>::iterator it2 = c.find(45);
-	// std::cout << it2->first << std::endl;
-
-
-	// c.insert (it2, std::pair<int,int>(77,7700));  
-	// // c.print_tree();
-	// std::cout << "\n" << "******************\n";
-	// std::map<int,int> d;
-	// d.insert(c.begin(),c.find(45));
-	// // d.print_tree();
-
-	std::cout << "\n*******FT******\n";
-
-	// ft::map<int, int>a;
-	// a.insert(ft::pair<int, int>(1, 100));
-	// a.insert(ft::pair<int, int>(2, 200));
-	// a.insert(ft::pair<int, int>(3, 300));
-	// a.insert(ft::pair<int, int>(45, 4500));
-	// a.insert(ft::pair<int, int>(24, 2400));
-	// ft::map<int,int>::iterator it = a.begin();
-	// a.insert (it, ft::pair<int,int>(77,7700));  
-	// a.print_tree();
-	// std::cout << "\n" << "******************\n";
-	// ft::map<int,int>::iterator it1 = a.find(45);
-	// std::cout << it1->first << std::endl;
-	// a.erase(it1);
-	// // if (it1 != a.end())
-	// // a.insert (it1, ft::pair<int,int>(77,7700)); 
-	// a.print_tree();
-
-
-
-
-
-// 	ft::map<char,int> mymap2;
-// 	ft::map<char,int>::iterator it2;
-
-//   // insert some values:
-//   mymap2['a']=10;
-//   mymap2['b']=20;
-//   mymap2['c']=30;
-//   mymap2['d']=40;
-//   mymap2['e']=50;
-//   mymap2['f']=60;
-
-//   it2=mymap2.find('b');
-//   mymap2.erase (it2);                   // erasing by iterator
-
-//   mymap2.erase ('c');                  // erasing by key
-
-//   it2=mymap2.find ('e');
-//   mymap2.erase ( it2, mymap2.end() );    // erasing by range
-
-// //   show content:
-//   for (it2=mymap2.begin(); it2!=mymap2.end(); ++it2)
-//     std::cout << it2->first << " => " << it2->second << '\n';
-
-
-	// std::cout << "\n" << "******************\n";
-	// ft::map<int,int> b;
-	// b.insert(a.begin(), a.find(1));
-	// b.print_tree();
-
-
-	return (0);
+	for (typename std::map<Key, T>::iterator it = lst.begin(); it != lst.end(); it++)
+		std::cout << it->first << " => " << it->second << '\n';
 }
+
+int main ()
+{
+	{
+	std::map<char,int> foo,bar;
+
+	foo['x']=100;
+	foo['y']=200;
+
+	bar['a']=11;
+	bar['b']=22;
+	bar['c']=33;
+
+
+	std::map<char, int>::const_iterator tmp = foo.begin(); //tmp iterates through foo
+	std::map<char, int>::const_iterator tmp2 = bar.begin(); //tmp2 iterates through bar
+
+	foo.swap(bar); //tmp iterates through bar
+					//tmp2 iterates through foo
+
+
+	std::map<char, int>	other;
+
+	other['1'] = 73;
+	other['2'] = 173;
+	other['3'] = 763;
+	other['4'] = 73854;
+	other['5'] = 74683;
+	other['6'] = 753;
+
+	std::map<char, int>::const_iterator tmp3 = other.begin(); // tmp3 iterates through other
+
+	std::cout << "foo contains:\n";
+	for (std::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+		std::cout << it->first << " => " << it->second << '\n';
+
+	std::cout << "bar contains:\n";
+	for (std::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+		std::cout << it->first << " => " << it->second << '\n';
+
+		while(tmp != bar.end())
+		{
+			std::cout << tmp->first << " => " << tmp->second << '\n';
+			tmp++;
+		}
+		tmp--;
+
+		while(tmp2 != foo.end())
+		{
+			std::cout << tmp2->first << " => " << tmp2->second << '\n';
+			tmp2++;
+		}
+		tmp2--;
+
+		other.swap(foo); //tmp2 iterates through other
+						//tmp3 iterates throught foo
+		print(other);
+		print(foo);
+		print(bar);
+		while(tmp != bar.begin())
+		{
+			std::cout << tmp->first << " => " << tmp->second << '\n';
+			tmp--;
+		}
+		std::cout << tmp->first << " => " << tmp->second << '\n';
+
+		while(tmp2 != other.begin())
+		{
+			std::cout << tmp2->first << " => " << tmp2->second << '\n';
+			tmp2--;
+		}
+		std::cout << tmp2->first << " => " << tmp2->second << '\n';
+
+		while(tmp3 != foo.end())
+		{
+			std::cout << tmp3->first << " => " << tmp3->second << '\n';
+			tmp3++;
+		}
+		tmp3--;
+
+		bar.swap(foo); //tmp3 iterates through bar
+					//tmp iterates through foo
+
+		print(other);
+		print(foo);
+		print(bar);
+
+		while(tmp != foo.end())
+		{
+			std::cout << tmp->first << " => " << tmp->second << '\n';
+			tmp++;
+		}
+
+		while(tmp2 != other.end())
+		{
+			std::cout << tmp2->first << " => " << tmp2->second << '\n';
+			tmp2++;
+		}
+
+		while(tmp3 != bar.begin())
+		{
+			std::cout << tmp3->first << " => " << tmp3->second << '\n';
+			tmp3--;
+		}
+		std::cout << tmp3->first << " => " << tmp3->second << '\n';
+	}
+	
+	{
+		ft::map<char,int> foo,bar;
+
+		foo['x']=100;
+		foo['y']=200;
+
+		bar['a']=11;
+		bar['b']=22;
+		bar['c']=33;
+
+
+		ft::map<char, int>::const_iterator tmp = foo.begin(); //tmp iterates through foo
+		ft::map<char, int>::const_iterator tmp2 = bar.begin(); //tmp2 iterates through bar
+
+		foo.swap(bar); //tmp iterates through bar
+						//tmp2 iterates through foo
+
+
+		ft::map<char, int>	other;
+
+		other['1'] = 73;
+		other['2'] = 173;
+		other['3'] = 763;
+		other['4'] = 73854;
+		other['5'] = 74683;
+		other['6'] = 753;
+
+		ft::map<char, int>::const_iterator tmp3 = other.begin(); // tmp3 iterates through other
+
+		std::cout << "foo contains:\n";
+		for (ft::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+			std::cout << it->first << " => " << it->second << '\n';
+
+		std::cout << "bar contains:\n";
+		for (ft::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+			std::cout << it->first << " => " << it->second << '\n';
+
+		while(tmp != bar.end())
+		{
+			std::cout << tmp->first << " => " << tmp->second << '\n';
+			tmp++;
+		}
+		tmp--;
+
+		while(tmp2 != foo.end())
+		{
+			std::cout << tmp2->first << " => " << tmp2->second << '\n';
+			tmp2++;
+		}
+		tmp2--;
+
+		other.swap(foo); //tmp2 iterates through other
+						//tmp3 iterates throught foo
+		print(other);
+		print(foo);
+		print(bar);
+		while(tmp != bar.begin())
+		{
+			std::cout << tmp->first << " => " << tmp->second << '\n';
+			tmp--;
+		}
+		std::cout << tmp->first << " => " << tmp->second << '\n';
+
+		while(tmp2 != other.begin())
+		{
+			std::cout << tmp2->first << " => " << tmp2->second << '\n';
+			tmp2--;
+		}
+		std::cout << tmp2->first << " => " << tmp2->second << '\n';
+
+		while(tmp3 != foo.end())
+		{
+			std::cout << tmp3->first << " => " << tmp3->second << '\n';
+			tmp3++;
+		}
+		tmp3--;
+
+		bar.swap(foo); //tmp3 iterates through bar
+					//tmp iterates through foo
+
+		print(other);
+		print(foo);
+		print(bar);
+
+		while(tmp != foo.end())
+		{
+			std::cout << tmp->first << " => " << tmp->second << '\n';
+			tmp++;
+		}
+
+		while(tmp2 != other.end())
+		{
+			std::cout << tmp2->first << " => " << tmp2->second << '\n';
+			tmp2++;
+		}
+
+		while(tmp3 != bar.begin())
+		{
+			std::cout << tmp3->first << " => " << tmp3->second << '\n';
+			tmp3--;
+		}
+		std::cout << tmp3->first << " => " << tmp3->second << '\n';
+	}
+
+  return 0;
+}
+
+
+
+// int main()
+// {
+// 	{
+
+
+// 		std::std::map<char,int> foo,bar;
+
+// 		foo['x']=100;
+// 		foo['y']=200;
+
+// 		bar['a']=11;
+// 		bar['b']=22;
+// 		bar['c']=33;
+
+// 		swap(foo,bar);
+
+// 		std::std::cout << "foo contains:\n";
+// 		for (std::std::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+// 		std::std::cout << it->first << " => " << it->second << '\n';
+
+// 		std::std::cout << "bar contains:\n";
+// 		for (std::std::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+// 		std::std::cout << it->first << " => " << it->second << '\n';
+
+		
+// 	}
+
+// 	{
+// 		std::std::cout << "\n*******FT******\n";
+
+// 		ft::std::map<char,int> foo,bar;
+
+// 		foo['x']=100;
+// 		foo['y']=200;
+
+// 		bar['a']=11;
+// 		bar['b']=22;
+// 		bar['c']=33;
+
+// 		swap(foo,bar);
+
+// 		std::std::cout << "foo contains:\n";
+// 		for (ft::std::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+// 		std::std::cout << it->first << " => " << it->second << '\n';
+
+// 		std::std::cout << "bar contains:\n";
+// 		for (ft::std::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+// 		std::std::cout << it->first << " => " << it->second << '\n';
+
+// 		return 0;
+// 	}
+
+// 	return (0);
+// }
 
 
 
