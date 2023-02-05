@@ -32,7 +32,7 @@ private:
 	// =============================================================================
 	// CONSTRUCTORS ================================================================
 public:
-	iterator_map() : _current(ft::nullptr), _root(ft::nullptr), _end(ft::nullptr)
+	iterator_map() : _current(_nullptr), _root(_nullptr), _end(_nullptr)
 	{}
 
 	iterator_map(const node_ptr &current, const node_ptr &root, const node_ptr &end)
@@ -137,10 +137,10 @@ private:
 		else
 		{
 			node_ptr tmp_parent = tmp_current->parent;
-			for (; tmp_parent != ft::nullptr && tmp_current == tmp_parent->right; tmp_parent = tmp_current->parent)
+			for (; tmp_parent != _nullptr && tmp_current == tmp_parent->right; tmp_parent = tmp_current->parent)
 				tmp_current = tmp_parent;
 
-			if (tmp_parent == ft::nullptr)
+			if (tmp_parent == _nullptr)
 				_current = _end;
 			else
 				_current = tmp_parent;

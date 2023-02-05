@@ -27,13 +27,13 @@ struct Node
 
 	// =============================================================================
 	// CONSTRUCTORS ================================================================
-	Node() : data(), color(BLACK), parent(ft::nullptr), left(ft::nullptr), right(ft::nullptr)
+	Node() : data(), color(BLACK), parent(_nullptr), left(_nullptr), right(_nullptr)
 	{}
 
-	Node (const T & data) : data(data), color(RED), parent(ft::nullptr), left(ft::nullptr), right(ft::nullptr)
+	Node (const T & data) : data(data), color(RED), parent(_nullptr), left(_nullptr), right(_nullptr)
 	{}
 
-	Node (const T & data, Node *ptr_left, Node *ptr_right) : data(data), color(RED), parent(ft::nullptr), left(ptr_left), right(ptr_right)
+	Node (const T & data, Node *ptr_left, Node *ptr_right) : data(data), color(RED), parent(_nullptr), left(ptr_left), right(ptr_right)
 	{}
 
 };

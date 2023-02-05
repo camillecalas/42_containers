@@ -37,11 +37,6 @@ template <> struct is_integral<long>: 				public 	true_type {};
 template <> struct is_integral<unsigned long>: 		public 	true_type {};
 template <> struct is_integral<long long>: 			public 	true_type {};
 template <> struct is_integral<unsigned long long>: public	true_type {};
-// template <> struct is_integral<float>: 				public 	true_type {};
-// template <> struct is_integral<double>: 			public 	true_type {};
-// template <> struct is_integral<long double>: 		public 	true_type {};
-// template <> struct is_integral<void>: 				public 	true_type {};
-
 
 NAME_SPACE_END
 #endif

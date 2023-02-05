@@ -30,12 +30,10 @@ public:
 private:
 	value_compare	_comp;
 	allocator_type	_alloc;
-
-public:
 	pointer 		TNULL;
 	pointer			root;
 
-
+public:
 	// =============================================================================
 	// CONSTRUCTORS ================================================================
 	RedBlackTree(const value_compare &comp = value_compare()) 
@@ -44,9 +42,9 @@ public:
 		TNULL = _alloc.allocate(1);
 		_alloc.construct(TNULL, Node(value_type()));
 
-		TNULL->parent = ft::nullptr;
-		TNULL->left = ft::nullptr;
-		TNULL->right = ft::nullptr;
+		TNULL->parent = _nullptr;
+		TNULL->left = _nullptr;
+		TNULL->right = _nullptr;
 		TNULL->color = BLACK;
 		root = TNULL;
 	}
@@ -60,7 +58,6 @@ public:
 
 	// =============================================================================
 	// GETTERS =====================================================================
-	//TODO not sure 
 	pointer
 	get_tnull() const
 	{
@@ -209,6 +206,12 @@ public:
 		return (_find(node, val));
 	}
 
+	// pointer
+	// find_set(const pointer node, const value_type &val) const
+	// {
+	// 	return (_find(node, val));
+	// }
+
 	pointer
 	lower_bound_rbt(const value_type &val) const
 	{
@@ -227,7 +230,7 @@ public:
 		pointer node = _alloc.allocate(1);
 		_alloc.construct(node, Node(key, TNULL, TNULL));
 
-		pointer y = ft::nullptr;
+		pointer y = _nullptr;
 		pointer x = root;
 
 		while (x != TNULL) 
@@ -241,7 +244,7 @@ public:
 			{
 				_alloc.destroy(node);
 				_alloc.deallocate(node, 1);
-				return (ft::nullptr);
+				return (_nullptr);
 			}
 		}
 
@@ -253,13 +256,13 @@ public:
 		else
 			y->right = node;
 
-		if (node->parent == ft::nullptr)
+		if (node->parent == _nullptr)
 		{
 			node->color = BLACK;
 			return (node);
 		}
 
-		if (node->parent->parent == ft::nullptr)
+		if (node->parent->parent == _nullptr)
 			return (node);
 		_insertFix(node);
 		return (node);

@@ -20,7 +20,7 @@ class nullptr_t
 	private:
 		void operator&() const;    	/* Can't take address of nullptr */
 
-} nullptr = {};  
+} _nullptr = {};  
 
 NAME_SPACE_END
 #endif
