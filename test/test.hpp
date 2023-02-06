@@ -13,6 +13,7 @@
 # include "../map.hpp"
 
 # include <vector>
+# include <map>
 # include <stack>
 # include <iostream>
 # include <time.h>

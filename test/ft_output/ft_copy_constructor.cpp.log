@@ -1,0 +1,30 @@
+TEST: COPY CONSTRUCTOR
+---------------------------------------------------------
+SIZE = 8 CAPACITY = 8
+
+
+
+
+
+
+
+
+---------------------------------------------------------
+SIZE = 8 CAPACITY = 8
+
+
+
+
+
+
+
+
+len: 5
+	-- PART ONE --
+SIZE = 5 CAPACITY = 5
+SIZE = 3 CAPACITY = 3
+SIZE = 7 CAPACITY = 10
+	-- PART TWO --
+SIZE = 7 CAPACITY = 7
+SIZE = 0 CAPACITY = 3
+SIZE = 3 CAPACITY = 10

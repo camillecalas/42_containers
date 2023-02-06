@@ -17,6 +17,7 @@
 # include "lexicographical_compare.hpp"
 
 # include <iostream>
+#include <functional>
 
 //TODO erase later
 // # include <map>

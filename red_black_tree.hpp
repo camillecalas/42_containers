@@ -31,7 +31,7 @@ private:
 	value_compare	_comp;
 	allocator_type	_alloc;
 	pointer 		TNULL;
-	pointer			root;
+	pointer			_root;
 
 public:
 	// =============================================================================
@@ -46,7 +46,7 @@ public:
 		TNULL->left = _nullptr;
 		TNULL->right = _nullptr;
 		TNULL->color = BLACK;
-		root = TNULL;
+		_root = TNULL;
 	}
 	
 
@@ -67,7 +67,7 @@ public:
 	pointer
 	get_root() const
 	{
-		return (root);
+		return (_root);
 	}
 
 	size_type
@@ -82,7 +82,7 @@ public:
 	bool
 	empty() const
 	{
-		if (root == TNULL)
+		if (_root == TNULL)
 			return (1);
 		return (0);
 	}
@@ -109,6 +109,7 @@ public:
 			node = node->right;
 		return (node);
 	}
+
 
 	// =============================================================================
 	// OPERATIONS PRIVATE ==========================================================
@@ -177,20 +178,21 @@ private:
 		return (res);
 	}
 
+
 	// =============================================================================
 	// OPERATIONS ==================================================================
 public:
 	void
 	delete_tree()
 	{
-		_delete_tree(root);
-		root = TNULL;
+		_delete_tree(_root);
+		_root = TNULL;
 	}
 
 	bool
 	deleteNode(value_type data) 
 	{
-		return (_deleteNode(root, data));
+		return (_deleteNode(_root, data));
 	}
 
 	void
@@ -206,12 +208,6 @@ public:
 		return (_find(node, val));
 	}
 
-	// pointer
-	// find_set(const pointer node, const value_type &val) const
-	// {
-	// 	return (_find(node, val));
-	// }
-
 	pointer
 	lower_bound_rbt(const value_type &val) const
 	{
@@ -221,7 +217,7 @@ public:
 	pointer
 	upper_bound_rbt(const value_type &val) const
 	{
-		return (_upper_bound_rbt(val, root));
+		return (_upper_bound_rbt(val, _root));
 	}
 
 	pointer
@@ -231,7 +227,7 @@ public:
 		_alloc.construct(node, Node(key, TNULL, TNULL));
 
 		pointer y = _nullptr;
-		pointer x = root;
+		pointer x = _root;
 
 		while (x != TNULL) 
 		{
@@ -249,8 +245,8 @@ public:
 		}
 
 		node->parent = y;
-		if (y == nullptr)
-			root = node;
+		if (y == _nullptr)
+			_root = node;
 		else if (_comp(node->data, y->data))
 			y->left = node;
 		else
@@ -274,35 +270,14 @@ public:
 	pointer
 	begin() const
 	{
-		return (minimum(root));
+		return (minimum(_root));
 	}
 
 	pointer
 	end() const
 	{
-		return (maximum(root));
+		return (maximum(_root));
 	}
-
-
-	// void
-	// initializeNULLNode(pointer node, pointer parent) 
-	// {
-	// 	node->data = 0;
-	// 	node->parent = parent;
-	// 	node->left = nullptr;
-	// 	node->right = nullptr;
-	// 	node->color = 0;
-	// }
-
-	// pointer
-	// searchTreeHelper(pointer node, int key) 
-	// {
-	// 	if (node == TNULL || key == node->data)
-	// 		return node;
-	// 	if (key < node->data)
-	// 		return searchTreeHelper(node->left, key);
-	// 	return searchTreeHelper(node->right, key);
-	// }
 
 private:
 	// For balancing the tree after deletion
@@ -310,7 +285,7 @@ private:
 	_deleteFix(pointer x) 
 	{
 		pointer s;
-		while (x != root && x->color == 0) 
+		while (x != _root && x->color == 0) 
 		{
 			if (x == x->parent->left) 
 			{
@@ -341,7 +316,7 @@ private:
 					x->parent->color = 0;
 					s->right->color = 0;
 					_leftRotate(x->parent);
-					x = root;
+					x = _root;
 				}
 			} 
 			else 
@@ -374,7 +349,7 @@ private:
 					x->parent->color = 0;
 					s->left->color = 0;
 					_rightRotate(x->parent);
-					x = root;
+					x = _root;
 				}
 			}
 		}
@@ -384,8 +359,8 @@ private:
 	void 
 	_rbTransplant(pointer u, pointer v) 
 	{
-		if (u->parent == nullptr)
-			root = v;
+		if (u->parent == _nullptr)
+			_root = v;
 		else if (u == u->parent->left)
 			u->parent->left = v;
 		else
@@ -505,37 +480,13 @@ private:
 					_rightRotate(k->parent->parent);
 				}
 			}
-			if (k == root)
+			if (k == _root)
 				break;
 		}
-		root->color = BLACK;
+		_root->color = BLACK;
 	}
 
 private:
-	// void 
-	// preorder() 
-	// {
-	// 	preOrderHelper(this->root);
-	// }
-
-	// void 
-	// inorder() 
-	// {
-	// 	inOrderHelper(this->root);
-	// }
-
-	// void 
-	// postorder() 
-	// {
-	// 	postOrderHelper(this->root);
-	// }
-
-	// pointer 
-	// searchTree(int k) 
-	// {
-	// 	return searchTreeHelper(this->root, k);
-	// }
-
 	pointer 
 	_successor(pointer x) 
 	{
@@ -575,8 +526,8 @@ private:
 			y->left->parent = x;
 		y->parent = x->parent;
 
-		if (x->parent == nullptr)
-			this->root = y;
+		if (x->parent == _nullptr)
+			this->_root = y;
 		else if (x == x->parent->left)
 			x->parent->left = y;
 		else
@@ -594,8 +545,8 @@ private:
 			y->right->parent = x;
 		y->parent = x->parent;
 
-		if (x->parent == nullptr)
-			this->root = y;
+		if (x->parent == _nullptr)
+			this->_root = y;
 		else if (x == x->parent->right)
 			x->parent->right = y;
 		else
@@ -608,3 +559,48 @@ private:
 
 NAME_SPACE_END
 #endif
+
+
+	// void
+	// initializeNULLNode(pointer node, pointer parent) 
+	// {
+	// 	node->data = 0;
+	// 	node->parent = parent;
+	// 	node->left = nullptr;
+	// 	node->right = nullptr;
+	// 	node->color = 0;
+	// }
+
+	// pointer
+	// searchTreeHelper(pointer node, int key) 
+	// {
+	// 	if (node == TNULL || key == node->data)
+	// 		return node;
+	// 	if (key < node->data)
+	// 		return searchTreeHelper(node->left, key);
+	// 	return searchTreeHelper(node->right, key);
+	// }
+
+		// void 
+	// preorder() 
+	// {
+	// 	preOrderHelper(this->_root);
+	// }
+
+	// void 
+	// inorder() 
+	// {
+	// 	inOrderHelper(this->_root);
+	// }
+
+	// void 
+	// postorder() 
+	// {
+	// 	postOrderHelper(this->_root);
+	// }
+
+	// pointer 
+	// searchTree(int k) 
+	// {
+	// 	return searchTreeHelper(this->_root, k);
+	// }

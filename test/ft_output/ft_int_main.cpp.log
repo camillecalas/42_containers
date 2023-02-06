@@ -1,0 +1,17 @@
+BOB(5, 8) : 8 8 8 8 8 
+
+CTORS
+Empty is empty ? true
+BOB is empty? false
+Size of JOHN 0
+Size of BOB 5
+Size of MIKE 5
+
+RESIZE
+Size of JOHN 0
+Capacity of JOHN is sufficient
+Size of BOB 2
+Capacity of BOB is sufficient
+Size of MIKE 5
+Capacity of MIKE is sufficient
+BOB is empty now ? true
