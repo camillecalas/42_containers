@@ -269,7 +269,6 @@ public:
 	void 
 	reserve (size_type n)
 	{
-		// check : if (n < capacity())
 		if (n < _capacity)
 			return ;
 		else if (n > _alloc.max_size())

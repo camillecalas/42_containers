@@ -330,7 +330,7 @@ private:
 					s = x->parent->left;
 				}
 
-				if (s->right->color == 0 && s->right->color == 0) 
+				if (s->left->color == 0 && s->right->color == 0) //
 				{
 					s->color = 1;
 					x = x->parent;
@@ -559,48 +559,3 @@ private:
 
 NAME_SPACE_END
 #endif
-
-
-	// void
-	// initializeNULLNode(pointer node, pointer parent) 
-	// {
-	// 	node->data = 0;
-	// 	node->parent = parent;
-	// 	node->left = nullptr;
-	// 	node->right = nullptr;
-	// 	node->color = 0;
-	// }
-
-	// pointer
-	// searchTreeHelper(pointer node, int key) 
-	// {
-	// 	if (node == TNULL || key == node->data)
-	// 		return node;
-	// 	if (key < node->data)
-	// 		return searchTreeHelper(node->left, key);
-	// 	return searchTreeHelper(node->right, key);
-	// }
-
-		// void 
-	// preorder() 
-	// {
-	// 	preOrderHelper(this->_root);
-	// }
-
-	// void 
-	// inorder() 
-	// {
-	// 	inOrderHelper(this->_root);
-	// }
-
-	// void 
-	// postorder() 
-	// {
-	// 	postOrderHelper(this->_root);
-	// }
-
-	// pointer 
-	// searchTree(int k) 
-	// {
-	// 	return searchTreeHelper(this->_root, k);
-	// }

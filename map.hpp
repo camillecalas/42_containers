@@ -17,11 +17,7 @@
 # include "lexicographical_compare.hpp"
 
 # include <iostream>
-#include <functional>
-
-//TODO erase later
-// # include <map>
-// std::map<int, int> salut;
+# include <functional>
 
 NAME_SPACE_START
 template <class Key, class T, class Compare = std::less<Key>,
@@ -55,13 +51,6 @@ public:
 };
 
 //! ================================================================================
-
-	//TODO to erase later
-	// void
-	// print_tree()
-	// {
-	// 	_rbt.printTree();
-	// }
 
 	// =============================================================================
 	// TYPEDEF =====================================================================
@@ -115,6 +104,7 @@ public:
 		*this = copy;
 	}
 
+
 	// =============================================================================
 	// DESTRUCTORS =================================================================
 	~map()
@@ -123,6 +113,7 @@ public:
 			_rbt.delete_tree();
 		_rbt.destroy_tnull();
 	}
+
 
 	// =============================================================================
 	// OVERLOADS ===================================================================
@@ -276,7 +267,8 @@ public:
 		return (iterator(_rbt.lower_bound_rbt(value_type(k, mapped_type())), _rbt.get_root(), _rbt.get_tnull()));
 	}
 	
-	const_iterator lower_bound (const key_type& k) const
+	const_iterator
+	lower_bound (const key_type& k) const
 	{
 		return (const_iterator(_rbt.lower_bound_rbt(value_type(k, mapped_type())), _rbt.get_root(), _rbt.get_tnull()));
 	}
@@ -425,21 +417,7 @@ swap(ft::map<Key, T, Compare, Alloc>& x, ft::map<Key, T, Compare, Alloc>& y)
 template <class Key, class T, class Compare, class Alloc>
 bool	operator==(const ft::map<Key, T, Compare, Alloc>& lhs, const ft::map<Key, T, Compare, Alloc>& rhs)
 {
-	// if (lhs.size() != rhs.size())
-	// 	return (false);
-	// typename ft::map<Key, T, Compare, Alloc>::const_iterator it = lhs.begin();
-	// typename ft::map<Key, T, Compare, Alloc>::const_iterator ite = lhs.end();
-	// typename ft::map<Key, T, Compare, Alloc>::const_iterator it2 = rhs.begin();
-	// while (it != ite)
-	// {
-	// 	if (*it != *it2)
-	// 		return (false);
-	// 	it++;
-	// 	it2++;
-	// }
-	// return (true);
-
-		return (!(lhs < rhs) && !(lhs > rhs));
+	return (!(lhs < rhs) && !(lhs > rhs));
 }
 
 template <class Key, class T, class Compare, class Alloc>
