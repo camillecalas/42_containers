@@ -29,7 +29,7 @@ Utilizing advanced concepts like templates and iterators, I ensured efficient an
 
 ### Built with
 
-- [C++](https://cplusplus.com/)) - C++
+- [C++](https://cplusplus.com/)
 
 ## Linkedin
 - [https://www.linkedin.com/in/camillecalas](https://www.linkedin.com/in/camillecalas/)
