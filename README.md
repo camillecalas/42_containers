@@ -1,5 +1,3 @@
-# 42_containers
-
 # Container Implementations in C++ (part of the 42 curriculum)
 
 ## Table of contents
